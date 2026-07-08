@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MOMO ✕ SALSA — Philippines, December 2026</title>
+<title>MOMO ✕ SALSA — Philippines, Nov–Dec 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -12,74 +12,29 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
   :root{
-    --ink:#10231F;
-    --paper:#EEF4F2;
-    --lagoon:#1B8F7E;
-    --lagoon-deep:#0C5A50;
-    --coral:#FF6B5E;
-    --sun:#F4B942;
-    --mist:#D8E5E1;
-    --card:#FFFFFF;
+    --ink:#10231F;--paper:#EEF4F2;--lagoon:#1B8F7E;--lagoon-deep:#0C5A50;
+    --coral:#FF6B5E;--sun:#F4B942;--mist:#D8E5E1;--card:#FFFFFF;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
-  body{
-    background:var(--paper);
-    color:var(--ink);
-    font-family:'Space Grotesk',sans-serif;
-    font-size:16px;
-    line-height:1.6;
-    -webkit-font-smoothing:antialiased;
-  }
+  body{background:var(--paper);color:var(--ink);font-family:'Space Grotesk',sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
   .mono{font-family:'Space Mono',monospace}
   .wrap{max-width:880px;margin:0 auto;padding:0 24px}
   img{max-width:100%}
 
   /* ---------- HERO ---------- */
-  .hero{
-    min-height:92vh;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    position:relative;
-    overflow:hidden;
-    padding:64px 0 48px;
-  }
-  .hero-eyebrow{
-    font-family:'Space Mono',monospace;
-    font-size:12px;
-    letter-spacing:.22em;
-    text-transform:uppercase;
-    color:var(--lagoon-deep);
-    margin-bottom:20px;
-  }
-  .hero h1{
-    font-family:'Unbounded',sans-serif;
-    font-weight:800;
-    font-size:clamp(34px,7vw,72px);
-    line-height:1.04;
-    letter-spacing:-.01em;
-  }
+  .hero{min-height:92vh;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;padding:64px 0 48px}
+  .hero-eyebrow{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--lagoon-deep);margin-bottom:20px}
+  .hero h1{font-family:'Unbounded',sans-serif;font-weight:800;font-size:clamp(34px,7vw,72px);line-height:1.04;letter-spacing:-.01em}
   .hero h1 .x{color:var(--coral);font-weight:400}
-  .hero-sub{
-    margin-top:18px;
-    font-size:clamp(15px,2vw,19px);
-    max-width:52ch;
-    color:#3A4E49;
-  }
+  .hero-sub{margin-top:18px;font-size:clamp(15px,2vw,19px);max-width:54ch;color:#3A4E49}
   .routes-svg{width:100%;max-width:820px;margin-top:40px;display:block}
-  .routes-svg .path{
-    fill:none;stroke-width:2.5;
-    stroke-dasharray:900;stroke-dashoffset:900;
-    animation:draw 2.4s ease-out forwards;
-  }
+  .routes-svg .path{fill:none;stroke-width:2.5;stroke-dasharray:900;stroke-dashoffset:900;animation:draw 2.4s ease-out forwards}
   .routes-svg .path.dxb{stroke:var(--coral);animation-delay:.3s}
   .routes-svg .path.cgk{stroke:var(--lagoon);animation-delay:.7s}
   @keyframes draw{to{stroke-dashoffset:0}}
   .routes-svg .dot{opacity:0;animation:pop .5s ease-out forwards}
-  .routes-svg .dot.d1{animation-delay:.2s}
-  .routes-svg .dot.d2{animation-delay:.6s}
-  .routes-svg .dot.d3{animation-delay:2.6s}
+  .routes-svg .dot.d1{animation-delay:.2s}.routes-svg .dot.d2{animation-delay:.6s}.routes-svg .dot.d3{animation-delay:2.6s}
   @keyframes pop{from{opacity:0;transform:scale(0)}to{opacity:1;transform:scale(1)}}
   .routes-svg text{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;fill:var(--ink)}
   .routes-svg .sub{font-weight:400;font-size:10.5px;fill:#5B6E69}
@@ -98,7 +53,7 @@
   .cd-sep{font-family:'Space Mono',monospace;font-weight:700;font-size:clamp(28px,6vw,52px);color:var(--lagoon);line-height:1;align-self:flex-start;padding-top:2px}
   .cd-arrived{font-family:'Unbounded',sans-serif;font-weight:800;font-size:clamp(24px,5vw,44px);color:var(--sun);position:relative;z-index:1}
 
-  /* ---------- BOARDING STRIP ---------- */
+  /* ---------- BOARDING ---------- */
   .board{background:var(--lagoon-deep);color:var(--paper);padding:36px 0}
   .board .wrap{display:grid;grid-template-columns:1fr 1fr;gap:24px}
   .pass{border:1px dashed rgba(238,244,242,.35);border-radius:14px;padding:20px 22px;position:relative}
@@ -136,8 +91,6 @@
   .leg h2{font-family:'Unbounded',sans-serif;font-weight:600;font-size:clamp(24px,4vw,38px)}
   .leg-days{font-family:'Space Mono',monospace;font-size:12.5px;color:#5B6E69;margin-bottom:24px}
   .leg-intro{max-width:60ch;color:#3A4E49;margin-bottom:28px}
-
-  /* leg banner photo */
   .leg-photo{margin:0 0 34px;border-radius:20px;overflow:hidden;position:relative;box-shadow:0 8px 24px rgba(16,35,31,.14)}
   .leg-photo img{width:100%;height:clamp(180px,34vw,320px);object-fit:cover;display:block}
   .leg-photo figcaption{position:absolute;left:0;right:0;bottom:0;padding:34px 20px 14px;background:linear-gradient(transparent,rgba(16,35,31,.78));color:#fff;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.06em}
@@ -153,40 +106,24 @@
   .day-card{background:var(--card);border-radius:16px;padding:20px 24px;box-shadow:0 1px 3px rgba(16,35,31,.06)}
   .day.transit .day-card{background:transparent;border:1.5px dashed #B9CCC6;box-shadow:none}
   .day-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px}
-  .day-num{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.15em;color:#5B6E69}
+  .day-num{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.12em;color:#5B6E69}
+  .day-date{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--lagoon-deep)}
+  .leg.l2 .day-date{color:var(--coral)}.leg.l3 .day-date{color:#B8860B}
   .day-title{font-family:'Unbounded',sans-serif;font-weight:600;font-size:16px}
   .chip{font-family:'Space Mono',monospace;font-size:10.5px;font-weight:700;padding:3px 10px;border-radius:100px;background:var(--ink);color:var(--paper);letter-spacing:.08em}
   .chip.hl{background:var(--coral)}
   .day-body{font-size:14.5px;color:#3A4E49;max-width:64ch}
   .day-body strong{color:var(--ink)}
-
-  /* day -> night schedule */
   .sched{list-style:none;margin-top:14px;display:grid;gap:9px}
   .sched li{display:flex;gap:12px;font-size:13.5px;color:#3A4E49}
   .sched .t{flex-shrink:0;width:96px;font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--lagoon-deep);padding-top:2px}
-  .leg.l2 .sched .t{color:var(--coral)}
-  .leg.l3 .sched .t{color:#B8860B}
+  .leg.l2 .sched .t{color:var(--coral)}.leg.l3 .sched .t{color:#B8860B}
   .sched strong{color:var(--ink)}
-
-  /* ---------- HIGHLIGHT (Balabac) ---------- */
-  .feature{
-    color:#fff;border-radius:20px;padding:34px 30px;margin:8px 0 22px;position:relative;overflow:hidden;
-    background:linear-gradient(135deg,rgba(12,90,80,.90),rgba(27,143,126,.62)),
-      url('https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Sunset_in_Onuk_Island%2C_Balabac%2C_Palawan.jpg/1280px-Sunset_in_Onuk_Island%2C_Balabac%2C_Palawan.jpg') center/cover;
-  }
-  .feature .day-num{color:rgba(255,255,255,.85)}
-  .feature h3{font-family:'Unbounded',sans-serif;font-weight:600;font-size:clamp(19px,3vw,26px);margin:4px 0 10px}
-  .feature p{font-size:14.5px;max-width:60ch;color:rgba(255,255,255,.94)}
-  .feature .sched .t{color:var(--sun)}
-  .feature .sched li{color:rgba(255,255,255,.92)}
-  .feature .sched strong{color:#fff}
-  .feature .warn{display:inline-block;margin-top:16px;font-family:'Space Mono',monospace;font-size:11.5px;font-weight:700;background:var(--sun);color:var(--ink);padding:6px 14px;border-radius:100px}
 
   /* ---------- WHAT TO DO ---------- */
   .todo{margin-top:36px;border-top:2px solid var(--mist);padding-top:28px}
   .todo h3{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--lagoon-deep);margin-bottom:20px}
-  .leg.l2 .todo h3{color:var(--coral)}
-  .leg.l3 .todo h3{color:#B8860B}
+  .leg.l2 .todo h3{color:var(--coral)}.leg.l3 .todo h3{color:#B8860B}
   .todo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
   .todo-card{background:var(--card);border-radius:16px;padding:16px 16px 20px;box-shadow:0 1px 3px rgba(16,35,31,.06);overflow:hidden}
   .place-photo{width:100%;height:130px;object-fit:cover;border-radius:12px;margin-bottom:14px;display:block}
@@ -194,8 +131,7 @@
   .todo-card ul{list-style:none;padding:0 6px}
   .todo-card li{font-size:13px;color:#3A4E49;padding:4px 0 4px 20px;position:relative}
   .todo-card li::before{content:'●';position:absolute;left:0;font-size:8px;top:9px;color:var(--lagoon)}
-  .leg.l2 .todo-card li::before{color:var(--coral)}
-  .leg.l3 .todo-card li::before{color:var(--sun)}
+  .leg.l2 .todo-card li::before{color:var(--coral)}.leg.l3 .todo-card li::before{color:var(--sun)}
   .todo-card li.eat::before{content:'♦';font-size:10px;top:7px}
   .todo-card li em{font-style:normal;font-family:'Space Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:.1em;color:#8AA39C;display:block}
 
@@ -220,8 +156,25 @@
   .night-card li::before{content:'●';position:absolute;left:0;top:6px;font-size:9px;color:var(--coral)}
   .night-card li strong{color:#fff}
 
+  /* ---------- WEATHER ---------- */
+  .weather{padding:72px 0 20px}
+  .weather h2{font-family:'Unbounded',sans-serif;font-weight:600;font-size:clamp(22px,3.5vw,32px);margin-bottom:14px}
+  .verdict{background:linear-gradient(135deg,var(--lagoon-deep),var(--lagoon));color:#fff;border-radius:18px;padding:22px 26px;margin-bottom:26px;font-size:14.5px;position:relative;overflow:hidden}
+  .verdict::after{content:'☀';position:absolute;right:-6px;top:-24px;font-size:120px;opacity:.12}
+  .verdict b{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--sun);display:block;margin-bottom:6px}
+  .wx-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}
+  .wx{background:var(--card);border-radius:16px;padding:22px 24px;box-shadow:0 1px 3px rgba(16,35,31,.06)}
+  .wx .wx-place{font-family:'Unbounded',sans-serif;font-weight:600;font-size:16px}
+  .wx .wx-dates{font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.1em;color:#5B6E69;margin:3px 0 16px}
+  .wx-stats{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:14px}
+  .wx-stat .k{font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:#8AA39C}
+  .wx-stat .v{font-family:'Unbounded',sans-serif;font-weight:600;font-size:17px}
+  .wx p{font-size:13px;color:#3A4E49}
+  .wx .pack{margin-top:14px;border-top:1px solid var(--mist);padding-top:12px;font-size:12.5px;color:#3A4E49}
+  .wx .pack b{font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--lagoon-deep);display:block;margin-bottom:4px}
+
   /* ---------- NOTES ---------- */
-  .notes{padding:72px 0 40px}
+  .notes{padding:64px 0 40px}
   .notes h2{font-family:'Unbounded',sans-serif;font-weight:600;font-size:clamp(22px,3.5vw,32px);margin-bottom:28px}
   .notes-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
   .note{background:var(--card);border-radius:16px;padding:22px 24px;box-shadow:0 1px 3px rgba(16,35,31,.06)}
@@ -245,8 +198,7 @@
 
   @media(max-width:640px){
     .board .wrap{grid-template-columns:1fr}
-    .timeline{padding-left:28px}
-    .day::before{left:-26px}
+    .timeline{padding-left:28px}.day::before{left:-26px}
     .cd-unit{min-width:52px}
     .cities-strip{grid-template-columns:1fr}
     .sched .t{width:78px}
@@ -263,9 +215,9 @@
 <!-- ================= HERO ================= -->
 <header class="hero">
   <div class="wrap">
-    <p class="hero-eyebrow">December 2026 · 21 Days · 8 Islands</p>
+    <p class="hero-eyebrow">28 Nov – 12 Dec 2026 · 14 nights · 3 islands, slow</p>
     <h1>MOMO <span class="x">✕</span> SALSA<br>PHILIPPINES</h1>
-    <p class="hero-sub">Two departure cities, one archipelago. From the Balabac sandbars at the edge of the map to the mystic shores of Siquijor — west to east, slowly.</p>
+    <p class="hero-sub">No rushing this time. Three islands, longer stays, nicer hotels — El Nido, Coron, and Bohol — with plenty of uninterrupted time together. Unpack once, explore by day, and actually relax.</p>
 
     <svg class="routes-svg" viewBox="0 0 820 240" xmlns="http://www.w3.org/2000/svg" aria-label="Flight routes from Dubai and Jakarta converging in Manila">
       <path class="path dxb" d="M 60 70 C 260 -10, 520 20, 700 108"/>
@@ -284,14 +236,14 @@
         <circle cx="700" cy="115" r="9" fill="var(--ink)"/>
         <circle cx="700" cy="115" r="16" fill="none" stroke="var(--ink)" stroke-width="1.5" opacity=".3"/>
         <text x="700" y="88" text-anchor="middle">MNL</text>
-        <text class="sub" x="700" y="145" text-anchor="middle">Manila · Day 1</text>
+        <text class="sub" x="700" y="145" text-anchor="middle">Manila · 28 Nov</text>
       </g>
     </svg>
 
     <div class="hero-meta mono">
-      <div><span>Route</span>Palawan → Boracay → Visayas</div>
-      <div><span>Pace</span>Slow · quality over quantity</div>
-      <div><span>Season</span>Amihan · dry &amp; breezy</div>
+      <div><span>Route</span>El Nido → Coron → Bohol</div>
+      <div><span>Pace</span>Slow · unpack once</div>
+      <div><span>Season</span>Amihan · drying &amp; bright</div>
     </div>
   </div>
 </header>
@@ -300,7 +252,7 @@
 <section class="countdown">
   <div class="wrap">
     <h2>Countdown to Manila</h2>
-    <p class="cd-sub">see you at NAIA, Day 1</p>
+    <p class="cd-sub">see you at NAIA · 28 Nov</p>
     <div class="cd-clock" id="cdClock" aria-live="polite">
       <div class="cd-unit"><div class="cd-num" id="cdDays">--</div><div class="cd-label">Days</div></div>
       <div class="cd-sep">:</div>
@@ -320,12 +272,12 @@
     <div class="pass momo">
       <p class="who"><em>Traveler 01</em>Momo</p>
       <p class="route">DXB <span class="arrow">✈ →</span> MNL</p>
-      <p class="detail">Direct ~9h 15m · Emirates / PAL · arrive Day 1</p>
+      <p class="detail">28 Nov · Direct ~9h 15m · Emirates / PAL</p>
     </div>
     <div class="pass salsa">
       <p class="who"><em>Traveler 02</em>Salsa</p>
       <p class="route">CGK <span class="arrow">✈ →</span> MNL</p>
-      <p class="detail">Direct ~4h 15m · PAL / Cebu Pacific · arrive Day 1</p>
+      <p class="detail">28 Nov · Direct ~4h 15m · PAL / Cebu Pacific</p>
     </div>
   </div>
 </section>
@@ -334,126 +286,181 @@
 <section class="mapsec">
   <div class="wrap">
     <p class="eyebrow">The real map</p>
-    <h2>From two cities to eight islands</h2>
-    <p class="lead">Momo flies west-to-east from Dubai, Salsa north from Jakarta — both landing in Manila on Day 1. From there the whole island-hopping route unfolds. Drag, zoom, and tap any pin.</p>
+    <h2>Two cities in, three islands to explore</h2>
+    <p class="lead">Momo flies west-to-east from Dubai, Salsa north from Jakarta — both landing in Manila on 28 Nov. From there it's just three relaxed bases: El Nido, Coron, and Bohol. Drag, zoom, and tap any pin.</p>
     <div id="map"></div>
     <div class="map-legend">
       <span><i style="border-color:var(--coral)"></i> Momo · Dubai → Manila</span>
       <span><i style="border-color:var(--lagoon)"></i> Salsa · Jakarta → Manila</span>
-      <span><i style="border-color:var(--sun)"></i> Island-hopping route</span>
-      <span><i class="dot" style="background:var(--ink)"></i> Stops</span>
+      <span><i style="border-color:var(--sun)"></i> Island route</span>
+      <span><i class="dot" style="background:var(--ink)"></i> Bases</span>
     </div>
-
     <div class="cities-strip">
       <div class="city-photo"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Burj_Khalifa_%28worlds_tallest_building%29_and_the_Dubai_skyline_%2825781049892%29.jpg/1280px-Burj_Khalifa_%28worlds_tallest_building%29_and_the_Dubai_skyline_%2825781049892%29.jpg" alt="Dubai skyline" loading="lazy"><b><em>Momo departs</em>Dubai</b></div>
       <div class="city-photo"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/City_activity_Jakarta_%28Unsplash%29.jpg/1280px-City_activity_Jakarta_%28Unsplash%29.jpg" alt="Jakarta city" loading="lazy"><b><em>Salsa departs</em>Jakarta</b></div>
-      <div class="city-photo"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Skyline_in_Manila_%28Metro_Manila%3B_2023-08-11%29_E911a_35.jpg/1280px-Skyline_in_Manila_%28Metro_Manila%3B_2023-08-11%29_E911a_35.jpg" alt="Manila skyline" loading="lazy"><b><em>Meet on Day 1</em>Manila</b></div>
+      <div class="city-photo"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Skyline_in_Manila_%28Metro_Manila%3B_2023-08-11%29_E911a_35.jpg/1280px-Skyline_in_Manila_%28Metro_Manila%3B_2023-08-11%29_E911a_35.jpg" alt="Manila skyline" loading="lazy"><b><em>Meet on 28 Nov</em>Manila</b></div>
     </div>
   </div>
 </section>
 
-<!-- ================= LEG 1 ================= -->
+<!-- ================= LEG 1 · EL NIDO ================= -->
 <section class="leg l1">
   <div class="wrap">
-    <div class="leg-head">
-      <span class="leg-tag">LEG 01</span>
-      <h2>Palawan</h2>
-    </div>
-    <p class="leg-days mono">DAY 1 – 12 · Manila → Puerto Princesa → Balabac → El Nido → Coron</p>
-    <p class="leg-intro">The heavy-logistics leg comes first, while energy is high. Balabac is the wildest place on this trip — the reward is water that doesn't look real.</p>
+    <div class="leg-head"><span class="leg-tag">LEG 01</span><h2>El Nido</h2></div>
+    <p class="leg-days mono">29 NOV – 4 DEC · 5 nights · lagoons, beaches, sunsets</p>
+    <p class="leg-intro">The relaxed opener. Base at one beautiful resort for five nights — kayak the lagoons, laze on Nacpan, and watch the sky go pink every evening. No packing and moving.</p>
 
     <figure class="leg-photo">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Big_Lagoon%2C_El_Nido%2C_Philippines_%2836929052692%29.jpg/1280px-Big_Lagoon%2C_El_Nido%2C_Philippines_%2836929052692%29.jpg" alt="Big Lagoon, El Nido, Palawan" loading="lazy">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Big_Lagoon%2C_El_Nido%2C_Philippines_%2836929052692%29.jpg/1280px-Big_Lagoon%2C_El_Nido%2C_Philippines_%2836929052692%29.jpg" alt="Big Lagoon, El Nido" loading="lazy">
       <figcaption>Big Lagoon · El Nido, Palawan</figcaption>
     </figure>
 
     <div class="timeline">
       <div class="day transit">
         <div class="day-card">
-          <div class="day-top"><span class="day-num">DAY 01</span><span class="day-title">Meet in Manila</span><span class="chip">DXB → MNL</span><span class="chip">CGK → MNL</span></div>
-          <p class="day-body">Two planes, one arrivals hall. The trip officially starts with a hug.</p>
+          <div class="day-top"><span class="day-num">DAY 01</span><span class="day-date">28 NOV</span><span class="day-title">Meet in Manila</span><span class="chip">DXB → MNL</span><span class="chip">CGK → MNL</span></div>
+          <p class="day-body">Two planes, one arrivals hall. The trip starts with a hug.</p>
           <ul class="sched">
-            <li><span class="t">Morning</span><span>Land at NAIA — Momo from Dubai, Salsa from Jakarta. Find each other at arrivals.</span></li>
-            <li><span class="t">Midday</span><span>Drop bags in Makati. First <strong>Jollibee</strong> of the trip — Chickenjoy + spaghetti, obviously.</span></li>
-            <li><span class="t">Evening</span><span>Poblacion stroll — speakeasies &amp; rooftop bars, if jetlag allows.</span></li>
-            <li><span class="t">Night</span><span>Early-ish sleep. Domestic flight tomorrow.</span></li>
+            <li><span class="t">Afternoon</span><span>Land at NAIA — Momo from Dubai, Salsa from Jakarta. Reunite at arrivals.</span></li>
+            <li><span class="t">Evening</span><span>Check into Makati, first <strong>Jollibee</strong> of the trip.</span></li>
+            <li><span class="t">Night</span><span>Optional Poblacion date night — speakeasies &amp; rooftops — if jetlag allows.</span></li>
           </ul>
         </div>
       </div>
 
       <div class="day transit">
         <div class="day-card">
-          <div class="day-top"><span class="day-num">DAY 02</span><span class="day-title">Fly to Puerto Princesa</span><span class="chip">MNL → PPS</span></div>
-          <p class="day-body">Gateway to Palawan. Stock up today — Balabac has nothing.</p>
+          <div class="day-top"><span class="day-num">DAY 02</span><span class="day-date">29 NOV</span><span class="day-title">Fly to El Nido</span><span class="chip">MNL → ENI</span></div>
+          <p class="day-body">Straight to paradise — a short hop, no long van rides this trip.</p>
           <ul class="sched">
-            <li><span class="t">Morning</span><span>Flight MNL → PPS (~1h 20m). Check in, quick lunch.</span></li>
-            <li><span class="t">Afternoon</span><span>Buy expedition supplies: reef-safe sunblock, dry bags, power banks. Withdraw plenty of pesos.</span></li>
-            <li><span class="t">Evening</span><span>Baywalk sunset stroll along the water.</span></li>
-            <li><span class="t">Night</span><span>Seafood feast at <strong>Kalui</strong> (book ahead). Pack light for Balabac.</span></li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="day">
-        <div class="feature">
-          <span class="day-num mono">DAY 03 – 06</span>
-          <h3>Balabac Expedition · 4D3N</h3>
-          <p>The crown jewel. The edge of the Philippines: <strong>Onuk Island</strong> and its iconic sandbar, Punta Sebaring, Candaraman, Patawan. Basic homestays, almost no signal, unreal water.</p>
-          <ul class="sched">
-            <li><span class="t">Pre-dawn</span><span>Pickup, ~5h overland to Rio Tuba, then boats out to the islands.</span></li>
-            <li><span class="t">Days</span><span>Sandbars, snorkeling untouched reefs, island-to-island by boat.</span></li>
-            <li><span class="t">Nights</span><span>Homestay dinners, <strong>stargazing</strong> with zero light pollution, glowing plankton if you're lucky. Fully offline.</span></li>
-          </ul>
-          <span class="warn">BOOK NOW — DECEMBER SLOTS SELL OUT</span>
-        </div>
-      </div>
-
-      <div class="day">
-        <div class="day-card">
-          <div class="day-top"><span class="day-num">DAY 07</span><span class="day-title">Recovery day, Puerto Princesa</span></div>
-          <p class="day-body">Back from the wild. This buffer day is intentional — protect it.</p>
-          <ul class="sched">
-            <li><span class="t">Morning</span><span>Sleep in. A real bed, hot shower, actual wifi.</span></li>
-            <li><span class="t">Midday</span><span>Laundry, long slow lunch at <strong>Ima's Gulay Bar</strong>.</span></li>
-            <li><span class="t">Evening</span><span>Easy — a massage, café, nothing scheduled.</span></li>
-            <li><span class="t">Night</span><span>Repack for El Nido.</span></li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="day transit">
-        <div class="day-card">
-          <div class="day-top"><span class="day-num">DAY 08</span><span class="day-title">Van to El Nido</span><span class="chip">PPS → ENI · 5-6H</span></div>
-          <p class="day-body">Long road north, big payoff at the end.</p>
-          <ul class="sched">
-            <li><span class="t">Morning</span><span>Shuttle van PPS → El Nido (5–6h). Snacks + playlist ready.</span></li>
-            <li><span class="t">Afternoon</span><span>Arrive, check in, wander into town.</span></li>
-            <li><span class="t">Evening</span><span>Sunset at <strong>Las Cabanas Beach</strong> (sunset zipline optional).</span></li>
-            <li><span class="t">Night</span><span><strong>Pukka Bar</strong> — live reggae right on the sand.</span></li>
+            <li><span class="t">Morning</span><span>AirSwift flight MNL → El Nido / Lio (~1h 15m).</span></li>
+            <li><span class="t">Midday</span><span>Check into the resort, settle in, lunch by the water.</span></li>
+            <li><span class="t">Evening</span><span>Sunset at <strong>Las Cabanas Beach</strong>.</span></li>
+            <li><span class="t">Night</span><span>Easy first dinner in town, early night.</span></li>
           </ul>
         </div>
       </div>
 
       <div class="day">
         <div class="day-card">
-          <div class="day-top"><span class="day-num">DAY 09</span><span class="day-title">El Nido island hopping</span><span class="chip hl">TOUR A</span></div>
-          <p class="day-body">The postcard lagoons. Kayak, don't just look.</p>
+          <div class="day-top"><span class="day-num">DAY 03</span><span class="day-date">30 NOV</span><span class="day-title">Tour A lagoons</span><span class="chip hl">BIG LAGOON</span></div>
+          <p class="day-body">The postcard day. Kayak, don't just look.</p>
           <ul class="sched">
-            <li><span class="t">Morning</span><span>Tour A boat: <strong>Big Lagoon</strong> (kayak it), Secret Lagoon.</span></li>
-            <li><span class="t">Midday</span><span>Beach lunch, snorkeling at Shimizu Island.</span></li>
+            <li><span class="t">Morning</span><span>Boat to <strong>Big Lagoon</strong> — kayak right inside it.</span></li>
+            <li><span class="t">Midday</span><span>Small Lagoon + Secret Lagoon, beach lunch, snorkeling.</span></li>
             <li><span class="t">Evening</span><span>Back to town, rinse off, golden-hour walk.</span></li>
             <li><span class="t">Night</span><span>Dinner at <strong>Trattoria Altrove</strong> — the famous wood-fired pizza.</span></li>
           </ul>
         </div>
       </div>
 
+      <div class="day">
+        <div class="day-card">
+          <div class="day-top"><span class="day-num">DAY 04</span><span class="day-date">1 DEC</span><span class="day-title">Private island hopping</span><span class="chip hl">JUST US</span></div>
+          <p class="day-body">Splurge on a private boat — your own pace, your own coves.</p>
+          <ul class="sched">
+            <li><span class="t">Morning</span><span>Private boat to <strong>Secret Beach</strong> &amp; Hidden Beach.</span></li>
+            <li><span class="t">Midday</span><span>Matinloc Shrine viewpoint, snorkel stops, lunch on board.</span></li>
+            <li><span class="t">Evening</span><span>Cocktails on the sand at <strong>SAVA Beach Bar</strong>.</span></li>
+            <li><span class="t">Night</span><span>SAVA turns to DJ + dancing till late — the one real night out in El Nido.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-card">
+          <div class="day-top"><span class="day-num">DAY 05</span><span class="day-date">2 DEC</span><span class="day-title">Nacpan &amp; resort day</span></div>
+          <p class="day-body">A pure do-nothing day. This is the whole point of the trip.</p>
+          <ul class="sched">
+            <li><span class="t">Morning</span><span>Slow resort breakfast, pool, no alarms.</span></li>
+            <li><span class="t">Midday</span><span>Head to <strong>Nacpan Beach</strong> — long golden twin beach, fresh coconuts.</span></li>
+            <li><span class="t">Evening</span><span>Couples massage / spa.</span></li>
+            <li><span class="t">Night</span><span>Quiet seafood dinner.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-card">
+          <div class="day-top"><span class="day-num">DAY 06</span><span class="day-date">3 DEC</span><span class="day-title">Last El Nido day</span></div>
+          <p class="day-body">One more slow day before the ferry.</p>
+          <ul class="sched">
+            <li><span class="t">Morning</span><span>Optional <strong>Taraw Canopy Walk</strong> for the panorama (or sleep in).</span></li>
+            <li><span class="t">Midday</span><span>Beach, swim, one last lagoon dip.</span></li>
+            <li><span class="t">Evening</span><span>Sunset drinks at <strong>Maremegmeg / Las Cabanas</strong> (do the zipline!).</span></li>
+            <li><span class="t">Night</span><span>Nightcap at <strong>Pukka Bar</strong>; pack for Coron.</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="todo">
+      <h3>What to do — El Nido</h3>
+      <div class="todo-grid">
+        <div class="todo-card">
+          <img class="place-photo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Small_Lagoon%2C_El_Nido%2C_Philippines_%2836702744670%29.jpg/1280px-Small_Lagoon%2C_El_Nido%2C_Philippines_%2836702744670%29.jpg" alt="Small Lagoon El Nido" loading="lazy">
+          <p class="place">Lagoons &amp; tours</p>
+          <ul>
+            <li>Tour A — Big, Small &amp; Secret Lagoon (kayak the Big Lagoon)</li>
+            <li>Tour C — Secret Beach, Hidden Beach, Matinloc Shrine</li>
+            <li>Book a <strong>private boat</strong> — worth it for two</li>
+            <li>Snorkeling at Shimizu &amp; Entalula</li>
+          </ul>
+        </div>
+        <div class="todo-card">
+          <img class="place-photo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Nacpan_Beach%2C_El_Nido%2C_Philippines_%2836958342541%29.jpg/1280px-Nacpan_Beach%2C_El_Nido%2C_Philippines_%2836958342541%29.jpg" alt="Nacpan Beach El Nido" loading="lazy">
+          <p class="place">Beaches &amp; views</p>
+          <ul>
+            <li>Nacpan Beach — long golden twin beach</li>
+            <li>Las Cabanas + sunset zipline</li>
+            <li>Taraw Canopy Walk viewpoint</li>
+            <li>Sunrise kayak from your resort</li>
+          </ul>
+        </div>
+        <div class="todo-card">
+          <img class="place-photo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Las_Cabanas_Beach_-_panoramio.jpg/1280px-Las_Cabanas_Beach_-_panoramio.jpg" alt="Las Cabanas Beach" loading="lazy">
+          <p class="place">Bars &amp; beach clubs</p>
+          <ul>
+            <li><strong>SAVA Beach Bar</strong> — cocktails + DJ till 2am</li>
+            <li>Maremegmeg / Las Cabanas Beach Club</li>
+            <li>Manille Beach Bar (Lio) — upscale, great mixologist</li>
+            <li>Pukka Bar — beachfront reggae classic</li>
+          </ul>
+        </div>
+        <div class="todo-card">
+          <p class="place">Eat</p>
+          <ul>
+            <li class="eat"><em>EAT</em>Trattoria Altrove — wood-fired pizza (book)</li>
+            <li class="eat"><em>EAT</em>The Alternative — rooftop, best sunset view</li>
+            <li class="eat"><em>EAT</em>Happiness Beach Bar — on the sand</li>
+            <li class="eat"><em>SWEET</em>Gusto Gelato · or a private beach dinner one night</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= LEG 2 · CORON ================= -->
+<section class="leg l2">
+  <div class="wrap">
+    <div class="leg-head"><span class="leg-tag">LEG 02</span><h2>Coron</h2></div>
+    <p class="leg-days mono">4 DEC – 8 DEC · 4 nights · lakes, wrecks, coral gardens</p>
+    <p class="leg-intro">The adventure-lite leg. Coron town is sleepy — and that's perfect. Days are for the clearest water of the trip; evenings for the hot spring and a good dinner.</p>
+
+    <figure class="leg-photo">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Kayangan_Lake_in_Coron%2C_Palawan.jpg/1280px-Kayangan_Lake_in_Coron%2C_Palawan.jpg" alt="Kayangan Lake, Coron" loading="lazy">
+      <figcaption>Kayangan Lake · Coron, Palawan</figcaption>
+    </figure>
+
+    <div class="timeline">
       <div class="day transit">
         <div class="day-card">
-          <div class="day-top"><span class="day-num">DAY 10</span><span class="day-title">Ferry to Coron</span><span class="chip">ENI → CORON · ~4H</span></div>
-          <p class="day-body">Across the Linapacan strait to shipwreck country.</p>
+          <div class="day-top"><span class="day-num">DAY 07</span><span class="day-date">4 DEC</span><span class="day-title">Ferry to Coron</span><span class="chip">ENI → CORON · ~4H</span></div>
+          <p class="day-body">A short sea crossing to shipwreck country.</p>
           <ul class="sched">
-            <li><span class="t">Morning</span><span>Fastcraft El Nido → Coron (~4h). Check in.</span></li>
-            <li><span class="t">Afternoon</span><span>Rest, lunch in town.</span></li>
+            <li><span class="t">Morning</span><span>Fast ferry El Nido → Coron (~3.5–4h).</span></li>
+            <li><span class="t">Midday</span><span>Check in, lunch in town.</span></li>
             <li><span class="t">Evening</span><span>Climb <strong>Mt. Tapyas</strong> (720 steps) for sunset.</span></li>
             <li><span class="t">Night</span><span>Soak at <strong>Maquinit Hot Spring</strong> under the stars.</span></li>
           </ul>
@@ -462,72 +469,83 @@
 
       <div class="day">
         <div class="day-card">
-          <div class="day-top"><span class="day-num">DAY 11</span><span class="day-title">Coron lakes &amp; lagoons</span></div>
-          <p class="day-body">The clearest water of the whole trip, arguably.</p>
+          <div class="day-top"><span class="day-num">DAY 08</span><span class="day-date">5 DEC</span><span class="day-title">Coron lakes &amp; lagoons</span><span class="chip hl">KAYANGAN</span></div>
+          <p class="day-body">The clearest water you'll see all trip.</p>
           <ul class="sched">
-            <li><span class="t">Morning</span><span><strong>Kayangan Lake</strong> — often called the clearest lake in Asia.</span></li>
-            <li><span class="t">Midday</span><span>Twin Lagoon, Barracuda Lake.</span></li>
-            <li><span class="t">Afternoon</span><span>Snorkel Siete Pecados, back to town.</span></li>
-            <li><span class="t">Night</span><span>Grilled everything at <strong>Santino's Grill</strong>.</span></li>
+            <li><span class="t">Morning</span><span><strong>Kayangan Lake</strong> — the iconic viewpoint, then swim.</span></li>
+            <li><span class="t">Midday</span><span><strong>Twin Lagoon</strong> — swim/kayak between the two lagoons.</span></li>
+            <li><span class="t">Afternoon</span><span>Barracuda Lake — surreal warm-cold thermocline.</span></li>
+            <li><span class="t">Night</span><span>Grilled seafood at <strong>Kawayanan Grill</strong>.</span></li>
           </ul>
         </div>
       </div>
 
       <div class="day">
         <div class="day-card">
-          <div class="day-top"><span class="day-num">DAY 12</span><span class="day-title">Coron: wrecks or beaches</span></div>
-          <p class="day-body">Choose your own adventure — then an early night.</p>
+          <div class="day-top"><span class="day-num">DAY 09</span><span class="day-date">6 DEC</span><span class="day-title">Reefs &amp; wrecks</span></div>
+          <p class="day-body">Snorkel over coral gardens and WWII history.</p>
           <ul class="sched">
-            <li><span class="t">Morning</span><span>Divers: WWII Japanese shipwrecks. Non-divers: Malcapuya / Banana Island.</span></li>
-            <li><span class="t">Midday</span><span>Beach picnic, more snorkeling.</span></li>
-            <li><span class="t">Evening</span><span>Return, last Coron sunset.</span></li>
-            <li><span class="t">Night</span><span>Easy dinner, pack — big travel day tomorrow.</span></li>
+            <li><span class="t">Morning</span><span>Snorkel <strong>Siete Pecados</strong> coral garden.</span></li>
+            <li><span class="t">Midday</span><span>WWII wreck snorkeling in Coron Bay (Skeleton Wreck).</span></li>
+            <li><span class="t">Evening</span><span>Back to town, rest, sunset stroll.</span></li>
+            <li><span class="t">Night</span><span>Tapas &amp; wine date at <strong>Hermanos</strong>.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-card">
+          <div class="day-top"><span class="day-num">DAY 10</span><span class="day-date">7 DEC</span><span class="day-title">White-sand island hopping</span></div>
+          <p class="day-body">The lazy beach day of the Coron leg.</p>
+          <ul class="sched">
+            <li><span class="t">Morning</span><span>Boat to <strong>Malcapuya Island</strong> — powdery white sand.</span></li>
+            <li><span class="t">Midday</span><span>Banana / Bulog Dos sandbar, beach picnic.</span></li>
+            <li><span class="t">Evening</span><span>Return, freshen up.</span></li>
+            <li><span class="t">Night</span><span>Sunset seafood at <strong>La Sirenetta</strong> — book the terrace.</span></li>
           </ul>
         </div>
       </div>
     </div>
 
     <div class="todo">
-      <h3>What to do — Palawan</h3>
+      <h3>What to do — Coron</h3>
       <div class="todo-grid">
         <div class="todo-card">
-          <img class="place-photo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Inside_the_Underground_River_in_Puerto_Princesa%2C_Palawan_Philippines.jpg/1280px-Inside_the_Underground_River_in_Puerto_Princesa%2C_Palawan_Philippines.jpg" alt="Puerto Princesa Underground River" loading="lazy">
-          <p class="place">Puerto Princesa</p>
+          <img class="place-photo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Isola_di_coron%2C_lagune_gemelle_%28twin_lagoon%29_03.jpg/1280px-Isola_di_coron%2C_lagune_gemelle_%28twin_lagoon%29_03.jpg" alt="Twin Lagoon, Coron" loading="lazy">
+          <p class="place">Lakes &amp; lagoons</p>
           <ul>
-            <li>Underground River day trip (Sabang) — UNESCO site, if you add a buffer day</li>
-            <li>Baywalk sunset stroll</li>
-            <li class="eat"><em>EAT</em>Kalui — the seafood institution, book ahead</li>
-            <li class="eat"><em>EAT</em>Ima's Gulay Bar — cheap, local, great</li>
+            <li>Kayangan Lake — the iconic viewpoint</li>
+            <li>Twin Lagoon — swim/kayak between two lagoons</li>
+            <li>Barracuda Lake — surreal thermocline</li>
           </ul>
         </div>
         <div class="todo-card">
-          <img class="place-photo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Sunset_in_Onuk_Island%2C_Balabac%2C_Palawan.jpg/1280px-Sunset_in_Onuk_Island%2C_Balabac%2C_Palawan.jpg" alt="Onuk Island, Balabac" loading="lazy">
-          <p class="place">Balabac (in the tour)</p>
+          <img class="place-photo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Malcapuya_Island%2C_Palawan%2C_Philippines.jpg/1280px-Malcapuya_Island%2C_Palawan%2C_Philippines.jpg" alt="Malcapuya Island, Coron" loading="lazy">
+          <p class="place">Reefs, wrecks &amp; islands</p>
           <ul>
-            <li>Onuk Island sandbar — the photo you came for</li>
-            <li>Snorkeling untouched reefs</li>
-            <li>Stargazing — zero light pollution</li>
-            <li>Bioluminescent plankton at night, if lucky</li>
+            <li>Siete Pecados coral garden snorkeling</li>
+            <li>WWII wreck snorkeling / diving</li>
+            <li>Malcapuya, Banana &amp; Bulog white-sand hop</li>
+            <li>Go <strong>private</strong> to skip the crowds</li>
           </ul>
         </div>
         <div class="todo-card">
-          <img class="place-photo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Big_Lagoon%2C_El_Nido%2C_Philippines_%2836929052692%29.jpg/1280px-Big_Lagoon%2C_El_Nido%2C_Philippines_%2836929052692%29.jpg" alt="El Nido Big Lagoon" loading="lazy">
-          <p class="place">El Nido</p>
+          <img class="place-photo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Entrance_lagoon_to_Barracuda_Lake%2C_Coron%2C_Palawan_-_panoramio.jpg/1280px-Entrance_lagoon_to_Barracuda_Lake%2C_Coron%2C_Palawan_-_panoramio.jpg" alt="Barracuda Lake, Coron" loading="lazy">
+          <p class="place">After dark (it's sleepy)</p>
           <ul>
-            <li>Tour A lagoons (kayak the Big Lagoon)</li>
-            <li>Las Cabanas beach + sunset zipline</li>
-            <li>Nacpan Beach if you squeeze in a scooter ride</li>
-            <li class="eat"><em>EAT</em>Trattoria Altrove — the famous wood-fired pizza</li>
+            <li>Maquinit Hot Spring — best in the evening</li>
+            <li>Mt. Tapyas sunset (720 steps)</li>
+            <li>Levit8 Floating Bar</li>
+            <li>Helldivers Bar for a low-key drink</li>
           </ul>
         </div>
         <div class="todo-card">
-          <img class="place-photo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Kayangan_Lake_in_Coron%2C_Palawan.jpg/1280px-Kayangan_Lake_in_Coron%2C_Palawan.jpg" alt="Kayangan Lake, Coron" loading="lazy">
-          <p class="place">Coron</p>
+          <p class="place">Eat</p>
           <ul>
-            <li>Kayangan Lake + Twin Lagoon</li>
-            <li>Wreck diving or snorkeling Skeleton Wreck</li>
-            <li>Mt. Tapyas sunset, Maquinit Hot Spring after</li>
-            <li class="eat"><em>EAT</em>Santino's Grill — grilled everything, always packed</li>
+            <li class="eat"><em>DATE</em>La Sirenetta — romantic bayside, book the terrace</li>
+            <li class="eat"><em>DATE</em>Hermanos Tapas &amp; Wine Bar</li>
+            <li class="eat"><em>EAT</em>Kawayanan Grill — grilled seafood</li>
+            <li class="eat"><em>LOCAL</em>Lolo Nonoy's — authentic Filipino</li>
           </ul>
         </div>
       </div>
@@ -535,105 +553,12 @@
   </div>
 </section>
 
-<!-- ================= LEG 2 ================= -->
-<section class="leg l2">
-  <div class="wrap">
-    <div class="leg-head">
-      <span class="leg-tag">LEG 02</span>
-      <h2>Boracay</h2>
-    </div>
-    <p class="leg-days mono">DAY 13 – 15 · the softest sand in the country</p>
-    <p class="leg-intro">Mid-trip reward. Nothing to plan, nothing to catch. Just powder-white sand and the most reliable sunset in the Philippines.</p>
-
-    <figure class="leg-photo">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/White_beach%2C_Boracay_%2852264019827%29.jpg/1280px-White_beach%2C_Boracay_%2852264019827%29.jpg" alt="White Beach, Boracay" loading="lazy">
-      <figcaption>White Beach · Boracay</figcaption>
-    </figure>
-
-    <div class="timeline">
-      <div class="day transit">
-        <div class="day-card">
-          <div class="day-top"><span class="day-num">DAY 13</span><span class="day-title">Travel day to Boracay</span><span class="chip">USU → MNL → MPH</span></div>
-          <p class="day-body">A full transit day by design — arrive, eat, sleep.</p>
-          <ul class="sched">
-            <li><span class="t">Morning</span><span>Fly Coron (USU) → Manila.</span></li>
-            <li><span class="t">Midday</span><span>Connect Manila → Caticlan (MPH).</span></li>
-            <li><span class="t">Evening</span><span>15-min boat across to Boracay, check in.</span></li>
-            <li><span class="t">Night</span><span>Simple dinner near the hotel, early sleep.</span></li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="day">
-        <div class="day-card">
-          <div class="day-top"><span class="day-num">DAY 14</span><span class="day-title">Puka Beach + paraw sunset</span><span class="chip hl">CORE MEMORY</span></div>
-          <p class="day-body">The day the whole trip's "quality over quantity" rule was written for.</p>
-          <ul class="sched">
-            <li><span class="t">Morning</span><span>Raw, quiet <strong>Puka Beach</strong> — the wild side of the island.</span></li>
-            <li><span class="t">Midday</span><span>Lunch, then lounge on White Beach.</span></li>
-            <li><span class="t">Evening</span><span><strong>Paraw sailing</strong> at golden hour — sunset from a sailboat. Non-negotiable.</span></li>
-            <li><span class="t">Night</span><span>The big one: Epic → OM Bar → Exit Bar. Dance late.</span></li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="day">
-        <div class="day-card">
-          <div class="day-top"><span class="day-num">DAY 15</span><span class="day-title">Beach bum day</span></div>
-          <p class="day-body">Brunch, swim, wander, massage, repeat.</p>
-          <ul class="sched">
-            <li><span class="t">Morning</span><span>Slow brunch at <strong>Sunny Side Café</strong>.</span></li>
-            <li><span class="t">Midday</span><span>Swim, D'Mall wander, Real Coffee calamansi muffins.</span></li>
-            <li><span class="t">Evening</span><span>Couples massage on the beach.</span></li>
-            <li><span class="t">Night</span><span>Craft beer at <strong>BIBCO</strong> or cocktails at <strong>Prisma</strong>.</span></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <div class="todo">
-      <h3>What to do — Boracay</h3>
-      <div class="todo-grid">
-        <div class="todo-card">
-          <p class="place">On the water</p>
-          <ul>
-            <li>Paraw sailing at golden hour — the essential</li>
-            <li>Puka Beach morning (quieter, wilder)</li>
-            <li>Ariel's Point cliff jumping day trip</li>
-            <li>Parasailing or helmet diving if feeling extra</li>
-          </ul>
-        </div>
-        <div class="todo-card">
-          <p class="place">On land</p>
-          <ul>
-            <li>White Beach walk Station 1 → 3 at sunset</li>
-            <li>D'Mall browsing + people watching</li>
-            <li>Couples massage — beachfront spas everywhere</li>
-          </ul>
-        </div>
-        <div class="todo-card">
-          <p class="place">Eat &amp; drink</p>
-          <ul>
-            <li class="eat"><em>EAT</em>Sunny Side Café — famous brunch spot</li>
-            <li class="eat"><em>EAT</em>Real Coffee — the legendary calamansi muffins</li>
-            <li class="eat"><em>EAT</em>Chori burger from a beach grill — street-food rite of passage</li>
-            <li class="eat"><em>DRINK</em>Los Indios Bravos — craft beer, chill night out</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= LEG 3 ================= -->
+<!-- ================= LEG 3 · PANGLAO / BOHOL ================= -->
 <section class="leg l3">
   <div class="wrap">
-    <div class="leg-head">
-      <span class="leg-tag">LEG 03</span>
-      <h2>Visayas</h2>
-    </div>
-    <p class="leg-days mono">DAY 16 – 21 · Bohol → Panglao → Siquijor</p>
-    <p class="leg-intro">The closing act: chocolate-colored hills, the world's tiniest primates, sea turtles, and a slow mystical island to end on.</p>
+    <div class="leg-head"><span class="leg-tag">LEG 03</span><h2>Panglao &amp; Bohol</h2></div>
+    <p class="leg-days mono">8 DEC – 11 DEC · 3 nights · turtles, hills, spa &amp; beach</p>
+    <p class="leg-intro">The gentle finale. Turtles and a sardine river in the morning, chocolate-colored hills and tiny tarsiers inland, then spa and beach time before the long way home.</p>
 
     <figure class="leg-photo">
       <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Chocolate_Hills_Carmen_Bohol_2019.jpg/1280px-Chocolate_Hills_Carmen_Bohol_2019.jpg" alt="Chocolate Hills, Bohol" loading="lazy">
@@ -643,116 +568,109 @@
     <div class="timeline">
       <div class="day transit">
         <div class="day-card">
-          <div class="day-top"><span class="day-num">DAY 16</span><span class="day-title">Boracay → Panglao</span><span class="chip">MPH → CEB → TAG</span></div>
-          <p class="day-body">Island-to-island via Cebu, arriving in time for sunset.</p>
+          <div class="day-top"><span class="day-num">DAY 11</span><span class="day-date">8 DEC</span><span class="day-title">Coron → Bohol</span><span class="chip">USU → MNL → TAG</span></div>
+          <p class="day-body">The one big travel day — keep it loose, don't over-plan it.</p>
           <ul class="sched">
-            <li><span class="t">Morning</span><span>Boat off Boracay, fly Caticlan → Cebu.</span></li>
-            <li><span class="t">Midday</span><span>OceanJet ferry Cebu → Tagbilaran (~2h).</span></li>
-            <li><span class="t">Evening</span><span>Drive to Panglao, sunset at Alona or Dumaluan Beach.</span></li>
-            <li><span class="t">Night</span><span>Alona strip — beach bars, fire dancers, acoustic sets.</span></li>
+            <li><span class="t">Morning</span><span>Fly Coron (USU) → Manila.</span></li>
+            <li><span class="t">Midday</span><span>Connect Manila → Panglao / Bohol (TAG).</span></li>
+            <li><span class="t">Evening</span><span>Check in, sunset at Alona or Dumaluan Beach.</span></li>
+            <li><span class="t">Night</span><span>Alona strip — beach bars, acoustic sets, fire dancers.</span></li>
           </ul>
         </div>
       </div>
 
       <div class="day">
         <div class="day-card">
-          <div class="day-top"><span class="day-num">DAY 17</span><span class="day-title">Bohol countryside</span></div>
-          <p class="day-body">The classic inland loop — hills, tarsiers, river lunch.</p>
+          <div class="day-top"><span class="day-num">DAY 12</span><span class="day-date">9 DEC</span><span class="day-title">Balicasag &amp; the sardine run</span><span class="chip hl">TURTLES</span></div>
+          <p class="day-body">An early start for the best morning in the water of the whole trip.</p>
+          <ul class="sched">
+            <li><span class="t">Sunrise</span><span>Dolphin watching off Pamilacan.</span></li>
+            <li><span class="t">Morning</span><span>Snorkel with <strong>sea turtles</strong> at Balicasag Island.</span></li>
+            <li><span class="t">Midday</span><span><strong>Napaling Reef sardine run</strong> — swim into the shimmering ball.</span></li>
+            <li><span class="t">Night</span><span>Dinner at <strong>Giuseppe Pizzeria</strong>.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-card">
+          <div class="day-top"><span class="day-num">DAY 13</span><span class="day-date">10 DEC</span><span class="day-title">Bohol countryside</span></div>
+          <p class="day-body">The classic inland loop — hills, tarsiers, a river lunch.</p>
           <ul class="sched">
             <li><span class="t">Morning</span><span><strong>Chocolate Hills</strong> viewing deck.</span></li>
             <li><span class="t">Midday</span><span>Tarsiers at the Corella conservation sanctuary; <strong>Loboc River</strong> lunch cruise.</span></li>
-            <li><span class="t">Afternoon</span><span>Bilar man-made mahogany forest photo stop.</span></li>
-            <li><span class="t">Night</span><span>Dinner at <strong>Bohol Bee Farm</strong> — organic spread + famous ice cream.</span></li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="day">
-        <div class="day-card">
-          <div class="day-top"><span class="day-num">DAY 18</span><span class="day-title">Balicasag island hopping</span><span class="chip hl">TURTLES</span></div>
-          <p class="day-body">Early start for the marine sanctuary — one of the country's best.</p>
-          <ul class="sched">
-            <li><span class="t">Sunrise</span><span>Dolphin watching off Pamilacan.</span></li>
-            <li><span class="t">Morning</span><span>Snorkel or dive with <strong>sea turtles</strong> at Balicasag Island.</span></li>
-            <li><span class="t">Afternoon</span><span>Hinagdanan Cave lagoon swim.</span></li>
-            <li><span class="t">Evening</span><span>Alona sunset, chill beach-bar night.</span></li>
+            <li><span class="t">Afternoon</span><span>Hinagdanan Cave hidden-lagoon swim.</span></li>
+            <li><span class="t">Night</span><span>Dinner + famous ice cream at <strong>Bohol Bee Farm</strong>.</span></li>
           </ul>
         </div>
       </div>
 
       <div class="day transit">
         <div class="day-card">
-          <div class="day-top"><span class="day-num">DAY 19</span><span class="day-title">Ferry to Siquijor</span><span class="chip">TAG → SIQ · ~2H</span></div>
-          <p class="day-body">Onto the island of legends. Two wheels only.</p>
+          <div class="day-top"><span class="day-num">DAY 14</span><span class="day-date">11 DEC</span><span class="day-title">Beach, spa &amp; fly to Manila</span><span class="chip">TAG → MNL</span></div>
+          <p class="day-body">Slow last island day before the long way home.</p>
           <ul class="sched">
-            <li><span class="t">Morning</span><span>OceanJet Tagbilaran → Siquijor (~2h).</span></li>
-            <li><span class="t">Midday</span><span>Rent a scooter — the only correct way to explore. Check in.</span></li>
-            <li><span class="t">Evening</span><span>Sunset at <strong>Paliton Beach</strong>.</span></li>
-            <li><span class="t">Night</span><span><strong>Baha Bar</strong> — live music in a garden.</span></li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="day">
-        <div class="day-card">
-          <div class="day-top"><span class="day-num">DAY 20</span><span class="day-title">Siquijor loop</span></div>
-          <p class="day-body">A full island circle. Slow, mystical, the perfect closer.</p>
-          <ul class="sched">
-            <li><span class="t">Morning</span><span><strong>Cambugahay Falls</strong> — tarzan swings into turquoise water.</span></li>
-            <li><span class="t">Midday</span><span>Enchanted Balete tree fish spa; lunch on the coast.</span></li>
-            <li><span class="t">Afternoon</span><span>Salagdoong cliff jumping, San Isidro church.</span></li>
-            <li><span class="t">Night</span><span>Save the very last sunset for Paliton.</span></li>
+            <li><span class="t">Morning</span><span>Spa, slow breakfast, Alona beach time.</span></li>
+            <li><span class="t">Midday</span><span>Last swim, a little souvenir shopping.</span></li>
+            <li><span class="t">Evening</span><span>Clifftop farewell dinner at <strong>Saffron (Amorita)</strong>, then fly TAG → Manila.</span></li>
+            <li><span class="t">Night</span><span>Overnight in Manila — don't gamble the last connection.</span></li>
           </ul>
         </div>
       </div>
 
       <div class="day transit">
         <div class="day-card">
-          <div class="day-top"><span class="day-num">DAY 21</span><span class="day-title">Homeward</span><span class="chip">SIQ → DGT → MNL</span><span class="chip">MNL → DXB</span><span class="chip">MNL → CGK</span></div>
+          <div class="day-top"><span class="day-num">DAY 15</span><span class="day-date">12 DEC</span><span class="day-title">Homeward</span><span class="chip">MNL → DXB</span><span class="chip">MNL → CGK</span></div>
           <p class="day-body">The hard part: two planes going opposite ways.</p>
           <ul class="sched">
-            <li><span class="t">Morning</span><span>Ferry Siquijor → Dumaguete (~1h).</span></li>
-            <li><span class="t">Midday</span><span>Fly Dumaguete → Manila.</span></li>
-            <li><span class="t">Evening</span><span>Split at NAIA — Momo west to Dubai, Salsa south to Jakarta.</span></li>
-            <li><span class="t">Night</span><span>If connections are tight, overnight in Manila — don't gamble the last day. 💚</span></li>
+            <li><span class="t">Morning</span><span>Breakfast in Manila, no rush.</span></li>
+            <li><span class="t">Midday</span><span>Split at NAIA — Momo west to Dubai, Salsa south to Jakarta.</span></li>
+            <li><span class="t">Note</span><span>Give the goodbyes time. Already planning the next one. 💚</span></li>
           </ul>
         </div>
       </div>
     </div>
 
     <div class="todo">
-      <h3>What to do — Bohol · Panglao · Siquijor</h3>
+      <h3>What to do — Panglao &amp; Bohol</h3>
       <div class="todo-grid">
         <div class="todo-card">
-          <img class="place-photo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Chocolate_Hills_Carmen_Bohol_2019.jpg/1280px-Chocolate_Hills_Carmen_Bohol_2019.jpg" alt="Chocolate Hills" loading="lazy">
-          <p class="place">Bohol countryside</p>
+          <img class="place-photo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Boats_docked_on_Balicasag_Island.jpg/1280px-Boats_docked_on_Balicasag_Island.jpg" alt="Balicasag Island" loading="lazy">
+          <p class="place">On the water</p>
+          <ul>
+            <li>Balicasag Island — turtles &amp; coral wall (go early)</li>
+            <li>Napaling Reef sardine run — the hidden gem</li>
+            <li>Dolphin watching at dawn</li>
+            <li>Alona &amp; Dumaluan Beach sunsets</li>
+          </ul>
+        </div>
+        <div class="todo-card">
+          <img class="place-photo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Phillipine_Tarsier_from_Philppine_Tarsier_Sanctuary%2C_Corella%2C_Bohol.jpg/1280px-Phillipine_Tarsier_from_Philppine_Tarsier_Sanctuary%2C_Corella%2C_Bohol.jpg" alt="Philippine tarsier, Corella" loading="lazy">
+          <p class="place">Countryside</p>
           <ul>
             <li>Chocolate Hills viewing deck</li>
-            <li>Tarsier sanctuary in Corella — the real conservation one</li>
+            <li>Tarsier Sanctuary in Corella — the ethical one</li>
             <li>Loboc River lunch cruise</li>
-            <li>Bilar man-made mahogany forest photo stop</li>
+            <li>Hinagdanan Cave hidden lagoon</li>
           </ul>
         </div>
         <div class="todo-card">
           <img class="place-photo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Panglao_coast%2C_Alona_Beach_from_air_%28Panglao%2C_Bohol%3B_01-09-2023%29.jpg/1280px-Panglao_coast%2C_Alona_Beach_from_air_%28Panglao%2C_Bohol%3B_01-09-2023%29.jpg" alt="Alona Beach, Panglao" loading="lazy">
-          <p class="place">Panglao</p>
+          <p class="place">Beach clubs &amp; bars</p>
           <ul>
-            <li>Balicasag Island — turtles, dolphins, top dive site</li>
-            <li>Hinagdanan Cave lagoon swim</li>
-            <li>Alona or Dumaluan Beach sunsets</li>
-            <li class="eat"><em>EAT</em>Bohol Bee Farm — organic spread + famous ice cream</li>
+            <li><strong>Saffron @ Amorita</strong> — clifftop sunset cocktails</li>
+            <li>Sea Breeze Beach Club</li>
+            <li>Alona Beach strip after dark</li>
+            <li>Bohol Bee Farm — sunset with a view</li>
           </ul>
         </div>
         <div class="todo-card">
-          <img class="place-photo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Cambugahay_Falls_DSC00147_%2834018408676%29.jpg/1280px-Cambugahay_Falls_DSC00147_%2834018408676%29.jpg" alt="Cambugahay Falls, Siquijor" loading="lazy">
-          <p class="place">Siquijor</p>
+          <p class="place">Eat</p>
           <ul>
-            <li>Scooter loop around the whole island</li>
-            <li>Cambugahay Falls tarzan swings</li>
-            <li>Enchanted Balete tree fish spa</li>
-            <li>Salagdoong cliff jumping (optional bravery)</li>
-            <li>Paliton Beach sunset — save the last one for here</li>
-            <li class="eat"><em>DRINK</em>Baha Bar — live music, garden vibes</li>
+            <li class="eat"><em>EAT</em>Giuseppe Pizzeria — authentic Italian</li>
+            <li class="eat"><em>EAT</em>Oasis — Alona beachfront classic</li>
+            <li class="eat"><em>BRUNCH</em>Shaka — smoothie bowls · Gavroche café</li>
+            <li class="eat"><em>SWEET</em>Bohol Bee Farm — organic + famous ice cream</li>
           </ul>
         </div>
       </div>
@@ -765,69 +683,83 @@
   <div class="wrap">
     <p class="n-eyebrow">After Dark</p>
     <h2>Nights out</h2>
-    <p class="n-sub">Honest expectation-setting: only Boracay has a real party scene. Everywhere else is sunset drinks and live music — which, frankly, is the point. Energy meter: ★★★★★ = dance until 3am, ★ = one beautiful beer.</p>
+    <p class="n-sub">This is a relaxed trip, so nights are mostly sunset drinks and live music — with El Nido as the one place you can actually dance. Energy meter: ★★★★★ = out till 2am, ★ = one beautiful beer.</p>
 
     <div class="night-grid">
       <div class="night-card big">
-        <div class="n-top">
-          <span class="place">Boracay — the big nights</span>
-          <span class="energy">★★★★★</span>
-        </div>
-        <p class="n-day">DAY 14 – 15 · STATION 1 &amp; 2</p>
-        <p>Happy hours run long (some buy-1-get-1 from 4pm), bars go until 1–3am. Start at a Station 1 sunset bar, end wherever the night takes you.</p>
+        <div class="n-top"><span class="place">El Nido — the liveliest of the three</span><span class="energy">★★★★<span class="off">★</span></span></div>
+        <p class="n-day">DAY 2 – 6 · TOWN BEACH &amp; LIO</p>
+        <p>Not a party island, but SAVA gives you a genuine night out, and the beach clubs do golden hour beautifully.</p>
         <ul>
-          <li><strong>Epic</strong> — the island's flagship beach club, next to D'Mall; dinner spot that turns nightclub after midnight</li>
-          <li><strong>OM Bar</strong> — Epic's neighbor and rival, dance floor on the sand, hookah upstairs</li>
-          <li><strong>Exit Bar</strong> — beach-bungalow vibe, cheap drinks, sandy dance floor; arrive before midnight</li>
-          <li><strong>Prisma at Station X</strong> — the stylish one: the country's biggest rum collection, proper cocktails</li>
-          <li><strong>BIBCO</strong> — craft brewery; try the Kiamoy Sour and Hazy Ube</li>
-          <li><strong>Boracay PubCrawl</strong> — if you two feel like collecting new friends for a night</li>
+          <li><strong>SAVA Beach Bar</strong> — the classy one: cocktails on the sand → DJ + dancing till ~2am</li>
+          <li><strong>Maremegmeg / Las Cabanas Beach Club</strong> — loungers, sunset zipline, fire shows in peak season</li>
+          <li><strong>Manille Beach Bar</strong> (Lio Beach) — upscale, a genuinely great mixologist, calm swimmable beach</li>
+          <li><strong>Pukka Bar</strong> — the beachfront reggae institution for a loose, local night</li>
         </ul>
       </div>
 
       <div class="night-card">
-        <div class="n-top">
-          <span class="place">Manila — Poblacion</span>
-          <span class="energy">★★★★<span class="off">★</span></span>
-        </div>
+        <div class="n-top"><span class="place">Manila — Poblacion</span><span class="energy">★★★★<span class="off">★</span></span></div>
         <p class="n-day">DAY 1 · IF JETLAG PERMITS</p>
-        <p>Makati's Poblacion district: speakeasies, rooftop bars, natural wine — all walking distance. A very good first date night before the islands.</p>
+        <p>Makati's Poblacion: speakeasies, rooftop bars, natural wine — all walkable. A lovely first date night before the islands.</p>
       </div>
 
       <div class="night-card">
-        <div class="n-top">
-          <span class="place">El Nido</span>
-          <span class="energy">★★★<span class="off">★★</span></span>
-        </div>
-        <p class="n-day">DAY 8 – 9</p>
-        <p><strong>Pukka Bar</strong> is the legend — live reggae right on the beach. Small scene, big charm, done by midnight because tomorrow is lagoon day.</p>
+        <div class="n-top"><span class="place">Coron</span><span class="energy">★<span class="off">★★★★</span></span></div>
+        <p class="n-day">DAY 7 – 10</p>
+        <p>Sleepy town, 8am boat departures. Best "night out" is the hot spring under the stars or the Levit8 floating bar — and honestly that's the charm.</p>
       </div>
 
       <div class="night-card">
-        <div class="n-top">
-          <span class="place">Coron</span>
-          <span class="energy">★<span class="off">★★★★</span></span>
-        </div>
-        <p class="n-day">DAY 10 – 12</p>
-        <p>Sleepy town, 8am boat departures. Your best night here is the hot spring under the stars, not a bar — and that's a feature.</p>
+        <div class="n-top"><span class="place">Panglao — Alona</span><span class="energy">★★★<span class="off">★★</span></span></div>
+        <p class="n-day">DAY 11 – 14</p>
+        <p>The Alona strip after dark: beach bars, acoustic sets, fire dancers, happy hours everywhere. Clifftop cocktails at Saffron for something special.</p>
       </div>
+    </div>
+  </div>
+</section>
 
-      <div class="night-card">
-        <div class="n-top">
-          <span class="place">Panglao — Alona</span>
-          <span class="energy">★★<span class="off">★★★</span></span>
+<!-- ================= WEATHER ================= -->
+<section class="weather">
+  <div class="wrap">
+    <h2>Weather &amp; what to pack</h2>
+    <div class="verdict">
+      <b>The verdict</b>
+      You've timed it beautifully. Palawan (El Nido &amp; Coron) is drying into its calm, clear, best-of-the-year window right as you arrive — and Bohol stays warm, with only short, passing tropical showers. Hot days, warm sea, strong sun.
+    </div>
+    <div class="wx-grid">
+      <div class="wx">
+        <div class="wx-place">El Nido &amp; Coron</div>
+        <div class="wx-dates">PALAWAN · 29 NOV – 8 DEC</div>
+        <div class="wx-stats">
+          <div class="wx-stat"><div class="k">Day</div><div class="v">29–31°C</div></div>
+          <div class="wx-stat"><div class="k">Night</div><div class="v">24–25°C</div></div>
+          <div class="wx-stat"><div class="k">Sea</div><div class="v">~29–30°C</div></div>
         </div>
-        <p class="n-day">DAY 16 – 18</p>
-        <p>The Alona strip after dark: beach bars, acoustic sets, fire dancers, happy hours everywhere. Relaxed with a pulse.</p>
+        <p>Late November is the tail of the wet season — expect a few short showers — but it dries out fast into early December, with calm, clear seas that are ideal for lagoons and snorkeling.</p>
+        <div class="pack"><b>Pack</b>Reef-safe sunscreen, rash guard, a light rain jacket for late Nov, dry bag, water shoes.</div>
       </div>
-
-      <div class="night-card">
-        <div class="n-top">
-          <span class="place">Siquijor</span>
-          <span class="energy">★★<span class="off">★★★</span></span>
+      <div class="wx">
+        <div class="wx-place">Panglao &amp; Bohol</div>
+        <div class="wx-dates">VISAYAS · 8 – 11 DEC</div>
+        <div class="wx-stats">
+          <div class="wx-stat"><div class="k">Day</div><div class="v">30–31°C</div></div>
+          <div class="wx-stat"><div class="k">Night</div><div class="v">~26°C</div></div>
+          <div class="wx-stat"><div class="k">Sea</div><div class="v">~29°C</div></div>
         </div>
-        <p class="n-day">DAY 19 – 20</p>
-        <p>One name: <strong>Baha Bar</strong>. Live music in a garden, island-mystic energy. Not a party — often the most memorable night anyway.</p>
+        <p>December is a wetter month here — expect passing downpours (usually short) and some cloud. Mornings are typically the clearest, so do Balicasag and the sardine run early.</p>
+        <div class="pack"><b>Pack</b>Light rain layer or umbrella, quick-dry clothes, plus the beach kit above.</div>
+      </div>
+      <div class="wx">
+        <div class="wx-place">Everywhere</div>
+        <div class="wx-dates">GENERAL · ALL TRIP</div>
+        <div class="wx-stats">
+          <div class="wx-stat"><div class="k">Feel</div><div class="v">Hot &amp; humid</div></div>
+          <div class="wx-stat"><div class="k">UV</div><div class="v">Very high</div></div>
+          <div class="wx-stat"><div class="k">Sun</div><div class="v">~6am–6pm</div></div>
+        </div>
+        <p>Tropical and humid with strong sun year-round. Boats and planes get cold, and ferries can be bumpy.</p>
+        <div class="pack"><b>Pack</b>Sunglasses + hat, one warm layer for cold planes/ferries, motion-sickness tabs, a power bank.</div>
       </div>
     </div>
   </div>
@@ -839,11 +771,11 @@
     <h2>Good to know</h2>
     <div class="notes-grid">
       <div class="note"><span class="n-tag">Visas</span><p>Indonesian passport: visa-free 30 days. Momo: check requirements for your passport nationality — UAE residency alone doesn't grant entry, the passport does.</p></div>
-      <div class="note"><span class="n-tag">Weather</span><p>December = amihan season. Mostly dry and sunny, but northern Palawan seas can get choppy — tours occasionally reschedule. Balabac is at its best.</p></div>
-      <div class="note"><span class="n-tag">Cash</span><p>Balabac and Siquijor are cash territory, and Coron ATMs run dry in peak season. Load up on pesos in Puerto Princesa and Cebu.</p></div>
-      <div class="note"><span class="n-tag">Peak season</span><p>Christmas/New Year weeks can double prices. Book the big three early: Balabac tour, El Nido–Coron ferry, Boracay hotel.</p></div>
-      <div class="note"><span class="n-tag">Connectivity</span><p>Grab a local eSIM or Globe/Smart SIM at MNL. Expect near-zero signal in Balabac — tell people in advance.</p></div>
-      <div class="note"><span class="n-tag">Packing</span><p>Reef-safe sunscreen, dry bag, water shoes, motion-sickness tabs for ferries, one warm layer for night boats and cold planes.</p></div>
+      <div class="note"><span class="n-tag">Flights</span><p>Manila → El Nido is small AirSwift planes with tight baggage limits — book early and pack light. The 8 Dec Coron → Bohol day routes via Manila; leave a comfortable connection.</p></div>
+      <div class="note"><span class="n-tag">Cash</span><p>El Nido and Coron are largely cash; Coron ATMs run dry in peak season. Load up on pesos in Manila before flying out.</p></div>
+      <div class="note"><span class="n-tag">Peak season</span><p>December fills up fast. Book the El Nido resort, the El Nido–Coron ferry, and all flights well ahead.</p></div>
+      <div class="note"><span class="n-tag">Connectivity</span><p>Grab a local eSIM or Globe/Smart SIM at MNL. Signal is fine in town, patchy out on the boats.</p></div>
+      <div class="note"><span class="n-tag">Seas &amp; tours</span><p>Late-Nov Palawan seas can occasionally be choppy — a tour may reschedule. Keep one flexible day per island.</p></div>
     </div>
   </div>
 </section>
@@ -854,23 +786,26 @@
     <h2>Booking checklist</h2>
     <p class="sub">TAP TO CHECK OFF · SAVES AUTOMATICALLY · IN ORDER OF URGENCY</p>
     <ul id="cklist">
-      <li><span class="box"></span><span class="txt"><span class="pri">ASAP</span>Balabac 4D3N expedition tour (December slots are limited)</span></li>
-      <li><span class="box"></span><span class="txt"><span class="pri">ASAP</span>International flights: DXB→MNL and CGK→MNL, same arrival day</span></li>
-      <li><span class="box"></span><span class="txt"><span class="pri">EARLY</span>Boracay hotel (peak-season pricing)</span></li>
-      <li><span class="box"></span><span class="txt"><span class="pri">EARLY</span>Domestic flights: MNL→PPS, USU→MNL→MPH, MPH→CEB, DGT→MNL</span></li>
-      <li><span class="box"></span><span class="txt"><span class="pri">EARLY</span>El Nido → Coron fastcraft ferry</span></li>
-      <li><span class="box"></span><span class="txt">OceanJet ferries: CEB→TAG and TAG→SIQ, SIQ→DGT</span></li>
-      <li><span class="box"></span><span class="txt">Hotels: Puerto Princesa, El Nido, Coron, Panglao, Siquijor</span></li>
-      <li><span class="box"></span><span class="txt">Kalui restaurant reservation, Puerto Princesa</span></li>
+      <li><span class="box"></span><span class="txt"><span class="pri">ASAP</span>International flights: DXB→MNL and CGK→MNL, both arriving 28 Nov</span></li>
+      <li><span class="box"></span><span class="txt"><span class="pri">ASAP</span>Manila → El Nido AirSwift flight (29 Nov) — small planes sell out</span></li>
+      <li><span class="box"></span><span class="txt"><span class="pri">ASAP</span>El Nido resort — 5 nights, peak season</span></li>
+      <li><span class="box"></span><span class="txt"><span class="pri">EARLY</span>El Nido → Coron fast ferry (4 Dec)</span></li>
+      <li><span class="box"></span><span class="txt"><span class="pri">EARLY</span>Coron → Manila → Panglao flights (8 Dec)</span></li>
+      <li><span class="box"></span><span class="txt"><span class="pri">EARLY</span>Hotels: Coron (4N) and Panglao/Bohol (3N)</span></li>
+      <li><span class="box"></span><span class="txt">Private island-hopping tours — El Nido &amp; Coron</span></li>
+      <li><span class="box"></span><span class="txt">Bohol tours: Balicasag + Napaling, and the countryside day</span></li>
+      <li><span class="box"></span><span class="txt">Dinner reservations: La Sirenetta, Trattoria Altrove, Saffron</span></li>
+      <li><span class="box"></span><span class="txt">Panglao/Bohol → Manila flight (11 Dec) + Manila hotel that night</span></li>
+      <li><span class="box"></span><span class="txt">Manila → Dubai and Manila → Jakarta (12 Dec)</span></li>
       <li><span class="box"></span><span class="txt">Travel insurance for both</span></li>
       <li><span class="box"></span><span class="txt">Momo: verify Philippines entry rules for your passport</span></li>
     </ul>
-    <p class="check-progress" id="ckProgress">0 of 10 booked</p>
+    <p class="check-progress" id="ckProgress">0 of 13 booked</p>
   </div>
 </section>
 
 <footer>
-  <p>MOMO ✕ SALSA · PHILIPPINES · DEC 2026 <span class="hearts">♥</span> see you in Manila</p>
+  <p>MOMO ✕ SALSA · PHILIPPINES · 28 NOV – 12 DEC 2026 <span class="hearts">♥</span> see you in Manila</p>
 </footer>
 
 <script>
@@ -878,13 +813,12 @@
      COUNTDOWN — change ONLY this next line to set the real trip start.
      Format: 'YYYY-MM-DDTHH:MM:SS+08:00'  (+08:00 = Philippines time)
      ============================================================ */
-  var DEPARTURE = new Date('2026-12-01T00:00:00+08:00');
+  var DEPARTURE = new Date('2026-11-28T00:00:00+08:00');
 
-  var cdClock   = document.getElementById('cdClock');
-  var cdArrived = document.getElementById('cdArrived');
-  var elDays = document.getElementById('cdDays'), elHours = document.getElementById('cdHours'),
-      elMins = document.getElementById('cdMins'), elSecs = document.getElementById('cdSecs');
-  function pad(n){ return (n < 10 ? '0' : '') + n; }
+  var cdClock=document.getElementById('cdClock'), cdArrived=document.getElementById('cdArrived');
+  var elDays=document.getElementById('cdDays'), elHours=document.getElementById('cdHours'),
+      elMins=document.getElementById('cdMins'), elSecs=document.getElementById('cdSecs');
+  function pad(n){ return (n<10?'0':'')+n; }
   function tick(){
     var diff = DEPARTURE.getTime() - Date.now();
     if (diff <= 0){ cdClock.style.display='none'; cdArrived.style.display='block'; clearInterval(timer); return; }
@@ -900,13 +834,13 @@
   /* ============================================================
      BOOKING CHECKLIST — tap to toggle, saved in this browser
      ============================================================ */
-  var STORAGE_KEY = 'momo-salsa-checklist';
+  var STORAGE_KEY = 'momo-salsa-checklist-v2';
   var items = Array.prototype.slice.call(document.querySelectorAll('#cklist li'));
   var progressEl = document.getElementById('ckProgress');
-  function loadSaved(){ try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch(e){ return {}; } }
+  function loadSaved(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }catch(e){ return {}; } }
   function save(){ var st={}; items.forEach(function(li,i){ st[i]=li.classList.contains('done'); }); try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(st)); }catch(e){} }
-  function updateProgress(){ var d=items.filter(function(li){return li.classList.contains('done');}).length; progressEl.textContent = d + ' of ' + items.length + ' booked'; }
-  function setDone(li, on){ li.classList.toggle('done', on); li.querySelector('.box').textContent = on ? '✓' : ''; }
+  function updateProgress(){ var d=items.filter(function(li){return li.classList.contains('done');}).length; progressEl.textContent = d+' of '+items.length+' booked'; }
+  function setDone(li,on){ li.classList.toggle('done',on); li.querySelector('.box').textContent = on?'✓':''; }
   var saved = loadSaved();
   items.forEach(function(li,i){
     setDone(li, !!saved[i]);
@@ -920,43 +854,26 @@
   (function(){
     if (typeof L === 'undefined') return; // Leaflet failed to load (offline) — skip gracefully
     var C = { coral:'#FF6B5E', lagoon:'#1B8F7E', sun:'#F4B942', ink:'#10231F' };
+    var DXB=[25.2532,55.3657], CGK=[-6.1256,106.6559], MNL=[14.5086,121.0194],
+        ENI=[11.1830,119.3860], CORON=[12.0053,120.2043], PANGLAO=[9.5793,123.7480], CHOC=[9.8299,124.1716];
 
-    var DXB=[25.2532,55.3657], CGK=[-6.1256,106.6559], MNL=[14.5086,121.0194];
-    var PPS=[9.7392,118.7353], BALABAC=[7.9868,117.0644], ENI=[11.1830,119.3860],
-        CORON=[12.0053,120.2043], BORACAY=[11.9674,121.9248], CEB=[10.3157,123.8854],
-        PANGLAO=[9.5793,123.7480], CHOC=[9.8299,124.1716], SIQ=[9.1985,123.5950];
+    var map = L.map('map', { scrollWheelZoom:false }).setView([13,120], 5);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom:18, attribution:'&copy; OpenStreetMap contributors' }).addTo(map);
 
-    var map = L.map('map', { scrollWheelZoom:false }).setView([12.5,120.5], 5);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom:18, attribution:'&copy; OpenStreetMap contributors'
-    }).addTo(map);
-
-    // Flights in
     L.polyline([DXB, MNL], { color:C.coral, weight:2, opacity:.9, dashArray:'6,9' }).addTo(map).bindPopup('Momo · Dubai → Manila');
     L.polyline([CGK, MNL], { color:C.lagoon, weight:2, opacity:.9, dashArray:'6,9' }).addTo(map).bindPopup('Salsa · Jakarta → Manila');
+    L.polyline([MNL, ENI, CORON, PANGLAO], { color:C.sun, weight:3, opacity:.85 }).addTo(map);
 
-    // Island-hopping route
-    L.polyline([MNL,PPS,BALABAC,ENI,CORON,BORACAY,CEB,PANGLAO,SIQ],
-      { color:C.sun, weight:3, opacity:.85 }).addTo(map);
+    function pin(ll, color, r){ return L.circleMarker(ll, { radius:r||8, color:'#fff', weight:2, fillColor:color, fillOpacity:1 }).addTo(map); }
+    pin(DXB, C.coral).bindPopup('<b>Dubai (DXB)</b><br>Momo departs · 28 Nov');
+    pin(CGK, C.lagoon).bindPopup('<b>Jakarta (CGK)</b><br>Salsa departs · 28 Nov');
+    pin(MNL, C.ink, 9).bindPopup('<b>Manila (MNL)</b><br>28 Nov · meet here');
+    pin(ENI, C.ink).bindPopup('<b>El Nido</b><br>29 Nov – 4 Dec · lagoons &amp; beaches');
+    pin(CORON, C.ink).bindPopup('<b>Coron</b><br>4 – 8 Dec · lakes &amp; wrecks');
+    pin(PANGLAO, C.ink).bindPopup('<b>Panglao / Bohol</b><br>8 – 11 Dec · turtles &amp; hills');
+    pin(CHOC, '#7E938D', 5).bindPopup('<b>Chocolate Hills</b><br>10 Dec');
 
-    function pin(latlng, color, r){
-      return L.circleMarker(latlng, { radius:r||7, color:'#fff', weight:2, fillColor:color, fillOpacity:1 }).addTo(map);
-    }
-    pin(DXB, C.coral, 8).bindPopup('<b>Dubai (DXB)</b><br>Momo departs');
-    pin(CGK, C.lagoon, 8).bindPopup('<b>Jakarta (CGK)</b><br>Salsa departs');
-    pin(MNL, C.ink, 9).bindPopup('<b>Manila (MNL)</b><br>Day 1 · meet here');
-    pin(PPS, C.ink).bindPopup('<b>Puerto Princesa</b><br>Day 2 · gateway to Palawan');
-    pin(BALABAC, C.ink).bindPopup('<b>Balabac / Onuk Island</b><br>Day 3–6 · the crown jewel');
-    pin(ENI, C.ink).bindPopup('<b>El Nido</b><br>Day 8–9 · lagoons');
-    pin(CORON, C.ink).bindPopup('<b>Coron</b><br>Day 10–12 · lakes &amp; wrecks');
-    pin(BORACAY, C.ink).bindPopup('<b>Boracay</b><br>Day 13–15 · White Beach');
-    pin(CEB, '#7E938D', 5).bindPopup('<b>Cebu</b><br>Day 16 · transit hub');
-    pin(PANGLAO, C.ink).bindPopup('<b>Panglao / Bohol</b><br>Day 16–18 · turtles &amp; hills');
-    pin(CHOC, '#7E938D', 5).bindPopup('<b>Chocolate Hills</b><br>Day 17');
-    pin(SIQ, C.ink).bindPopup('<b>Siquijor</b><br>Day 19–20 · the closer');
-
-    // Show the whole journey (Dubai in the west to the Visayas) on load
-    map.fitBounds([DXB, CGK, MNL, PPS, BALABAC, SIQ], { padding:[30,30] });
+    map.fitBounds([DXB, CGK, MNL, ENI, CORON, PANGLAO], { padding:[30,30] });
   })();
 </script>
 
