@@ -307,6 +307,24 @@
   .err{margin-top:16px;color:var(--coral);font-size:13.5px}
   .err[hidden]{display:none}
 
+  /* ---- lock screen ---- */
+  .lock-ic{width:60px;height:60px;margin:0 auto 22px;border-radius:19px;display:grid;place-items:center;background:var(--lagoon-deep);color:#fff}
+  .lock-ic svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .lockform{display:flex;gap:9px;margin:28px auto 0;max-width:400px}
+  .lockform input{
+    flex:1;min-width:0;background:var(--panel);border:1.5px solid var(--line);border-radius:14px;
+    padding:15px 17px;font-family:'Space Mono',monospace;font-size:15px;color:var(--ink);outline:none;
+  }
+  .lockform input:focus{border-color:var(--lagoon)}
+  .lockform button{
+    flex:none;background:var(--lagoon-deep);color:#fff;border-radius:14px;padding:0 24px;
+    font-family:'Unbounded',sans-serif;font-weight:600;font-size:14.5px;transition:.2s;
+  }
+  .lockform button:disabled{opacity:.45;cursor:default}
+  .lockform button:not(:disabled):hover{background:var(--lagoon)}
+  .remember{display:inline-flex;align-items:center;gap:9px;margin-top:16px;font-size:13.5px;color:var(--muted);cursor:pointer}
+  .remember input{accent-color:var(--lagoon)}
+
   @media (max-width:560px){
     .bubble{max-width:84%}
     .avatar{width:38px;height:38px}
@@ -406,6 +424,26 @@
       <svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6z"/><path d="M9.5 12l1.8 1.8 3.4-3.6"/></svg>
       <span>Your chat never leaves this device. It is parsed in the browser and, if you let it, remembered only in this browser's own storage. Nothing is uploaded, and nothing is committed to the repo.</span>
     </p>
+  </div>
+</div>
+
+<div class="welcome" id="lock" hidden>
+  <div class="welcome-card">
+    <div class="lock-ic">
+      <svg viewBox="0 0 24 24"><rect x="4" y="10.5" width="16" height="10.5" rx="2.6"/><path d="M8 10.5V7.5a4 4 0 018 0v3"/><circle cx="12" cy="15.5" r="1.3"/></svg>
+    </div>
+    <div class="eyebrow">Momo <span style="color:var(--coral)">✕</span> Salsa · archive</div>
+    <h1>This one is locked</h1>
+    <p class="lead">Type the passphrase you picked when you encrypted it. It is checked here on your device — it is never sent anywhere.</p>
+
+    <form class="lockform" id="lockForm">
+      <input type="password" id="pw" placeholder="passphrase" autocomplete="current-password" spellcheck="false" autofocus>
+      <button type="submit" id="unlock">Open</button>
+    </form>
+    <label class="remember"><input type="checkbox" id="rememberMe" checked> Remember on this device</label>
+
+    <p class="err" id="lockErr" hidden></p>
+    <p class="alt" style="margin-top:22px">Got the plain export instead? <button id="lockDrop" type="button">open a .txt file</button></p>
   </div>
 </div>
 
@@ -1249,14 +1287,96 @@ var DEMO = [
 ].join('\n');
 $('btnDemo').addEventListener('click', function(){ handleText(DEMO, 'sample chat', false); });
 
-/* ---- boot: remembered chat → sibling chat.txt → welcome ---- */
-dbGet().then(function(rec){
-  if(rec && rec.text){ handleText(rec.text, rec.name, false); return; }
-  return fetch('chat.txt', { cache:'no-store' }).then(function(r){
+/* ---- encrypted archive (chat.enc, made by encrypt.html) ---- */
+var MAGIC = [77,83,67,72,65,84,49];   /* "MSCHAT1" */
+var ITER = 600000;
+var LOCKED = null;                     /* the fetched ciphertext, awaiting a passphrase */
+
+function looksEncrypted(bytes){
+  if(bytes.length < 38) return false;
+  for(var i = 0; i < MAGIC.length; i++) if(bytes[i] !== MAGIC[i]) return false;
+  return bytes[7] === 1;
+}
+function gunzip(bytes){
+  if(typeof DecompressionStream === 'undefined'){
+    return Promise.reject(new Error('This browser is too old to unpack the archive.'));
+  }
+  var ds = new DecompressionStream('gzip');
+  var w = ds.writable.getWriter();
+  w.write(bytes); w.close();
+  return new Response(ds.readable).arrayBuffer().then(function(b){ return new Uint8Array(b); });
+}
+function decrypt(bytes, pass){
+  var flags = bytes[8];
+  var salt = bytes.slice(9, 25), iv = bytes.slice(25, 37), body = bytes.slice(37);
+  return crypto.subtle.importKey('raw', new TextEncoder().encode(pass), 'PBKDF2', false, ['deriveKey'])
+    .then(function(base){
+      return crypto.subtle.deriveKey(
+        { name:'PBKDF2', salt:salt, iterations:ITER, hash:'SHA-256' },
+        base, { name:'AES-GCM', length:256 }, false, ['decrypt']);
+    })
+    .then(function(key){ return crypto.subtle.decrypt({ name:'AES-GCM', iv:iv }, key, body); })
+    .then(function(plain){
+      var out = new Uint8Array(plain);
+      return (flags & 1) ? gunzip(out) : out;
+    })
+    .then(function(u8){ return new TextDecoder('utf-8').decode(u8); });
+}
+
+var lockEl = $('lock'), pw = $('pw'), unlockBtn = $('unlock'), lockErr = $('lockErr');
+$('lockForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  if(!LOCKED || !pw.value) return;
+  lockErr.hidden = true;
+  unlockBtn.disabled = true;
+  unlockBtn.textContent = 'Opening…';
+  /* let the button repaint before PBKDF2 pins the thread */
+  setTimeout(function(){
+    decrypt(LOCKED, pw.value).then(function(text){
+      var keep = $('rememberMe').checked;
+      pw.value = '';
+      lockEl.hidden = true;
+      handleText(text, 'chat.enc', keep);
+    }).catch(function(err){
+      unlockBtn.disabled = false;
+      unlockBtn.textContent = 'Open';
+      lockErr.hidden = false;
+      lockErr.textContent = (err && /too old/.test(err.message || ''))
+        ? err.message
+        : 'That passphrase does not open this file.';
+      pw.select();
+    });
+  }, 30);
+});
+$('lockDrop').addEventListener('click', function(){
+  lockEl.hidden = true;
+  welcome.hidden = false;
+  $('file').click();
+});
+
+/* ---- boot: remembered chat → chat.enc → chat.txt → welcome ---- */
+function tryFetch(name, binary){
+  return fetch(name, { cache:'no-store' }).then(function(r){
     if(!r.ok) throw 0;
-    return r.text();
-  }).then(function(t){ handleText(t, 'chat.txt', false); }).catch(function(){});
-}).catch(function(){});
+    return binary ? r.arrayBuffer() : r.text();
+  });
+}
+dbGet().catch(function(){ return null; }).then(function(rec){
+  if(rec && rec.text){ handleText(rec.text, rec.name, false); return; }
+
+  return tryFetch('chat.enc', true).then(function(buf){
+    var bytes = new Uint8Array(buf);
+    if(!looksEncrypted(bytes)) throw 0;
+    LOCKED = bytes;
+    welcome.hidden = true;
+    lockEl.hidden = false;
+    pw.focus();
+  }).catch(function(){
+    return tryFetch('chat.txt', false)
+      .then(function(t){ handleText(t, 'chat.txt', false); })
+      .catch(function(){});
+  });
+});
 
 })();
 </script>

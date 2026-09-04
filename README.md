@@ -34,7 +34,27 @@ tail of the thread first and pulls in more as you scroll, so it stays smooth.
 **The chat stays on your device.** It is parsed in the browser and, so you don't
 have to drop it in every time, kept in that browser's own IndexedDB — nothing is
 uploaded and nothing is committed here. `.gitignore` already blocks `chat.txt` and
-`*_chat*.txt` so an export dropped into this folder can't be pushed by accident.
+`*_chat*.txt` so a plain export dropped into this folder can't be pushed by accident.
+
+### Reading it on your phone — `encrypt.html`
+
+Dropping the file in works, but only on the device that has the file. To get a link
+that just opens anywhere, lock the export first:
+
+1. Open `encrypt.html`, drop `_chat.txt` in, pick a passphrase, download `chat.enc`.
+   Gzip then AES-256-GCM, key stretched with PBKDF2-SHA256 at 600k iterations — all
+   of it in your browser. The passphrase never leaves the page and is not stored in
+   the file.
+2. Commit `chat.enc` to the root of the repo, next to `chat.html` (GitHub's **Add
+   file -> Upload files** is enough).
+3. Open `chat.html` anywhere. It finds `chat.enc`, asks for the passphrase once, and
+   remembers the unlocked copy on that device.
+
+A 1.9 MB / 33k-message export ends up around 480 KB, and unlocks plus renders in
+about two seconds. What sits in the repo is indistinguishable from random bytes, so
+the repo can stay public — but the ciphertext is public and permanent in git history,
+so the passphrase is the whole defence. Use a long one, keep it somewhere safe, and
+know there is no reset.
 
 ## Edit the countdown date
 Open `index.html`, find the line near the bottom that starts with `var DEPARTURE =`

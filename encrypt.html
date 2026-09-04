@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lock the chat archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#10231F;--paper:#EEF4F2;--lagoon:#1B8F7E;--lagoon-deep:#0C5A50;
+    --coral:#FF6B5E;--sun:#F4B942;--mist:#D8E5E1;--card:#FFFFFF;--muted:#5B6E69;
+    --line:rgba(16,35,31,.12);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    min-height:100vh;background:var(--paper);color:var(--ink);
+    font-family:'Space Grotesk',system-ui,sans-serif;font-size:16px;line-height:1.55;
+    -webkit-font-smoothing:antialiased;padding:32px 20px 64px;
+    background-image:radial-gradient(circle at 12% 8%,rgba(27,143,126,.16),transparent 44%),radial-gradient(circle at 90% 88%,rgba(255,107,94,.13),transparent 40%);
+  }
+  .mono{font-family:'Space Mono',monospace}
+  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+  .wrap{max-width:600px;margin:0 auto}
+
+  header{text-align:center;margin-bottom:34px}
+  .eyebrow{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--lagoon-deep);margin-bottom:14px}
+  h1{font-family:'Unbounded',sans-serif;font-weight:800;font-size:clamp(26px,5.5vw,38px);line-height:1.1;letter-spacing:-.015em}
+  header p{margin:14px auto 0;max-width:46ch;color:var(--muted);font-size:14.5px}
+
+  .step{background:var(--card);border-radius:20px;padding:24px;margin-bottom:16px;box-shadow:0 1px 3px rgba(16,35,31,.07)}
+  .step.off{opacity:.45;pointer-events:none}
+  .step h2{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:10px;margin-bottom:16px}
+  .step h2 i{font-style:normal;width:22px;height:22px;border-radius:50%;background:var(--lagoon-deep);color:#fff;display:grid;place-items:center;font-size:11px;flex:none}
+  .step.done h2 i{background:var(--lagoon)}
+
+  .drop{border:2px dashed rgba(27,143,126,.45);border-radius:15px;padding:26px 20px;text-align:center;cursor:pointer;transition:.2s}
+  .drop:hover,.drop.over{border-color:var(--coral);background:var(--mist)}
+  .drop b{display:block;font-family:'Unbounded',sans-serif;font-weight:600;font-size:15px}
+  .drop small{display:block;margin-top:7px;color:var(--muted);font-size:12.5px}
+  .picked{display:flex;align-items:center;gap:12px;background:var(--mist);border-radius:13px;padding:14px 16px}
+  .picked[hidden]{display:none}
+  .picked .tick{width:26px;height:26px;border-radius:50%;background:var(--lagoon);color:#fff;display:grid;place-items:center;flex:none;font-size:14px}
+  .picked b{font-weight:500;font-size:14px;word-break:break-all}
+  .picked span{display:block;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted)}
+
+  label.f{display:block;font-size:13px;color:var(--muted);margin-bottom:7px}
+  input[type=password],input[type=text]{
+    width:100%;background:var(--mist);border:1.5px solid transparent;border-radius:12px;
+    padding:13px 15px;font-family:'Space Mono',monospace;font-size:14.5px;color:var(--ink);outline:none;
+  }
+  input:focus{border-color:var(--lagoon)}
+  .row{margin-bottom:14px}
+  .meter{height:6px;border-radius:100px;background:var(--mist);overflow:hidden;margin-top:9px}
+  .meter i{display:block;height:100%;width:0;border-radius:100px;transition:width .25s,background .25s}
+  .hint{font-size:12.5px;color:var(--muted);margin-top:8px;min-height:18px}
+  .hint.bad{color:var(--coral)}
+  .show{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);margin-top:12px;cursor:pointer}
+
+  .go{
+    width:100%;background:var(--lagoon-deep);color:#fff;border-radius:14px;padding:15px;
+    font-family:'Unbounded',sans-serif;font-weight:600;font-size:15px;transition:.2s;
+  }
+  .go:disabled{opacity:.4;cursor:default}
+  .go:not(:disabled):hover{background:var(--lagoon)}
+  .out{text-align:center}
+  .out[hidden]{display:none}
+  .out .big{font-family:'Unbounded',sans-serif;font-weight:800;font-size:30px;letter-spacing:-.01em}
+  .out .sub{font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);margin-top:6px}
+  .dl{display:inline-block;margin-top:18px;background:var(--coral);color:#fff;border-radius:13px;padding:14px 26px;font-family:'Unbounded',sans-serif;font-weight:600;font-size:14.5px;text-decoration:none}
+  ol.next{margin:20px 0 0 20px;font-size:14px;color:var(--muted);display:grid;gap:9px}
+  ol.next b{color:var(--ink);font-weight:500}
+  code{font-family:'Space Mono',monospace;font-size:13px;background:var(--mist);padding:2px 6px;border-radius:5px}
+  .warn{
+    display:flex;gap:11px;align-items:flex-start;background:#FFF4E5;border-radius:14px;
+    padding:15px 17px;margin-top:16px;font-size:13px;line-height:1.6;color:#6B4B12;
+  }
+  .warn svg{width:17px;height:17px;flex:none;margin-top:3px;fill:none;stroke:#B8860B;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+  footer{text-align:center;margin-top:26px;font-size:12.5px;color:var(--muted);line-height:1.65}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Momo <span style="color:var(--coral)">✕</span> Salsa · archive</div>
+    <h1>Lock the chat<br>before you upload it</h1>
+    <p>This scrambles your export in <em>this browser</em> so you can put it online and still be the only one who can read it. The passphrase never leaves this page.</p>
+  </header>
+
+  <div class="step" id="s1">
+    <h2><i>1</i>Pick the export</h2>
+    <div class="drop" id="drop" role="button" tabindex="0">
+      <b>Drop <span class="mono">_chat.txt</span> here</b>
+      <small>or click to choose it — nothing is uploaded</small>
+    </div>
+    <div class="picked" id="picked" hidden>
+      <span class="tick">✓</span>
+      <div><b id="fname"></b><span id="fsize"></span></div>
+    </div>
+  </div>
+
+  <div class="step off" id="s2">
+    <h2><i>2</i>Choose a passphrase</h2>
+    <div class="row">
+      <label class="f" for="p1">Passphrase — long beats complicated. Four random words is plenty.</label>
+      <input type="password" id="p1" autocomplete="new-password" spellcheck="false" placeholder="mangga sepeda lampu tujuh">
+      <div class="meter"><i id="meter"></i></div>
+      <div class="hint" id="hint"></div>
+    </div>
+    <div class="row">
+      <label class="f" for="p2">Type it again</label>
+      <input type="password" id="p2" autocomplete="new-password" spellcheck="false">
+      <div class="hint" id="hint2"></div>
+    </div>
+    <label class="show"><input type="checkbox" id="reveal"> Show what I typed</label>
+    <div class="warn">
+      <svg viewBox="0 0 24 24"><path d="M12 9v5M12 17.5h.01"/><path d="M10.3 3.9L2.6 17.4A2 2 0 004.3 20.4h15.4a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg>
+      <span><b>Write it down somewhere safe.</b> There is no reset — the file is encrypted with this passphrase and nothing else. Lose it and the archive is gone for good.</span>
+    </div>
+  </div>
+
+  <div class="step off" id="s3">
+    <h2><i>3</i>Lock it</h2>
+    <button class="go" id="go" disabled>Encrypt the archive</button>
+    <div class="out" id="out" hidden>
+      <div class="big" id="outSize"></div>
+      <div class="sub">encrypted · gzipped · AES-256-GCM</div>
+      <a class="dl" id="dl" download="chat.enc">Download chat.enc</a>
+      <ol class="next">
+        <li>Open your repo on GitHub and click <b>Add file → Upload files</b>.</li>
+        <li>Drop <code>chat.enc</code> in the <b>root</b> of the repo, next to <code>chat.html</code>, and commit to <code>main</code>.</li>
+        <li>Wait a minute, then open <code>chat.html</code> on any device. It will ask for this passphrase once, then remember it on that device.</li>
+      </ol>
+    </div>
+  </div>
+
+  <footer>
+    Everything above happens on your device. This page has no server, no upload, no analytics.<br>
+    Anyone who finds <span class="mono">chat.enc</span> online sees only random bytes.
+  </footer>
+</div>
+
+<input type="file" id="file" accept=".txt,text/plain" hidden>
+
+<script>
+(function(){
+"use strict";
+var $ = function(id){ return document.getElementById(id); };
+var MAGIC = [77,83,67,72,65,84,49];   /* "MSCHAT1" */
+var ITER = 600000;
+var text = null, fileName = '';
+
+/* ---------- step gating ---------- */
+function refresh(){
+  $('s2').classList.toggle('off', !text);
+  var p1 = $('p1').value, p2 = $('p2').value;
+  var ok = !!text && p1.length >= 8 && p1 === p2;
+  $('s3').classList.toggle('off', !ok);
+  $('go').disabled = !ok;
+
+  var score = Math.min(100, Math.round(p1.length / 24 * 100));
+  var col = p1.length < 8 ? '#FF6B5E' : p1.length < 14 ? '#F4B942' : '#1B8F7E';
+  $('meter').style.width = score + '%';
+  $('meter').style.background = col;
+  $('hint').className = 'hint' + (p1 && p1.length < 8 ? ' bad' : '');
+  $('hint').textContent = !p1 ? '' :
+    p1.length < 8  ? 'Too short — at least 8 characters.' :
+    p1.length < 14 ? 'Workable. Longer is a lot stronger.' :
+    p1.length < 20 ? 'Good.' : 'Excellent.';
+  $('hint2').className = 'hint' + (p2 && p1 !== p2 ? ' bad' : '');
+  $('hint2').textContent = !p2 ? '' : (p1 === p2 ? 'Matches.' : 'These do not match yet.');
+}
+['p1','p2'].forEach(function(id){ $(id).addEventListener('input', refresh); });
+$('reveal').addEventListener('change', function(){
+  var t = this.checked ? 'text' : 'password';
+  $('p1').type = t; $('p2').type = t;
+});
+
+/* ---------- file ---------- */
+function take(f){
+  if(!f) return;
+  fileName = f.name;
+  var r = new FileReader();
+  r.onload = function(){
+    text = String(r.result);
+    $('drop').style.display = 'none';
+    $('picked').hidden = false;
+    $('fname').textContent = f.name;
+    $('fsize').textContent = (f.size / 1048576).toFixed(2) + ' MB · ' +
+      (text.split('\n').length).toLocaleString('en-US') + ' lines';
+    $('s1').classList.add('done');
+    refresh();
+    $('p1').focus();
+  };
+  r.readAsText(f, 'utf-8');
+}
+$('file').addEventListener('change', function(e){ take(e.target.files[0]); });
+$('drop').addEventListener('click', function(){ $('file').click(); });
+$('drop').addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); $('file').click(); } });
+['dragenter','dragover'].forEach(function(ev){ window.addEventListener(ev, function(e){ e.preventDefault(); $('drop').classList.add('over'); }); });
+['dragleave','drop'].forEach(function(ev){ window.addEventListener(ev, function(e){ e.preventDefault(); $('drop').classList.remove('over'); }); });
+window.addEventListener('drop', function(e){
+  var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+  if(f) take(f);
+});
+
+/* ---------- crypto ---------- */
+function gzip(bytes){
+  if(typeof CompressionStream === 'undefined') return Promise.resolve(null);
+  var cs = new CompressionStream('gzip');
+  var w = cs.writable.getWriter();
+  w.write(bytes); w.close();
+  return new Response(cs.readable).arrayBuffer().then(function(b){ return new Uint8Array(b); });
+}
+function keyFrom(pass, salt){
+  return crypto.subtle.importKey('raw', new TextEncoder().encode(pass), 'PBKDF2', false, ['deriveKey'])
+    .then(function(base){
+      return crypto.subtle.deriveKey(
+        { name:'PBKDF2', salt:salt, iterations:ITER, hash:'SHA-256' },
+        base, { name:'AES-GCM', length:256 }, false, ['encrypt']);
+    });
+}
+$('go').addEventListener('click', function(){
+  var btn = $('go');
+  btn.disabled = true;
+  btn.textContent = 'Encrypting… this takes a moment';
+
+  var raw = new TextEncoder().encode(text);
+  gzip(raw).then(function(gz){
+    var flags = gz ? 1 : 0;
+    var body = gz || raw;
+    var salt = crypto.getRandomValues(new Uint8Array(16));
+    var iv = crypto.getRandomValues(new Uint8Array(12));
+    return keyFrom($('p1').value, salt).then(function(key){
+      return crypto.subtle.encrypt({ name:'AES-GCM', iv:iv }, key, body);
+    }).then(function(ct){
+      var c = new Uint8Array(ct);
+      var out = new Uint8Array(37 + c.length);
+      out.set(MAGIC, 0);
+      out[7] = 1;        /* version */
+      out[8] = flags;    /* bit0 = gzip */
+      out.set(salt, 9);
+      out.set(iv, 25);
+      out.set(c, 37);
+      var url = URL.createObjectURL(new Blob([out], { type:'application/octet-stream' }));
+      $('dl').href = url;
+      $('outSize').textContent = (out.length / 1048576).toFixed(2) + ' MB';
+      $('out').hidden = false;
+      $('s3').classList.add('done');
+      btn.textContent = 'Encrypted ✓';
+      $('dl').scrollIntoView({ behavior:'smooth', block:'center' });
+    });
+  }).catch(function(err){
+    btn.disabled = false;
+    btn.textContent = 'Encrypt the archive';
+    alert('Encryption failed: ' + (err && err.message ? err.message : err) +
+          '\n\nThis page needs a secure context — open it over https:// or from a local file, not plain http://.');
+  });
+});
+})();
+</script>
+</body>
+</html>
