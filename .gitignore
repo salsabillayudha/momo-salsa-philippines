@@ -1,0 +1,4 @@
+# a WhatsApp export dropped in next to chat.html stays local — never commit it
+chat.txt
+*_chat*.txt
+*.zip
