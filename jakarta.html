@@ -113,26 +113,46 @@
   .places-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;padding-left:4px}
   .places-head h4{font-size:15px;font-weight:700;letter-spacing:-.01em}
   .plist{display:grid;gap:8px}
-  .place{display:flex;gap:12px;align-items:center;padding:12px;border-radius:20px;background:var(--glass-2);border:1px solid var(--glass-line)}
+  .place{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start;padding:12px;border-radius:20px;background:var(--glass-2);border:1px solid var(--glass-line)}
   .place.picked{box-shadow:inset 0 0 0 1.5px var(--c)}
   .place .ico{width:40px;height:40px;flex-shrink:0;border-radius:50%;display:grid;place-items:center;font-size:17px;background:var(--cs)}
-  .place .body{flex:1;min-width:0}
+  .place .body{flex:1 1 0;min-width:0}
   .place .src{font-size:11.5px;font-weight:500;color:var(--muted)}
   .place .name{font-weight:700;font-size:14.5px;letter-spacing:-.01em;word-break:break-word}
   .place .name a{text-decoration:none}
   .place .pnote{font-size:12.5px;color:var(--muted);white-space:pre-wrap;word-break:break-word;margin-top:2px}
-  .place .acts{display:flex;align-items:center;gap:0;flex-shrink:0}
+  .place .acts{flex-basis:100%;display:flex;align-items:center;justify-content:flex-end;gap:2px;padding-top:8px;border-top:1px dashed var(--glass-line)}
   .icon-btn{border:0;background:transparent;width:30px;height:30px;border-radius:50%;font-size:14px;opacity:.5}
   .icon-btn:hover{opacity:1;background:var(--glass)}
   .icon-btn.on{opacity:1}
-  .go{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--pill);color:var(--pill-ink);text-decoration:none;font-size:16px;margin-left:4px;flex-shrink:0}
+  .go{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--pill);color:var(--pill-ink);text-decoration:none;font-size:16px;margin-left:4px;flex-shrink:0}
   .empty{font-size:13px;color:var(--muted);padding:4px}
 
   .bucket{margin:30px 0 36px}
   .sec-h{font-weight:700;font-size:clamp(22px,4.4vw,26px);letter-spacing:-.025em;margin-bottom:4px}
 
+  .what{font-size:12.5px;font-weight:600;color:var(--c);margin-top:1px}
+  .facts{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .facts span{font-size:12px;font-weight:600;padding:3px 10px;border-radius:100px;background:var(--cs);color:var(--ink)}
+  .must{margin-top:8px;font-size:13px;line-height:1.45}
+  .must b{font-weight:700}
+  .more{margin-top:8px;font-size:13px}
+  .more summary{cursor:pointer;font-weight:700;font-size:12.5px;color:var(--muted);list-style:none;display:inline-flex;gap:6px;align-items:center}
+  .more summary::-webkit-details-marker{display:none}
+  .more summary::before{content:'▸';transition:transform .15s}
+  .more[open] summary::before{transform:rotate(90deg)}
+  .more dl{margin-top:8px;display:grid;gap:8px}
+  .more dt{font-size:11.5px;font-weight:700;color:var(--muted)}
+  .more dd{white-space:pre-wrap;word-break:break-word}
+  .menu-list{list-style:none;display:grid;gap:3px}
+  .menu-list li{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed var(--glass-line);padding-bottom:3px}
+  .menu-list li .rp{font-weight:700;white-space:nowrap}
+  fieldset{border:0;display:grid;gap:12px}
+  fieldset legend{font-size:14px;font-weight:700;margin-bottom:8px;padding:0}
+  fieldset legend small{display:block;font-weight:500;font-size:12px;color:var(--muted)}
+
   /* DIALOG */
-  dialog{margin:auto;border-radius:30px;padding:0;color:var(--ink);width:min(460px,calc(100vw - 32px));background:var(--glass-2)}
+  dialog{margin:auto;border-radius:30px;padding:0;max-height:92vh;overflow:auto;color:var(--ink);width:min(460px,calc(100vw - 32px));background:var(--glass-2)}
   dialog::backdrop{background:rgba(60,20,40,.28);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
   form.f{padding:22px;display:grid;gap:12px}
   form.f h3{font-weight:700;font-size:22px;letter-spacing:-.025em}
@@ -221,7 +241,8 @@
       <label>Hari<select name="day" id="daySelect"></select></label>
       <label>Jenis<select name="type" id="typeSelect"></select></label>
     </div>
-    <label>Catatan<textarea name="note" placeholder="jam buka, harus reservasi, menu andalan, dress code…"></textarea></label>
+    <fieldset id="details"><legend>Info tempat <small>Semua opsional — isi yang kamu tahu aja.</small></legend></fieldset>
+    <label>Catatan lain<textarea name="note" placeholder="kenapa pengen ke sini, siapa yang rekomen, dll."></textarea></label>
     <div class="err" id="err"></div>
     <div class="f-acts">
       <button type="button" class="btn" id="cancel">Batal</button>
@@ -266,10 +287,24 @@ const DAYS = [
 const TYPES = { food:'🍽️ Makan', coffee:'☕ Coffee / dessert', shop:'🛍️ Shopping', activity:'🎯 Activity', night:'🪩 Nightlife', stay:'🏨 Hotel / transport', other:'📍 Lainnya' };
 const ICON = t => (TYPES[t]||TYPES.other).split(' ')[0];
 
+/* Extra info per place. [key, label, emoji, placeholder, multiline] */
+const DETAILS = [
+  ['what',   'Jualan apa / tempat apa', '🏷️', 'mis. Sunda homey, sate, leather boots custom', 0],
+  ['musttry','Must-try',                '⭐', 'mis. Nasi bakar cumi, es kopi pandan', 0],
+  ['menu',   'Menu + harga',            '📋', 'Satu per baris, mis.\nNasi bakar cumi — 45rb\nEs kopi pandan — 28rb', 1],
+  ['price',  'Kisaran harga',           '💸', 'mis. Rp100–150rb / orang', 0],
+  ['hours',  'Jam buka',                '🕒', 'mis. 10.00–22.00, tutup Senin', 0],
+  ['addr',   'Alamat / area',           '📍', 'mis. Jl. Braga No. 1, Bandung', 0],
+  ['tips',   'Tips',                    '💡', 'mis. reservasi dulu, ramai jam 7, smart casual', 1],
+];
+const DKEYS = DETAILS.map(d => d[0]);
+
+/* Places Claude researched / seeded. Stable ids: new ones show up on the next visit,
+   ones you delete stay deleted. */
 const SEED = [
-  { day:'sat3', type:'stay', name:'The Dharmawangsa Jakarta', url:'', note:'Home base all week.' },
-  { day:'sun4', type:'stay', name:'Stasiun Whoosh Halim', url:'', note:'Beli tiket di app Whoosh. Ke pusat kota Bandung biasanya turun Padalarang → KA feeder ke Stasiun Bandung.' },
-  { day:'tue6', type:'activity', name:'RR Archery Radio Dalam', url:'', note:'' },
+  { id:'seed-dharmawangsa', day:'sat3', type:'stay', name:'The Dharmawangsa Jakarta', url:'', note:'Home base all week.' },
+  { id:'seed-halim', day:'sun4', type:'stay', name:'Stasiun Whoosh Halim', url:'', note:'Beli tiket di app Whoosh. Ke pusat kota Bandung biasanya turun Padalarang → KA feeder ke Stasiun Bandung.' },
+  { id:'seed-rr-archery', day:'tue6', type:'activity', name:'RR Archery Radio Dalam', url:'', note:'' },
 ];
 
 /* ============================================================
@@ -277,12 +312,22 @@ const SEED = [
    ============================================================ */
 const KEY = 'momo-salsa-jkt-places-v1';
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+const GONE = KEY + ':removed';
+let removed = [];
+try{ removed = JSON.parse(localStorage.getItem(GONE)) || []; }catch(e){}
 function load(){
-  try{ const raw = localStorage.getItem(KEY); if(raw) return JSON.parse(raw); }catch(e){}
-  return SEED.map(p => ({ ...p, id:uid(), picked:false, t:Date.now() }));
+  let list = [];
+  try{ const raw = localStorage.getItem(KEY); if(raw) list = JSON.parse(raw); }catch(e){}
+  SEED.forEach((p, i) => {
+    if(removed.includes(p.id)) return;
+    const same = list.find(x => x.id===p.id || (x.name.toLowerCase()===p.name.toLowerCase() && x.day===p.day));
+    if(!same) list.push({ ...p, picked:false, t:i });
+    else if(same.id !== p.id) same.id = p.id;
+  });
+  return list;
 }
 let places = load();
-function save(){ try{ localStorage.setItem(KEY, JSON.stringify(places)); }catch(e){} }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(places)); localStorage.setItem(GONE, JSON.stringify(removed)); }catch(e){} }
 save();
 
 /* ============================================================
@@ -338,6 +383,14 @@ function renderDays(){
     el('div',{className:'plist', dataset:{slot:''}}));
 }
 
+/* "Nasi bakar — 45rb" → name on the left, price on the right */
+function menuList(text){
+  return el('ul',{className:'menu-list'}, text.split('\n').map(l => l.trim()).filter(Boolean).map(l => {
+    const m = l.match(/^(.*?)\s*(?:[—–:|]|\s-\s)\s*((?:Rp\.?\s*)?[\d.,]+\s*(?:rb|k|ribu|jt)?)$/i);
+    return m ? el('li',{}, el('span',{textContent:m[1]}), el('span',{className:'rp',textContent:m[2]})) : el('li',{}, el('span',{textContent:l}));
+  }));
+}
+
 function renderPlaces(){
   document.querySelectorAll('.plist').forEach(list => {
     const slot = list.dataset.slot;
@@ -352,11 +405,20 @@ function renderPlaces(){
         el('div',{className:'body'},
           el('div',{className:'src',textContent: (p.picked?'⭐ Picked · ':'') + (safeUrl(p.url) ? host(p.url) : 'Google Maps')}),
           el('div',{className:'name'}, el('a',{href:url,target:'_blank',rel:'noopener noreferrer',textContent:p.name})),
-          p.note && el('div',{className:'pnote',textContent:p.note})),
+          p.what && el('div',{className:'what',textContent:p.what}),
+          (p.price || p.hours) && el('div',{className:'facts'}, p.price && el('span',{textContent:'💸 '+p.price}), p.hours && el('span',{textContent:'🕒 '+p.hours})),
+          p.musttry && el('div',{className:'must'}, el('b',{textContent:'⭐ Must-try: '}), p.musttry),
+          p.note && el('div',{className:'pnote',textContent:p.note}),
+          (p.menu || p.addr || p.tips) && el('details',{className:'more'},
+            el('summary',{textContent: p.menu ? 'Menu & info' : 'Info'}),
+            el('dl',{},
+              p.menu && [el('dt',{textContent:'📋 Menu'}), el('dd',{}, menuList(p.menu))],
+              p.addr && [el('dt',{textContent:'📍 Alamat'}), el('dd',{textContent:p.addr})],
+              p.tips && [el('dt',{textContent:'💡 Tips'}), el('dd',{textContent:p.tips})]))),
         el('div',{className:'acts'},
           el('button',{className:'icon-btn'+(p.picked?' on':''),title:p.picked?'Batal pilih':'Pilih ini',textContent:p.picked?'⭐':'☆',onclick:()=>{p.picked=!p.picked;save();renderPlaces();}}),
           el('button',{className:'icon-btn',title:'Edit',textContent:'✎',onclick:()=>openForm(p)}),
-          el('button',{className:'icon-btn',title:'Hapus',textContent:'🗑',onclick:()=>{ if(confirm(`Hapus “${p.name}”?`)){ places=places.filter(x=>x.id!==p.id); save(); renderPlaces(); } }}),
+          el('button',{className:'icon-btn',title:'Hapus',textContent:'🗑',onclick:()=>{ if(confirm(`Hapus “${p.name}”?`)){ places=places.filter(x=>x.id!==p.id); if(p.id.startsWith('seed-')) removed.push(p.id); save(); renderPlaces(); } }}),
           el('a',{className:'go',href:url,target:'_blank',rel:'noopener noreferrer',title:'Buka link',textContent:'↗'}))));
     });
   });
@@ -368,12 +430,15 @@ function renderPlaces(){
 const dlg = $('#dlg'), form = $('#form'), F = form.elements;
 $('#daySelect').append(...DAYS.map(d => el('option',{value:d.id,textContent:d.emoji+' '+d.label+' · '+d.title})), el('option',{value:'',textContent:'💡 Belum ditentukan'}));
 $('#typeSelect').append(...Object.entries(TYPES).map(([v,t]) => el('option',{value:v,textContent:t})));
+$('#details').append(...DETAILS.map(([k,label,emo,ph,multi]) =>
+  el('label',{}, emo+' '+label, multi ? el('textarea',{name:k,placeholder:ph}) : el('input',{name:k,placeholder:ph,autocomplete:'off'}))));
 let editing = null;
 function openForm(p){
   editing = p.id ? p : null;
   $('#formTitle').textContent = editing ? 'Edit tempat' : 'Tambah tempat';
   F.name.value = p.name||''; F.url.value = p.url||''; F.note.value = p.note||'';
   F.day.value = p.day ?? ''; F.type.value = p.type||'food'; $('#err').textContent='';
+  DKEYS.forEach(k => F[k].value = p[k]||'');
   dlg.showModal(); F.name.focus();
 }
 document.querySelectorAll('[data-add]').forEach(b => b.onclick = () => openForm({day:''}));
@@ -385,6 +450,7 @@ form.addEventListener('submit', e => {
   const finalName = name || host(url);
   if(!finalName){ e.preventDefault(); $('#err').textContent='Isi nama tempat atau link dulu.'; return; }
   const data = { name:finalName, url, note:F.note.value.trim(), day:F.day.value, type:F.type.value };
+  DKEYS.forEach(k => data[k] = F[k].value.trim());
   if(editing) Object.assign(editing, data);
   else places.push({ ...data, id:uid(), picked:false, t:Date.now() });
   save(); renderPlaces(); toast(editing ? 'Updated ✓' : 'Ditambahin ✓');
@@ -396,14 +462,15 @@ form.addEventListener('submit', e => {
    ============================================================ */
 const b64e = s => btoa(String.fromCharCode(...new TextEncoder().encode(s))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
 const b64d = s => new TextDecoder().decode(Uint8Array.from(atob(s.replace(/-/g,'+').replace(/_/g,'/')), c=>c.charCodeAt(0)));
-const slim = () => places.map(({id,name,url,note,day,type,picked,t}) => ({id,name,url,note,day,type,picked,t}));
+const slim = () => places.map(p => { const o = {id:p.id,name:p.name,url:p.url,note:p.note,day:p.day,type:p.type,picked:p.picked,t:p.t}; DKEYS.forEach(k => { if(p[k]) o[k] = p[k]; }); return o; });
 
 function sanitize(list){
   if(!Array.isArray(list)) return [];
   return list.filter(p => p && typeof p.name==='string' && p.name.trim()).map(p => ({
     id: String(p.id||uid()).slice(0,40), name:String(p.name).slice(0,200), url:safeUrl(String(p.url||'')),
     note:String(p.note||'').slice(0,2000), day: DAYS.some(d=>d.id===p.day) ? p.day : '',
-    type: TYPES[p.type] ? p.type : 'other', picked:!!p.picked, t:Number(p.t)||Date.now() }));
+    type: TYPES[p.type] ? p.type : 'other', picked:!!p.picked, t:Number(p.t)||Date.now(),
+    ...Object.fromEntries(DKEYS.map(k => [k, String(p[k]||'').slice(0,3000)])) }));
 }
 function merge(incoming){
   let added=0, updated=0;
@@ -425,7 +492,15 @@ $('#wa').onclick = async () => {
     const ps = places.filter(p => p.day===d.id);
     if(!ps.length) return;
     lines.push(`*${d.emoji} ${d.label} — ${d.title}*`);
-    ps.forEach(p => lines.push(`${p.picked?'⭐':'•'} ${p.name}${p.note?' — '+p.note:''}\n  ${safeUrl(p.url)||mapsFor(p.name)}`));
+    ps.forEach(p => {
+      lines.push(`${p.picked?'⭐':'•'} *${p.name}*${p.what?' — '+p.what:''}`);
+      if(p.musttry) lines.push(`  Must-try: ${p.musttry}`);
+      if(p.price)   lines.push(`  Harga: ${p.price}`);
+      if(p.hours)   lines.push(`  Jam: ${p.hours}`);
+      if(p.addr)    lines.push(`  📍 ${p.addr}`);
+      if(p.note)    lines.push(`  ${p.note}`);
+      lines.push(`  ${safeUrl(p.url)||mapsFor(p.name)}`);
+    });
     lines.push('');
   });
   toast(await copy(lines.join('\n').trim()) ? 'Ke-copy, tinggal paste di WA ✓' : 'Gagal copy');
