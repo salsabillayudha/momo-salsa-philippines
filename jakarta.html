@@ -15,7 +15,7 @@
     --lime:#B5E35C;--lime-deep:#5E8C12;--lime-soft:#E6F7C2;
     --purple:#A77BDB;
     --glass:rgba(255,255,255,.42);--glass-2:rgba(255,255,255,.6);--glass-line:rgba(255,255,255,.85);
-    --pill:#28232A;--pill-ink:#FFFFFF;
+    --pill:#28232A;--pill-ink:#FFFFFF;--hair:rgba(36,31,38,.08);
     --shadow:0 12px 40px rgba(232,83,127,.12),0 2px 6px rgba(36,31,38,.04);
     --blob1:#FF7FA8;--blob2:#A9E145;--blob3:#FF9DBD;--blob4:#C3EE72;
   }
@@ -23,7 +23,7 @@
     :root{--ink:#FBEFF3;--muted:#C4B3BD;--paper:#1C1419;
       --pink-deep:#FF9CBC;--lime-deep:#C6F07A;
       --glass:rgba(48,32,42,.55);--glass-2:rgba(60,40,52,.7);--glass-line:rgba(255,255,255,.1);
-      --pill:#FFE3EC;--pill-ink:#241F26;
+      --pill:#FFE3EC;--pill-ink:#241F26;--hair:rgba(255,255,255,.08);
       --shadow:0 12px 40px rgba(0,0,0,.35);
       --blob1:#7A2A48;--blob2:#3F5A17;--blob3:#5A2238;--blob4:#2F4512}
   }
@@ -98,11 +98,13 @@
   .chip.ghost{background:var(--glass-2);color:var(--ink);border:1px solid var(--glass-line)}
   .title{font-weight:700;font-size:clamp(20px,4.4vw,24px);letter-spacing:-.025em;line-height:1.15}
   .blurb{font-size:14px;color:var(--muted);margin-top:12px}
-  .sched{list-style:none;margin-top:16px;display:flex;flex-wrap:wrap;gap:8px}
-  .sched li{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:500;padding:6px 14px 6px 6px;border-radius:20px;background:var(--glass-2);border:1px solid var(--glass-line)}
-  .sched .t{flex-shrink:0;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:100px;background:var(--cs);color:var(--ink)}
-  .sched li.work{opacity:.55}
-  .sched li.work .t{background:transparent;border:1px dashed var(--muted)}
+  /* schedule: a clean two-column list, time left, plan right */
+  .sched{list-style:none;margin-top:16px;border-radius:20px;background:var(--glass-2);border:1px solid var(--glass-line);overflow:hidden}
+  .sched li{display:grid;grid-template-columns:108px 1fr;gap:14px;align-items:baseline;padding:11px 16px;font-size:14.5px;font-weight:500;line-height:1.4}
+  .sched li + li{border-top:1px solid var(--hair)}
+  .sched .t{font-size:12.5px;font-weight:700;color:var(--c);font-variant-numeric:tabular-nums;letter-spacing:.01em}
+  .sched li.work{color:var(--muted);font-weight:400}
+  .sched li.work .t{color:var(--muted)}
   .note{margin-top:14px;display:flex;gap:12px;padding:14px 16px;border-radius:20px;background:var(--glass-2);border:1px solid var(--glass-line);font-size:13.5px}
   .note b{display:block;font-size:14.5px;font-weight:700;letter-spacing:-.01em;margin-bottom:2px}
   .note::before{content:'✦';flex-shrink:0;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--cs);color:var(--c);font-size:14px}
@@ -181,6 +183,8 @@
     .place{padding:10px;gap:10px}
     .place .ico{width:34px;height:34px}
     .row2{grid-template-columns:1fr}
+    .sched li{grid-template-columns:100px 1fr;gap:10px;padding:10px 14px;font-size:14px}
+    .sched .t{font-size:12px}
     .toolbar{grid-template-columns:1fr 1fr}
     .toolbar .btn:not(.solid){padding:10px 12px;font-size:12.5px}
   }
@@ -308,6 +312,13 @@ const SEED = [
     tips:'Couldn’t find hours or prices online. Call or DM ahead to book a lane for ~18.30.' },
 
   /* ---- researched Sep 2026: double-check hours before going ---- */
+  { id:'seed-arang-jinsa', day:'sat3', type:'food', name:'Arang Jinsa Galbi', url:'https://maps.app.goo.gl/HqNfJ6iexSUVRiUr8',
+    what:'All-you-can-eat Korean BBQ, charcoal-grilled (non-halal, pork & beef)',
+    musttry:'Moksal (pork neck), dwaeji galbi, samgyeopsal. Japchae and kimchi from the sides',
+    menu:'AYCE, 90 min: 9 meats, banchan, ice cream, coffee — 168k',
+    price:'Rp168k / person before tax (promos seen at 138k)', hours:'Until 22.00',
+    addr:'Jl. Senopati, Senayan, Kebayoran Baru (close to the hotel)',
+    tips:'90-minute limit, so arrive hungry. Service can be slow on busy nights.', note:'' },
   { id:'seed-kopi-purnama', day:'sun4', type:'coffee', name:'Warung Kopi Purnama Bandung', url:'',
     what:'Legendary old-school coffee house, open since 1930',
     musttry:'Kopi susu, roti srikaya (kaya toast)', price:'Rp10–40k per item', hours:'06.30–22.00 daily',
@@ -385,6 +396,8 @@ function load(){
     // refresh a seeded note you never edited (e.g. after a wording change)
     if(same.note === (same.seedNote ?? LEGACY_NOTES[p.id])) same.note = p.note;
     same.seedNote = p.note;
+    // fill in researched details you haven't typed yourself
+    DKEYS.forEach(k => { if(!same[k] && p[k]) same[k] = p[k]; });
   });
   return list;
 }
