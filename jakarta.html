@@ -554,8 +554,9 @@ const lsSet = (k,v) => { try{ v ? localStorage.setItem(k,v) : localStorage.remov
 function afSetup(){
   let url = AUTOFILL_URL || lsGet(AF_URL);
   if(!url){
-    url = (prompt('Auto-fill isn’t set up yet.\nPaste your Cloudflare Worker URL (see worker/README.md):') || '').trim();
-    if(!/^https:\/\//.test(url)) return null;
+    url = (prompt('Auto-fill isn’t set up yet.\nPaste your Cloudflare Worker URL (see worker/README.md):') || '').trim().replace(/\s+/g,'');
+    if(url && !/^https?:\/\//i.test(url)) url = 'https://' + url;
+    if(!/^https:\/\/[^/]+\.[^/]+/i.test(url)) return null;
     lsSet(AF_URL, url);
   }
   let pass = lsGet(AF_PASS);
@@ -575,8 +576,19 @@ $('#afBtn').onclick = async () => {
   const cfg = afSetup(); if(!cfg){ msg.textContent = 'Auto-fill needs the worker URL and passcode.'; return; }
   btn.disabled = true; btn.textContent = '✨ Searching… (20–40 s)'; msg.textContent = 'Looking it up on the web…';
   try{
-    const res = await fetch(cfg.url, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ name, link, passcode: cfg.pass }) });
-    const out = await res.json().catch(() => ({}));
+    // text/plain keeps this a "simple" request, so the browser skips the CORS preflight
+    const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 90000);
+    let res;
+    try{
+      res = await fetch(cfg.url, { method:'POST', headers:{'Content-Type':'text/plain;charset=UTF-8'}, body: JSON.stringify({ name, link, passcode: cfg.pass }), signal: ctl.signal });
+    }catch(netErr){
+      throw new Error(netErr.name === 'AbortError'
+        ? 'Took too long (90 s). Try again, maybe with the city in the name.'
+        : `Couldn’t reach the auto-fill worker at ${cfg.url}. Open that URL in your browser: it should say “Auto-fill worker is running”. If it doesn’t, fix the worker; if the URL is wrong, tap “Change auto-fill setup”.`);
+    }finally{ clearTimeout(timer); }
+    const isJson = (res.headers.get('content-type')||'').includes('json');
+    const out = isJson ? await res.json().catch(() => ({})) : {};
+    if(!isJson) throw new Error(`That URL answered, but not like the auto-fill worker (HTTP ${res.status}). Make sure worker.js is pasted and deployed there, or tap “Change auto-fill setup”.`);
     if(res.status === 401){ lsSet(AF_PASS,''); throw new Error('Wrong passcode. Tap again to re-enter it.'); }
     if(!res.ok || !out.place) throw new Error(out.error || `Auto-fill failed (${res.status}).`);
     const p = out.place; let filled = 0;

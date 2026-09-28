@@ -42,12 +42,22 @@ Optional:
 
 | Name | Value |
 |---|---|
-| `ALLOWED_ORIGIN` | Only if the page lives somewhere other than `https://salsabillayudha.github.io` |
+| `ALLOWED_ORIGIN` | Optional lock to specific sites, e.g. `https://salsabillayudha.github.io`. Leave it out and any site can call the worker; the passcode still guards it. |
 | `GEMINI_MODEL` | Defaults to `gemini-2.5-flash`. If Google retires that model, put a current free-tier model name here. |
 
 Click **Deploy** again after adding them.
 
-### 4. Connect the page
+### 4. Check it
+Open the worker URL in your browser. You should see:
+
+```
+{"ok":true,"message":"Auto-fill worker is running","GEMINI_API_KEY":"set","PASSCODE":"set",...}
+```
+
+`MISSING` means that secret isn't saved yet (add it and deploy again). "Hello World!" or a
+web page means `worker.js` isn't what's deployed there.
+
+### 5. Connect the page
 Copy the worker URL (looks like `https://momo-autofill.<you>.workers.dev`). Then either:
 
 - **Easiest:** open `jakarta.html`, tap **＋ Add a place → ✨ Auto-fill**, and paste the URL and
@@ -56,6 +66,13 @@ Copy the worker URL (looks like `https://momo-autofill.<you>.workers.dev`). Then
 - **Or** put the URL in `const AUTOFILL_URL = '';` in `jakarta.html`, so only the passcode is asked.
 
 "Change auto-fill setup" under the button clears what that browser remembers.
+
+## Troubleshooting
+- **"Couldn't reach the auto-fill worker"** (Safari used to just say "Load failed"): open the
+  worker URL. If it doesn't show "Auto-fill worker is running", redeploy `worker.js`. If it
+  does, the URL saved in the page is probably off, so tap **Change auto-fill setup** and paste it again.
+- **"…not like the auto-fill worker"**: something else is deployed at that URL.
+- **An error that mentions the model**: set `GEMINI_MODEL` to a current free-tier Gemini model.
 
 ## Notes
 - The passcode keeps strangers who find the page from using up your free quota.

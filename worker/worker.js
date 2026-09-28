@@ -7,11 +7,10 @@
  * Secrets / variables (Cloudflare → your worker → Settings → Variables and Secrets):
  *   GEMINI_API_KEY   secret, from aistudio.google.com
  *   PASSCODE         secret, anything you like; the page asks for it once
- *   ALLOWED_ORIGIN   optional, defaults to https://salsabillayudha.github.io
+ *   ALLOWED_ORIGIN   optional; comma-separated sites allowed to call this (default: any, the passcode guards it)
  *   GEMINI_MODEL     optional, defaults to gemini-2.5-flash
  */
 
-const DEFAULT_ORIGIN = 'https://salsabillayudha.github.io';
 const DEFAULT_MODEL = 'gemini-2.5-flash';
 const TYPES = ['food', 'coffee', 'shop', 'activity', 'night', 'stay', 'other'];
 const FIELDS = ['name', 'type', 'what', 'musttry', 'menu', 'price', 'hours', 'addr', 'tips'];
@@ -19,38 +18,56 @@ const FIELDS = ['name', 'type', 'what', 'musttry', 'menu', 'price', 'hours', 'ad
 export default {
   async fetch(request, env) {
     const origin = request.headers.get('Origin') || '';
-    const allowed = (env.ALLOWED_ORIGIN || DEFAULT_ORIGIN).split(',').map(s => s.trim());
+    const allowed = String(env.ALLOWED_ORIGIN || '').split(',').map(s => s.trim()).filter(Boolean);
     const cors = {
-      'Access-Control-Allow-Origin': allowed.includes(origin) ? origin : allowed[0],
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Origin': !allowed.length ? '*' : (allowed.includes(origin) ? origin : allowed[0]),
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
       'Vary': 'Origin',
     };
-    const reply = (body, status = 200) =>
-      new Response(JSON.stringify(body), { status, headers: { ...cors, 'Content-Type': 'application/json' } });
+    const reply = (body, status = 200) => body === null
+      ? new Response(null, { status, headers: cors })
+      : new Response(JSON.stringify(body), { status, headers: { ...cors, 'Content-Type': 'application/json' } });
 
-    if (request.method === 'OPTIONS') return new Response(null, { headers: cors });
-    if (request.method !== 'POST') return reply({ error: 'POST only' }, 405);
-    if (!env.GEMINI_API_KEY || !env.PASSCODE) return reply({ error: 'Worker is missing GEMINI_API_KEY or PASSCODE.' }, 500);
-
-    let input;
-    try { input = await request.json(); } catch { return reply({ error: 'Bad JSON' }, 400); }
-    if (String(input.passcode || '') !== env.PASSCODE) return reply({ error: 'Wrong passcode' }, 401);
-
-    let name = String(input.name || '').trim().slice(0, 200);
-    const link = String(input.link || '').trim().slice(0, 500);
-    const city = String(input.city || 'Jakarta or Bandung, Indonesia').slice(0, 100);
-
-    // Expand a Google Maps link to get the place name out of it.
-    let mapsUrl = '';
-    if (/^https?:\/\/(maps\.app\.goo\.gl|goo\.gl\/maps|(www\.)?google\.[a-z.]+\/maps)/i.test(link)) {
-      mapsUrl = await expand(link);
-      const fromUrl = placeFromMapsUrl(mapsUrl);
-      if (!name && fromUrl) name = fromUrl;
+    // Any crash still answers with CORS headers, so the page can show the real error.
+    try {
+      return await handle(request, env, reply);
+    } catch (e) {
+      return reply({ error: 'Worker error: ' + (e && e.message || e) }, 500);
     }
-    if (!name && !link) return reply({ error: 'Give me a place name or a link.' }, 400);
+  },
+};
 
-    const prompt = `Look up this place with Google Search and describe it for a couple planning a trip.
+async function handle(request, env, reply) {
+  if (request.method === 'OPTIONS') return reply(null, 204);
+  // Open the worker URL in a browser to check the setup.
+  if (request.method === 'GET') return reply({
+    ok: true, message: 'Auto-fill worker is running',
+    GEMINI_API_KEY: env.GEMINI_API_KEY ? 'set' : 'MISSING', PASSCODE: env.PASSCODE ? 'set' : 'MISSING',
+    model: env.GEMINI_MODEL || DEFAULT_MODEL,
+  });
+  if (request.method !== 'POST') return reply({ error: 'POST only' }, 405);
+  if (!env.GEMINI_API_KEY || !env.PASSCODE) return reply({ error: 'Worker is missing GEMINI_API_KEY or PASSCODE. Add them under Settings → Variables and Secrets, then deploy.' }, 500);
+
+  // The page sends JSON as text/plain so the browser skips the CORS preflight.
+  let input;
+  try { input = JSON.parse(await request.text()); } catch { return reply({ error: 'Bad JSON' }, 400); }
+  if (String(input.passcode || '') !== env.PASSCODE) return reply({ error: 'Wrong passcode' }, 401);
+
+  let name = String(input.name || '').trim().slice(0, 200);
+  const link = String(input.link || '').trim().slice(0, 500);
+  const city = String(input.city || 'Jakarta or Bandung, Indonesia').slice(0, 100);
+
+  // Expand a Google Maps link to get the place name out of it.
+  let mapsUrl = '';
+  if (/^https?:\/\/(maps\.app\.goo\.gl|goo\.gl\/maps|(www\.)?google\.[a-z.]+\/maps)/i.test(link)) {
+    mapsUrl = await expand(link);
+    const fromUrl = placeFromMapsUrl(mapsUrl);
+    if (!name && fromUrl) name = fromUrl;
+  }
+  if (!name && !link) return reply({ error: 'Give me a place name or a link.' }, 400);
+
+  const prompt = `Look up this place with Google Search and describe it for a couple planning a trip.
 
 Place: ${name || '(unknown name)'}
 Link they have: ${link || '(none)'}${mapsUrl && mapsUrl !== link ? `\nExpanded Maps link: ${mapsUrl}` : ''}
@@ -69,42 +86,41 @@ Reply with ONLY one JSON object, no markdown fences, with exactly these string k
 
 Rules: English only. Use only what the search results support; if you can't find something, use "" for it. Never invent prices, hours or menu items. Prices in Indonesian rupiah written like 45k.`;
 
-    const model = env.GEMINI_MODEL || DEFAULT_MODEL;
-    let data;
-    try {
-      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': env.GEMINI_API_KEY },
-        body: JSON.stringify({
-          contents: [{ role: 'user', parts: [{ text: prompt }] }],
-          tools: [{ google_search: {} }],
-          generationConfig: { temperature: 0.2 },
-        }),
-      });
-      data = await res.json();
-      if (!res.ok) {
-        const msg = data?.error?.message || `Gemini error ${res.status}`;
-        return reply({ error: res.status === 429 ? 'Free quota used up for now. Try again later.' : msg }, 502);
-      }
-    } catch (e) {
-      return reply({ error: 'Could not reach Gemini: ' + e.message }, 502);
+  const model = env.GEMINI_MODEL || DEFAULT_MODEL;
+  let data;
+  try {
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': env.GEMINI_API_KEY },
+      body: JSON.stringify({
+        contents: [{ role: 'user', parts: [{ text: prompt }] }],
+        tools: [{ google_search: {} }],
+        generationConfig: { temperature: 0.2 },
+      }),
+    });
+    data = await res.json();
+    if (!res.ok) {
+      const msg = data?.error?.message || `Gemini error ${res.status}`;
+      return reply({ error: res.status === 429 ? 'Free quota used up for now. Try again later.' : msg }, 502);
     }
+  } catch (e) {
+    return reply({ error: 'Could not reach Gemini: ' + e.message }, 502);
+  }
 
-    const cand = data?.candidates?.[0];
-    const text = (cand?.content?.parts || []).map(p => p.text || '').join('');
-    const place = parsePlace(text);
-    if (!place) return reply({ error: 'Couldn’t read the result. Try adding the city to the name.' }, 502);
-    if (mapsUrl && !place.url) place.url = link;
+  const cand = data?.candidates?.[0];
+  const text = (cand?.content?.parts || []).map(p => p.text || '').join('');
+  const place = parsePlace(text);
+  if (!place) return reply({ error: 'Couldn’t read the result. Try adding the city to the name.' }, 502);
+  if (mapsUrl && !place.url) place.url = link;
 
-    const sources = (cand?.groundingMetadata?.groundingChunks || [])
-      .map(c => c.web).filter(Boolean)
-      .map(w => ({ title: String(w.title || '').slice(0, 120), uri: String(w.uri || '') }))
-      .filter(s => /^https?:\/\//.test(s.uri))
-      .slice(0, 5);
+  const sources = (cand?.groundingMetadata?.groundingChunks || [])
+    .map(c => c.web).filter(Boolean)
+    .map(w => ({ title: String(w.title || '').slice(0, 120), uri: String(w.uri || '') }))
+    .filter(s => /^https?:\/\//.test(s.uri))
+    .slice(0, 5);
 
-    return reply({ place, sources });
-  },
-};
+  return reply({ place, sources });
+}
 
 /* Follow redirects by hand (max 5) and return the final URL. */
 async function expand(url) {
@@ -114,7 +130,7 @@ async function expand(url) {
     try { res = await fetch(current, { method: 'GET', redirect: 'manual' }); } catch { break; }
     const next = res.headers.get('Location');
     if (!(res.status >= 300 && res.status < 400) || !next) break;
-    current = new URL(next, current).href;
+    try { current = new URL(next, current).href; } catch { break; }
   }
   return current;
 }
