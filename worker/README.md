@@ -49,7 +49,7 @@ Optional:
 | Name | Value |
 |---|---|
 | `ALLOWED_ORIGIN` | Optional lock to specific sites, e.g. `https://salsabillayudha.github.io`. Leave it out and any site can call the worker; the passcode still guards it. |
-| `GEMINI_MODEL` | Defaults to `gemini-2.5-flash`. If Google retires that model, put a current free-tier model name here. |
+| `GEMINI_MODEL` | Defaults to `gemini-3.8-flash`. If Google retires that model, put a current free-tier model name here. |
 
 Click **Deploy** again after adding them.
 
