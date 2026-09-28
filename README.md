@@ -16,7 +16,7 @@ so it works locally and on GitHub Pages with no build step.
 
 ## `jakarta.html` — Momo's Jakarta week (3–10 Oct 2026)
 
-A playful, phone-first itinerary for Momo's visit: countdown to landing, a day-by-day plan
+A scrapbook-style, phone-first itinerary for Momo's visit: countdown to landing, a day-by-day plan
 (arrival, padel → Whoosh to Bandung, the weeknight dates, the slow goodbye), and today's
 card highlighted during the trip.
 
