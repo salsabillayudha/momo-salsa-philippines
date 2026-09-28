@@ -6,5 +6,7 @@
   "name": "momo-salsa-philippines",
   "main": "worker/worker.js",
   "compatibility_date": "2026-09-01",
-  "workers_dev": true
+  "workers_dev": true,
+  // keep variables set in the dashboard (e.g. GEMINI_MODEL) when a merge redeploys
+  "keep_vars": true
 }

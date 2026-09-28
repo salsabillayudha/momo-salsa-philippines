@@ -8,10 +8,10 @@
  *   GEMINI_API_KEY   secret, from aistudio.google.com
  *   PASSCODE         secret, anything you like; the page asks for it once
  *   ALLOWED_ORIGIN   optional; comma-separated sites allowed to call this (default: any, the passcode guards it)
- *   GEMINI_MODEL     optional, defaults to gemini-2.5-flash
+ *   GEMINI_MODEL     optional, defaults to gemini-3.8-flash
  */
 
-const DEFAULT_MODEL = 'gemini-2.5-flash';
+const DEFAULT_MODEL = 'gemini-3.8-flash';
 const TYPES = ['food', 'coffee', 'shop', 'activity', 'night', 'stay', 'other'];
 const FIELDS = ['name', 'type', 'what', 'musttry', 'menu', 'price', 'hours', 'addr', 'tips'];
 
