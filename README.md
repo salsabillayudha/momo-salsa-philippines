@@ -14,6 +14,20 @@ Built as a single `index.html`. The only external things it loads are Google Fon
 Leaflet, OpenStreetMap tiles, and the destination photos — all free, all over HTTPS,
 so it works locally and on GitHub Pages with no build step.
 
+## `jakarta.html` — Momo's Jakarta week (3–10 Oct 2026)
+
+Day-by-day itinerary for Momo's visit: arrival, padel → Whoosh to Bandung, the
+weeknight dates (grocery night, archery, dogs + books, spa, the big Friday), and
+the slow goodbye. Countdown to landing, sticky day nav, and today's card is
+highlighted during the trip.
+
+Every day has a **Places & links** list: add a recommendation with a link
+(Maps, Instagram, website), a note, and a type; ☆ marks the one you picked.
+Places without a day go in the **Ideas bucket**. No link? The name opens a
+Google Maps search. Everything saves in the browser; **Copy share link** packs
+the whole list into the URL so the other person can merge it in, **Copy buat
+WhatsApp** gives a pasteable summary, and Export / Import move a JSON file.
+
 ## `chat.html` — the conversation reader
 
 A second page that turns a WhatsApp chat export back into a conversation you can

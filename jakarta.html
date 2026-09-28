@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MOMO ✕ SALSA — Jakarta, Oct 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* Patrick palette: pink body, lime shorts, a dash of flower purple */
+  :root{
+    --ink:#241F26;--muted:#6E6570;--paper:#FFF4F6;
+    --pink:#FF8FB1;--pink-deep:#E8537F;--pink-soft:#FFD6E2;
+    --lime:#B5E35C;--lime-deep:#5E8C12;--lime-soft:#E6F7C2;
+    --purple:#A77BDB;
+    --glass:rgba(255,255,255,.42);--glass-2:rgba(255,255,255,.6);--glass-line:rgba(255,255,255,.85);
+    --pill:#28232A;--pill-ink:#FFFFFF;
+    --shadow:0 12px 40px rgba(232,83,127,.12),0 2px 6px rgba(36,31,38,.04);
+    --blob1:#FF7FA8;--blob2:#A9E145;--blob3:#FF9DBD;--blob4:#C3EE72;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--ink:#FBEFF3;--muted:#C4B3BD;--paper:#1C1419;
+      --pink-deep:#FF9CBC;--lime-deep:#C6F07A;
+      --glass:rgba(48,32,42,.55);--glass-2:rgba(60,40,52,.7);--glass-line:rgba(255,255,255,.1);
+      --pill:#FFE3EC;--pill-ink:#241F26;
+      --shadow:0 12px 40px rgba(0,0,0,.35);
+      --blob1:#7A2A48;--blob2:#3F5A17;--blob3:#5A2238;--blob4:#2F4512}
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--ink);font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:15.5px;line-height:1.55;-webkit-font-smoothing:antialiased;min-height:100vh;overflow-x:hidden}
+  /* dreamy blurred gradient blobs behind everything */
+  body::before{content:'';position:fixed;inset:-20vmax;z-index:-1;pointer-events:none;
+    background:
+      radial-gradient(38vmax 34vmax at 18% 12%,var(--blob1),transparent 62%),
+      radial-gradient(34vmax 30vmax at 88% 30%,var(--blob2),transparent 62%),
+      radial-gradient(40vmax 34vmax at 30% 70%,var(--blob4),transparent 60%),
+      radial-gradient(36vmax 30vmax at 85% 88%,var(--blob3),transparent 62%);
+    filter:blur(30px)}
+  .wrap{max-width:720px;margin:0 auto;padding:0 16px}
+  a{color:inherit}
+  button{font:inherit;color:inherit;cursor:pointer}
+
+  /* glass surface */
+  .glass,.card,.cd,.daynav a,.btn:not(.solid),dialog{background:var(--glass);backdrop-filter:blur(22px) saturate(1.4);-webkit-backdrop-filter:blur(22px) saturate(1.4);border:1px solid var(--glass-line);box-shadow:var(--shadow)}
+
+  /* HERO */
+  .hero{padding:28px 0 18px}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:34px}
+  .loc{display:inline-flex;align-items:center;gap:8px;padding:8px 14px 8px 8px;border-radius:100px;font-size:13px;font-weight:600}
+  .loc i{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--glass-2);font-style:normal}
+  .duo{display:flex}
+  .duo span{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-size:19px;border:2px solid var(--glass-line)}
+  .duo span:first-child{background:linear-gradient(135deg,var(--pink),var(--pink-soft))}
+  .duo span:last-child{background:linear-gradient(135deg,var(--lime),var(--lime-soft));margin-left:-10px}
+  .eyebrow{font-size:13.5px;font-weight:500;color:var(--muted);margin-bottom:6px}
+  .hero h1{font-weight:700;font-size:clamp(34px,8vw,54px);line-height:1.05;letter-spacing:-.035em}
+  .hero h1 .x{background:linear-gradient(90deg,var(--pink-deep),var(--lime-deep));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p{margin-top:12px;max-width:52ch;color:var(--muted)}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+  .meta div{padding:7px 14px;border-radius:100px;font-size:13px;font-weight:600;background:var(--glass);border:1px solid var(--glass-line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+  .meta div span{color:var(--muted);font-weight:500;margin-right:4px}
+  .cd{margin-top:22px;display:flex;gap:22px;align-items:flex-end;padding:20px 22px;border-radius:28px;flex-wrap:wrap}
+  .cd .lbl{width:100%;font-size:18px;font-weight:600;letter-spacing:-.01em}
+  .cd .lbl em{display:block;font-style:normal;font-size:13px;font-weight:500;color:var(--muted);letter-spacing:0}
+  .cd b{font-size:clamp(34px,8vw,46px);font-weight:700;line-height:1;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+  .cd small{font-size:12px;font-weight:600;color:var(--muted);margin-left:4px}
+
+  /* DAY NAV */
+  .daynav{position:sticky;top:0;z-index:5;padding:10px 0}
+  .daynav .wrap{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}
+  .daynav .wrap::-webkit-scrollbar{display:none}
+  .daynav a{flex-shrink:0;text-decoration:none;font-size:13px;font-weight:600;padding:9px 15px;border-radius:100px;white-space:nowrap;box-shadow:0 4px 14px rgba(232,83,127,.10)}
+  .daynav a.today{background:var(--pill);color:var(--pill-ink);border-color:var(--pill)}
+
+  /* BUTTONS */
+  .toolbar{display:grid;grid-template-columns:repeat(4,auto);justify-content:start;gap:8px;margin:18px 0 10px}
+  .toolbar .cta{grid-column:1/-1}
+  .btn{border-radius:100px;padding:10px 16px;font-size:13.5px;font-weight:600;transition:transform .15s}
+  .btn:active{transform:scale(.97)}
+  .btn.solid{background:var(--pill);color:var(--pill-ink);border:1px solid var(--pill);box-shadow:0 8px 22px rgba(36,31,38,.22)}
+  .btn.cta{width:100%;padding:15px;font-size:15px}
+  .btn.small{padding:7px 13px;font-size:12.5px}
+  .hint{font-size:13px;color:var(--muted);max-width:60ch}
+
+  /* DAY CARDS */
+  .timeline{padding:12px 0 8px;display:grid;gap:18px}
+  .day{scroll-margin-top:72px;--c:var(--pink-deep);--cs:var(--pink-soft)}
+  .day.lime{--c:var(--lime-deep);--cs:var(--lime-soft)}
+  .card{border-radius:30px;padding:20px}
+  .day.is-today .card{outline:2px solid var(--c);outline-offset:3px}
+  .top{display:flex;align-items:center;gap:12px}
+  .badge{width:48px;height:48px;border-radius:50%;flex-shrink:0;display:grid;place-items:center;font-size:22px;background:linear-gradient(140deg,var(--pink) 0%,var(--pink-soft) 48%,var(--lime) 100%);box-shadow:inset 0 0 0 2px rgba(255,255,255,.7)}
+  .day.lime .badge{background:linear-gradient(140deg,var(--lime) 0%,var(--lime-soft) 48%,var(--pink) 100%)}
+  .date{font-size:12.5px;font-weight:600;color:var(--muted);display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+  .chip{font-size:11px;font-weight:700;padding:3px 10px;border-radius:100px;background:var(--pill);color:var(--pill-ink);letter-spacing:.02em}
+  .chip.ghost{background:var(--glass-2);color:var(--ink);border:1px solid var(--glass-line)}
+  .title{font-weight:700;font-size:clamp(20px,4.4vw,24px);letter-spacing:-.025em;line-height:1.15}
+  .blurb{font-size:14px;color:var(--muted);margin-top:12px}
+  .sched{list-style:none;margin-top:16px;display:flex;flex-wrap:wrap;gap:8px}
+  .sched li{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:500;padding:6px 14px 6px 6px;border-radius:20px;background:var(--glass-2);border:1px solid var(--glass-line)}
+  .sched .t{flex-shrink:0;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:100px;background:var(--cs);color:var(--ink)}
+  .sched li.work{opacity:.55}
+  .sched li.work .t{background:transparent;border:1px dashed var(--muted)}
+  .note{margin-top:14px;display:flex;gap:12px;padding:14px 16px;border-radius:20px;background:var(--glass-2);border:1px solid var(--glass-line);font-size:13.5px}
+  .note b{display:block;font-size:14.5px;font-weight:700;letter-spacing:-.01em;margin-bottom:2px}
+  .note::before{content:'✦';flex-shrink:0;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--cs);color:var(--c);font-size:14px}
+
+  /* PLACES */
+  .places{margin-top:16px;padding:14px;border-radius:24px;background:rgba(255,255,255,.28);border:1px solid var(--glass-line)}
+  @media (prefers-color-scheme:dark){.places{background:rgba(255,255,255,.04)}}
+  .places-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;padding-left:4px}
+  .places-head h4{font-size:15px;font-weight:700;letter-spacing:-.01em}
+  .plist{display:grid;gap:8px}
+  .place{display:flex;gap:12px;align-items:center;padding:12px;border-radius:20px;background:var(--glass-2);border:1px solid var(--glass-line)}
+  .place.picked{box-shadow:inset 0 0 0 1.5px var(--c)}
+  .place .ico{width:40px;height:40px;flex-shrink:0;border-radius:50%;display:grid;place-items:center;font-size:17px;background:var(--cs)}
+  .place .body{flex:1;min-width:0}
+  .place .src{font-size:11.5px;font-weight:500;color:var(--muted)}
+  .place .name{font-weight:700;font-size:14.5px;letter-spacing:-.01em;word-break:break-word}
+  .place .name a{text-decoration:none}
+  .place .pnote{font-size:12.5px;color:var(--muted);white-space:pre-wrap;word-break:break-word;margin-top:2px}
+  .place .acts{display:flex;align-items:center;gap:0;flex-shrink:0}
+  .icon-btn{border:0;background:transparent;width:30px;height:30px;border-radius:50%;font-size:14px;opacity:.5}
+  .icon-btn:hover{opacity:1;background:var(--glass)}
+  .icon-btn.on{opacity:1}
+  .go{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--pill);color:var(--pill-ink);text-decoration:none;font-size:16px;margin-left:4px;flex-shrink:0}
+  .empty{font-size:13px;color:var(--muted);padding:4px}
+
+  .bucket{margin:30px 0 36px}
+  .sec-h{font-weight:700;font-size:clamp(22px,4.4vw,26px);letter-spacing:-.025em;margin-bottom:4px}
+
+  /* DIALOG */
+  dialog{margin:auto;border-radius:30px;padding:0;color:var(--ink);width:min(460px,calc(100vw - 32px));background:var(--glass-2)}
+  dialog::backdrop{background:rgba(60,20,40,.28);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+  form.f{padding:22px;display:grid;gap:12px}
+  form.f h3{font-weight:700;font-size:22px;letter-spacing:-.025em}
+  label{display:grid;gap:5px;font-size:12.5px;font-weight:600;color:var(--muted)}
+  input,select,textarea{font:inherit;font-size:15px;color:var(--ink);background:var(--glass-2);border:1px solid var(--glass-line);border-radius:16px;padding:11px 14px;width:100%}
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--pink);outline-offset:0}
+  textarea{resize:vertical;min-height:70px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .f-acts{display:flex;justify-content:flex-end;gap:8px;margin-top:4px}
+  .err{color:var(--pink-deep);font-size:12.5px;font-weight:600;min-height:1em}
+
+  /* BANNER + TOAST */
+  .banner{display:none;margin-top:16px;padding:14px 16px;border-radius:22px;background:var(--pill);color:var(--pill-ink);font-size:14px;font-weight:500}
+  .banner.show{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .banner .btn{background:transparent;border:1px solid currentColor;box-shadow:none;backdrop-filter:none}
+  .banner .btn:first-of-type{background:var(--lime);color:#241F26;border-color:var(--lime)}
+  .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:var(--pill);color:var(--pill-ink);padding:11px 18px;border-radius:100px;font-size:13px;font-weight:600;opacity:0;transition:.25s;pointer-events:none;z-index:20;max-width:calc(100vw - 32px);text-align:center}
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+
+  footer{padding:20px 0 44px;text-align:center;font-size:12.5px;color:var(--muted)}
+  footer a{color:var(--pink-deep);font-weight:600}
+
+  @media(max-width:520px){
+    .card{padding:16px;border-radius:26px}
+    .places{padding:10px}
+    .place{padding:10px;gap:10px}
+    .place .ico{width:34px;height:34px}
+    .row2{grid-template-columns:1fr}
+    .toolbar{grid-template-columns:1fr 1fr}
+    .toolbar .btn:not(.solid){padding:10px 12px;font-size:12.5px}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="topbar">
+      <span class="loc glass"><i>📍</i>Jakarta · Bandung</span>
+      <span class="duo" aria-hidden="true"><span>🩷</span><span>💚</span></span>
+    </div>
+    <div class="eyebrow">3 – 10 Oct 2026</div>
+    <h1>Momo <span class="x">✕</span> Salsa,<br>Jakarta week</h1>
+    <p>Workdays di siang hari, dates di malam hari. Padel, Whoosh, boots, arrows, dogs, books, spa, and one very loud Friday.</p>
+    <div class="meta">
+      <div><span>🏨</span>The Dharmawangsa</div>
+      <div><span>🌙</span>7 nights</div>
+      <div><span>🚄</span>Bandung by Whoosh</div>
+    </div>
+    <div class="cd" id="cd" aria-live="polite"></div>
+    <div class="banner" id="banner"></div>
+    <div class="toolbar">
+      <button class="btn solid cta" data-add="">＋ Tambah tempat</button>
+      <button class="btn" id="share">🔗 Copy share link</button>
+      <button class="btn" id="wa">💬 Copy ke WA</button>
+      <button class="btn" id="export">⬇ Export</button>
+      <button class="btn" id="importBtn">⬆ Import</button>
+      <input type="file" id="importFile" accept="application/json,.json" hidden>
+    </div>
+    <p class="hint">Tempat &amp; link yang kamu tambahin kesimpen di browser ini. Mau Momo lihat juga? Pakai <b>Copy share link</b> — linknya bawa semua tempat, dan pas dibuka bisa langsung digabung.</p>
+  </div>
+</header>
+
+<nav class="daynav" aria-label="Days"><div class="wrap" id="daynav"></div></nav>
+
+<main class="wrap">
+  <div class="timeline" id="timeline"></div>
+
+  <section class="bucket">
+    <h2 class="sec-h">💡 Ideas bucket</h2>
+    <p class="hint" style="margin-bottom:14px">Tempat yang belum ada harinya. Nanti tinggal ✎ edit dan pindahin ke hari yang pas.</p>
+    <div class="card"><div class="places" style="margin:0" data-slot="ideas"></div></div>
+  </section>
+</main>
+
+<footer>
+  <p>MOMO ✕ SALSA · JAKARTA · 3 – 10 OCT 2026 · <a href="index.html">next up: Philippines →</a></p>
+</footer>
+
+<dialog id="dlg">
+  <form class="f" id="form" method="dialog">
+    <h3 id="formTitle">Tambah tempat</h3>
+    <label>Nama tempat<input name="name" placeholder="mis. Kopi Nako Braga" autocomplete="off"></label>
+    <label>Link (Maps / IG / website)<input name="url" type="text" inputmode="url" placeholder="https://maps.app.goo.gl/…" autocomplete="off"></label>
+    <div class="row2">
+      <label>Hari<select name="day" id="daySelect"></select></label>
+      <label>Jenis<select name="type" id="typeSelect"></select></label>
+    </div>
+    <label>Catatan<textarea name="note" placeholder="jam buka, harus reservasi, menu andalan, dress code…"></textarea></label>
+    <div class="err" id="err"></div>
+    <div class="f-acts">
+      <button type="button" class="btn" id="cancel">Batal</button>
+      <button type="submit" class="btn solid" id="save">Simpan</button>
+    </div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   THE PLAN — edit here if the schedule changes.
+   ============================================================ */
+const ARRIVAL = '2026-10-03T13:00:00+07:00';
+const DEPART  = '2026-10-10T18:00:00+07:00';
+
+const DAYS = [
+  { id:'sat3', date:'2026-10-03', label:'Sat, 3 Oct', short:'Sat 3', emoji:'✈️', title:'Momo arrives',
+    blurb:'Landing, hotel, reunion. Nothing else is required of anyone today.',
+    items:[['13.00','Landing ✈️'],['After','Dharmawangsa check-in'],['Afternoon','Shower + nap + reunion'],['Evening','Dinner santai'],['Night','Hotel night']] },
+  { id:'sun4', date:'2026-10-04', label:'Sun, 4 Oct', short:'Sun 4', emoji:'🚄', title:'Padel → Bandung', chips:['WHOOSH'],
+    blurb:'Sporty Jakarta morning → Whoosh → cool Bandung afternoon → shopping → food → train home.',
+    items:[['08.30','Breakfast'],['10.00–12.00','🎾 Padel with your friend (tentative)'],['12.00–13.00','Lunch'],['13.00-ish','Berangkat ke stasiun'],['±14.30','Whoosh → Bandung'],['16.00','☕ Coffee'],['17.00–19.00','🧥 Momo’s leather boots + local handmade shopping'],['19.00–20.30','Bandung dinner'],['±20.30/21.00','Whoosh balik'],['±22.30','Dharmawangsa. KO.']],
+    note:['Tennis?','Drop tennis kalau padel jadi. Kalau padel batal → tennis di Dharmawangsa jadi backup Minggu pagi, dan plan Bandung tetap sama persis.'] },
+  { id:'mon5', date:'2026-10-05', label:'Mon, 5 Oct', short:'Mon 5', emoji:'🛒', title:'Domestic night',
+    items:[['Day','You work · Momo bebas santai / pool / hotel',1],['After work','🛒 Grocery run'],['Dinner','Dinner di kamar'],['Night','Movie / ngobrol / cuddling'],['Late','Early night']] },
+  { id:'tue6', date:'2026-10-06', label:'Tue, 6 Oct', short:'Tue 6', emoji:'🏹', title:'Archery + casual date',
+    blurb:'Not a whole “activity day”. Just “we finished work and went shooting arrows together.”',
+    items:[['Day','You work',1],['18.30-ish','→ RR Archery Radio Dalam'],['60–90 min','🏹 Archery'],['Dinner','Around Radio Dalam / Cipete'],['After','Dessert / coffee'],['Night','Home']] },
+  { id:'wed7', date:'2026-10-07', label:'Wed, 7 Oct', short:'Wed 7', emoji:'🐕', title:'Dogs + books',
+    items:[['Day','You work',1],['After work','🐕 Dog-friendly café / dog community activity'],['Dinner','Casual dinner'],['Ritual','📚 Seats at the Library — each picks a book for the other'],['Night','Hotel']] },
+  { id:'thu8', date:'2026-10-08', label:'Thu, 8 Oct', short:'Thu 8', emoji:'🧖🏻‍♀️', title:'Spa night', chips:['RECOVERY'],
+    blurb:'Exists specifically to undo the consequences of padel + archery.',
+    items:[['Day','You work',1],['Evening','🧖🏻‍♀️ Couples spa, ideally 90–120 min'],['After','Nice dinner'],['Night','Hotel · no club, no ambitious activity']] },
+  { id:'fri9', date:'2026-10-09', label:'Fri, 9 Oct', short:'Fri 9', emoji:'🪩', title:'Big date night', chips:['DRESS UP'],
+    items:[['Day','You work',1],['Early eve','Back to hotel, dress up'],['Dinner','Dinner'],['Then','🚌 Double-decker dinner bus'],['Late','🪩 Nightlife / club / live music / creative event'],['Very late','Go home when your souls have left your bodies']] },
+  { id:'sat10', date:'2026-10-10', label:'Sat, 10 Oct', short:'Sat 10', emoji:'👋', title:'Slow goodbye',
+    items:[['Morning','Breakfast'],['Late morning','Pool / lounge'],['Midday','Final lunch'],['After','Pack'],['Later','Airport ✈️']] },
+];
+
+const TYPES = { food:'🍽️ Makan', coffee:'☕ Coffee / dessert', shop:'🛍️ Shopping', activity:'🎯 Activity', night:'🪩 Nightlife', stay:'🏨 Hotel / transport', other:'📍 Lainnya' };
+const ICON = t => (TYPES[t]||TYPES.other).split(' ')[0];
+
+const SEED = [
+  { day:'sat3', type:'stay', name:'The Dharmawangsa Jakarta', url:'', note:'Home base all week.' },
+  { day:'sun4', type:'stay', name:'Stasiun Whoosh Halim', url:'', note:'Beli tiket di app Whoosh. Ke pusat kota Bandung biasanya turun Padalarang → KA feeder ke Stasiun Bandung.' },
+  { day:'tue6', type:'activity', name:'RR Archery Radio Dalam', url:'', note:'' },
+];
+
+/* ============================================================
+   STORAGE
+   ============================================================ */
+const KEY = 'momo-salsa-jkt-places-v1';
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+function load(){
+  try{ const raw = localStorage.getItem(KEY); if(raw) return JSON.parse(raw); }catch(e){}
+  return SEED.map(p => ({ ...p, id:uid(), picked:false, t:Date.now() }));
+}
+let places = load();
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(places)); }catch(e){} }
+save();
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+const $ = (s, r=document) => r.querySelector(s);
+const el = (tag, {dataset, style, ...props}={}, ...kids) => { const n = document.createElement(tag); Object.assign(n, props); if(dataset) Object.assign(n.dataset, dataset); if(style) n.style.cssText = style; kids.flat().forEach(k => k!=null && k!==false && k!=='' && n.append(k)); return n; };
+function safeUrl(u){
+  if(!u) return '';
+  u = u.trim();
+  if(!/^[a-z]+:/i.test(u)) u = 'https://' + u;
+  try{ const x = new URL(u); return /^https?:$/.test(x.protocol) ? x.href : ''; }catch(e){ return ''; }
+}
+const mapsFor = name => 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(name);
+const host = u => { try{ return new URL(u).hostname.replace(/^www\./,''); }catch(e){ return ''; } };
+function toast(msg){ const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toast.h); toast.h = setTimeout(()=>t.classList.remove('show'), 2200); }
+async function copy(text){
+  try{ await navigator.clipboard.writeText(text); return true; }
+  catch(e){ const ta = el('textarea',{value:text}); document.body.append(ta); ta.select(); const ok = document.execCommand('copy'); ta.remove(); return ok; }
+}
+const todayISO = () => new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Jakarta'});
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+function renderDays(){
+  const today = todayISO();
+  const nav = $('#daynav'), tl = $('#timeline');
+  nav.replaceChildren(); tl.replaceChildren();
+  DAYS.forEach((d, i) => {
+    const isToday = d.date === today;
+    nav.append(el('a',{href:'#'+d.id, className:isToday?'today':'', textContent:d.emoji+' '+d.short}));
+    const card = el('div',{className:'card'},
+      el('div',{className:'top'},
+        el('span',{className:'badge',textContent:d.emoji}),
+        el('div',{},
+          el('div',{className:'date'}, d.label,
+            isToday && el('span',{className:'chip',textContent:'TODAY'}),
+            (d.chips||[]).map(c => el('span',{className:'chip ghost',textContent:c}))),
+          el('h3',{className:'title',textContent:d.title}))),
+      d.blurb && el('p',{className:'blurb',textContent:d.blurb}),
+      el('ul',{className:'sched'}, d.items.map(([t,x,w]) => el('li',{className:w?'work':''}, el('span',{className:'t',textContent:t}), el('span',{textContent:x})))),
+      d.note && el('div',{className:'note'}, el('div',{}, el('b',{textContent:d.note[0]}), d.note[1])),
+      el('div',{className:'places'},
+        el('div',{className:'places-head'}, el('h4',{textContent:'Places & links'}), el('button',{className:'btn small',textContent:'＋ Tambah',onclick:()=>openForm({day:d.id})})),
+        el('div',{className:'plist', dataset:{slot:d.id}})));
+    const sec = el('article',{className:'day'+(i%2?' lime':'')+(isToday?' is-today':''), id:d.id}, card);
+    tl.append(sec);
+  });
+  const ideas = $('[data-slot="ideas"]');
+  ideas.replaceChildren(
+    el('div',{className:'places-head'}, el('h4',{textContent:'Belum ada hari'}), el('button',{className:'btn small',textContent:'＋ Tambah',onclick:()=>openForm({day:''})})),
+    el('div',{className:'plist', dataset:{slot:''}}));
+}
+
+function renderPlaces(){
+  document.querySelectorAll('.plist').forEach(list => {
+    const slot = list.dataset.slot;
+    const mine = places.filter(p => (DAYS.some(d=>d.id===p.day) ? p.day : '') === slot)
+                       .sort((a,b) => (b.picked-a.picked) || (a.t-b.t));
+    list.replaceChildren();
+    if(!mine.length){ list.append(el('p',{className:'empty',textContent:'Belum ada. Tambahin rekomendasi tempat + link di sini.'})); return; }
+    mine.forEach(p => {
+      const url = safeUrl(p.url) || mapsFor(p.name);
+      list.append(el('div',{className:'place'+(p.picked?' picked':'')},
+        el('span',{className:'ico',textContent:ICON(p.type)}),
+        el('div',{className:'body'},
+          el('div',{className:'src',textContent: (p.picked?'⭐ Picked · ':'') + (safeUrl(p.url) ? host(p.url) : 'Google Maps')}),
+          el('div',{className:'name'}, el('a',{href:url,target:'_blank',rel:'noopener noreferrer',textContent:p.name})),
+          p.note && el('div',{className:'pnote',textContent:p.note})),
+        el('div',{className:'acts'},
+          el('button',{className:'icon-btn'+(p.picked?' on':''),title:p.picked?'Batal pilih':'Pilih ini',textContent:p.picked?'⭐':'☆',onclick:()=>{p.picked=!p.picked;save();renderPlaces();}}),
+          el('button',{className:'icon-btn',title:'Edit',textContent:'✎',onclick:()=>openForm(p)}),
+          el('button',{className:'icon-btn',title:'Hapus',textContent:'🗑',onclick:()=>{ if(confirm(`Hapus “${p.name}”?`)){ places=places.filter(x=>x.id!==p.id); save(); renderPlaces(); } }}),
+          el('a',{className:'go',href:url,target:'_blank',rel:'noopener noreferrer',title:'Buka link',textContent:'↗'}))));
+    });
+  });
+}
+
+/* ============================================================
+   FORM
+   ============================================================ */
+const dlg = $('#dlg'), form = $('#form'), F = form.elements;
+$('#daySelect').append(...DAYS.map(d => el('option',{value:d.id,textContent:d.emoji+' '+d.label+' · '+d.title})), el('option',{value:'',textContent:'💡 Belum ditentukan'}));
+$('#typeSelect').append(...Object.entries(TYPES).map(([v,t]) => el('option',{value:v,textContent:t})));
+let editing = null;
+function openForm(p){
+  editing = p.id ? p : null;
+  $('#formTitle').textContent = editing ? 'Edit tempat' : 'Tambah tempat';
+  F.name.value = p.name||''; F.url.value = p.url||''; F.note.value = p.note||'';
+  F.day.value = p.day ?? ''; F.type.value = p.type||'food'; $('#err').textContent='';
+  dlg.showModal(); F.name.focus();
+}
+document.querySelectorAll('[data-add]').forEach(b => b.onclick = () => openForm({day:''}));
+$('#cancel').onclick = () => dlg.close();
+form.addEventListener('submit', e => {
+  const name = F.name.value.trim(), rawUrl = F.url.value.trim();
+  const url = safeUrl(rawUrl);
+  if(rawUrl && !url){ e.preventDefault(); $('#err').textContent='Linknya kurang valid — harus http(s).'; return; }
+  const finalName = name || host(url);
+  if(!finalName){ e.preventDefault(); $('#err').textContent='Isi nama tempat atau link dulu.'; return; }
+  const data = { name:finalName, url, note:F.note.value.trim(), day:F.day.value, type:F.type.value };
+  if(editing) Object.assign(editing, data);
+  else places.push({ ...data, id:uid(), picked:false, t:Date.now() });
+  save(); renderPlaces(); toast(editing ? 'Updated ✓' : 'Ditambahin ✓');
+  if(data.day) setTimeout(()=>document.getElementById(data.day)?.scrollIntoView({behavior:'smooth',block:'start'}), 80);
+});
+
+/* ============================================================
+   SHARE / EXPORT / IMPORT
+   ============================================================ */
+const b64e = s => btoa(String.fromCharCode(...new TextEncoder().encode(s))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+const b64d = s => new TextDecoder().decode(Uint8Array.from(atob(s.replace(/-/g,'+').replace(/_/g,'/')), c=>c.charCodeAt(0)));
+const slim = () => places.map(({id,name,url,note,day,type,picked,t}) => ({id,name,url,note,day,type,picked,t}));
+
+function sanitize(list){
+  if(!Array.isArray(list)) return [];
+  return list.filter(p => p && typeof p.name==='string' && p.name.trim()).map(p => ({
+    id: String(p.id||uid()).slice(0,40), name:String(p.name).slice(0,200), url:safeUrl(String(p.url||'')),
+    note:String(p.note||'').slice(0,2000), day: DAYS.some(d=>d.id===p.day) ? p.day : '',
+    type: TYPES[p.type] ? p.type : 'other', picked:!!p.picked, t:Number(p.t)||Date.now() }));
+}
+function merge(incoming){
+  let added=0, updated=0;
+  incoming.forEach(p => {
+    const i = places.findIndex(x => x.id===p.id || (x.name.toLowerCase()===p.name.toLowerCase() && x.day===p.day));
+    if(i<0){ places.push(p); added++; }
+    else if(JSON.stringify(places[i])!==JSON.stringify({...places[i],...p})){ places[i] = {...places[i], ...p, id:places[i].id}; updated++; }
+  });
+  save(); renderPlaces(); return {added, updated};
+}
+
+$('#share').onclick = async () => {
+  const link = location.href.split('#')[0] + '#p=' + b64e(JSON.stringify(slim()));
+  toast(await copy(link) ? 'Link ke-copy — kirim ke Momo 💌' : 'Gagal copy, coba lagi');
+};
+$('#wa').onclick = async () => {
+  const lines = ['*MOMO ✕ SALSA — Jakarta week* 🇮🇩', ''];
+  [...DAYS, {id:'', label:'IDEAS', title:'belum ada hari', emoji:'💡'}].forEach(d => {
+    const ps = places.filter(p => p.day===d.id);
+    if(!ps.length) return;
+    lines.push(`*${d.emoji} ${d.label} — ${d.title}*`);
+    ps.forEach(p => lines.push(`${p.picked?'⭐':'•'} ${p.name}${p.note?' — '+p.note:''}\n  ${safeUrl(p.url)||mapsFor(p.name)}`));
+    lines.push('');
+  });
+  toast(await copy(lines.join('\n').trim()) ? 'Ke-copy, tinggal paste di WA ✓' : 'Gagal copy');
+};
+$('#export').onclick = () => {
+  const blob = new Blob([JSON.stringify(slim(),null,2)],{type:'application/json'});
+  const a = el('a',{href:URL.createObjectURL(blob),download:'jakarta-places.json'}); a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+};
+$('#importBtn').onclick = () => $('#importFile').click();
+$('#importFile').onchange = async e => {
+  const f = e.target.files[0]; if(!f) return;
+  try{ const r = merge(sanitize(JSON.parse(await f.text()))); toast(`+${r.added} baru, ${r.updated} updated`); }
+  catch(err){ toast('File-nya nggak kebaca 😕'); }
+  e.target.value='';
+};
+
+function checkHash(){
+  const m = location.hash.match(/^#p=([\w-]+)/); if(!m) return;
+  let incoming; try{ incoming = sanitize(JSON.parse(b64d(m[1]))); }catch(e){ return; }
+  if(!incoming.length) return;
+  const bn = $('#banner');
+  const clear = () => { bn.classList.remove('show'); history.replaceState(null,'',location.pathname+location.search); };
+  bn.replaceChildren(
+    el('span',{style:'flex:1;min-width:200px',textContent:`💌 Link ini bawa ${incoming.length} tempat. Gabung ke list kamu?`}),
+    el('button',{className:'btn small',textContent:'Gabung',onclick:()=>{ const r=merge(incoming); toast(`+${r.added} baru, ${r.updated} updated`); clear(); }}),
+    el('button',{className:'btn small',textContent:'Nggak usah',onclick:clear}));
+  bn.classList.add('show');
+}
+
+/* ============================================================
+   COUNTDOWN
+   ============================================================ */
+function tick(){
+  const now = Date.now(), a = Date.parse(ARRIVAL), z = Date.parse(DEPART), cd = $('#cd');
+  if(now < a){
+    const s = Math.floor((a-now)/1000), d=Math.floor(s/86400), h=Math.floor(s%86400/3600), m=Math.floor(s%3600/60);
+    cd.innerHTML = `<span class="lbl">Momo lands in<em>Sat 3 Oct · 13.00 WIB</em></span><span><b>${d}</b><small>days</small></span><span><b>${String(h).padStart(2,'0')}</b><small>hrs</small></span><span><b>${String(m).padStart(2,'0')}</b><small>min</small></span>`;
+  } else if(now < z){
+    const idx = DAYS.findIndex(d => d.date===todayISO());
+    cd.innerHTML = `<span class="lbl">Momo’s here 🩷💚</span><span><b>Day ${idx+1}</b><small>of ${DAYS.length}</small></span>`;
+  } else {
+    cd.innerHTML = `<span class="lbl">Jakarta week</span><span><b>done 🩷</b></span>`;
+  }
+}
+
+renderDays(); renderPlaces(); checkHash(); tick(); setInterval(tick, 30000);
+window.addEventListener('hashchange', checkHash);
+if(DAYS.some(d => d.date===todayISO()) && !location.hash) setTimeout(()=>document.getElementById(DAYS.find(d=>d.date===todayISO()).id).scrollIntoView({block:'start'}), 200);
+</script>
+</body>
+</html>
