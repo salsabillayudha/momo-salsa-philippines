@@ -16,20 +16,22 @@ so it works locally and on GitHub Pages with no build step.
 
 ## `jakarta.html` — Momo's Jakarta week (3–10 Oct 2026)
 
-Day-by-day itinerary for Momo's visit: arrival, padel → Whoosh to Bandung, the
-weeknight dates (grocery night, archery, dogs + books, spa, the big Friday), and
-the slow goodbye. Countdown to landing, sticky day nav, and today's card is
-highlighted during the trip.
+A playful, phone-first itinerary for Momo's visit: countdown to landing, a day-by-day plan
+(arrival, padel → Whoosh to Bandung, the weeknight dates, the slow goodbye), and today's
+card highlighted during the trip.
 
-Every day has a **Places & links** list: add a recommendation with a link
-(Maps, Instagram, website), a type, and optional details — what it sells, must-try,
-menu + prices (one per line), price range, opening hours, address, tips; ☆ marks
-the one you picked. Seeded places live in `SEED` in the page with stable ids, so
-new ones show up on the next visit and deleted ones stay deleted.
-Places without a day go in the **Ideas bucket**. No link? The name opens a
-Google Maps search. Everything saves in the browser; **Copy share link** packs
-the whole list into the URL so the other person can merge it in, **Copy for
-WhatsApp** gives a pasteable summary, and Export / Import move a JSON file.
+- **Edit any day** with ✎: emoji, title, the line about the day, the note, and the schedule
+  rows (add, remove, reorder, mark as work time). Edits sit on top of the original plan, and
+  "Reset to original" undoes them.
+- **Photos:** an album per day, plus a cover photo per place. They're shrunk on the phone
+  and kept in that browser's IndexedDB.
+- **Places & links** per day, with what they sell, must-try, menu + prices, price range,
+  hours, address and tips. ☆ marks the pick, and places without a day go in the Ideas bucket.
+  Researched places ship in `SEED` with stable ids.
+- **💌 Share:**
+  - *Copy share link* carries places and schedule edits (not photos).
+  - *Copy for WhatsApp* gives a pasteable summary.
+  - *Download backup* moves everything, photos included, to another phone.
 
 **Auto-fill:** the add-a-place form has a **✨ Auto-fill from the web** button. Type a
 name or paste a Google Maps link, and a small free Cloudflare Worker (Gemini + Google Search)
