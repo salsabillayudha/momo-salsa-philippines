@@ -22,10 +22,13 @@ the slow goodbye. Countdown to landing, sticky day nav, and today's card is
 highlighted during the trip.
 
 Every day has a **Places & links** list: add a recommendation with a link
-(Maps, Instagram, website), a note, and a type; ☆ marks the one you picked.
+(Maps, Instagram, website), a type, and optional details — what it sells, must-try,
+menu + prices (one per line), price range, opening hours, address, tips; ☆ marks
+the one you picked. Seeded places live in `SEED` in the page with stable ids, so
+new ones show up on the next visit and deleted ones stay deleted.
 Places without a day go in the **Ideas bucket**. No link? The name opens a
 Google Maps search. Everything saves in the browser; **Copy share link** packs
-the whole list into the URL so the other person can merge it in, **Copy buat
+the whole list into the URL so the other person can merge it in, **Copy for
 WhatsApp** gives a pasteable summary, and Export / Import move a JSON file.
 
 ## `chat.html` — the conversation reader

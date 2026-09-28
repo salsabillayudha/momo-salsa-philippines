@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -113,26 +113,46 @@
   .places-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;padding-left:4px}
   .places-head h4{font-size:15px;font-weight:700;letter-spacing:-.01em}
   .plist{display:grid;gap:8px}
-  .place{display:flex;gap:12px;align-items:center;padding:12px;border-radius:20px;background:var(--glass-2);border:1px solid var(--glass-line)}
+  .place{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start;padding:12px;border-radius:20px;background:var(--glass-2);border:1px solid var(--glass-line)}
   .place.picked{box-shadow:inset 0 0 0 1.5px var(--c)}
   .place .ico{width:40px;height:40px;flex-shrink:0;border-radius:50%;display:grid;place-items:center;font-size:17px;background:var(--cs)}
-  .place .body{flex:1;min-width:0}
+  .place .body{flex:1 1 0;min-width:0}
   .place .src{font-size:11.5px;font-weight:500;color:var(--muted)}
   .place .name{font-weight:700;font-size:14.5px;letter-spacing:-.01em;word-break:break-word}
   .place .name a{text-decoration:none}
   .place .pnote{font-size:12.5px;color:var(--muted);white-space:pre-wrap;word-break:break-word;margin-top:2px}
-  .place .acts{display:flex;align-items:center;gap:0;flex-shrink:0}
+  .place .acts{flex-basis:100%;display:flex;align-items:center;justify-content:flex-end;gap:2px;padding-top:8px;border-top:1px dashed var(--glass-line)}
   .icon-btn{border:0;background:transparent;width:30px;height:30px;border-radius:50%;font-size:14px;opacity:.5}
   .icon-btn:hover{opacity:1;background:var(--glass)}
   .icon-btn.on{opacity:1}
-  .go{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--pill);color:var(--pill-ink);text-decoration:none;font-size:16px;margin-left:4px;flex-shrink:0}
+  .go{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--pill);color:var(--pill-ink);text-decoration:none;font-size:16px;margin-left:4px;flex-shrink:0}
   .empty{font-size:13px;color:var(--muted);padding:4px}
 
   .bucket{margin:30px 0 36px}
   .sec-h{font-weight:700;font-size:clamp(22px,4.4vw,26px);letter-spacing:-.025em;margin-bottom:4px}
 
+  .what{font-size:12.5px;font-weight:600;color:var(--c);margin-top:1px}
+  .facts{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .facts span{font-size:12px;font-weight:600;padding:3px 10px;border-radius:100px;background:var(--cs);color:var(--ink)}
+  .must{margin-top:8px;font-size:13px;line-height:1.45}
+  .must b{font-weight:700}
+  .more{margin-top:8px;font-size:13px}
+  .more summary{cursor:pointer;font-weight:700;font-size:12.5px;color:var(--muted);list-style:none;display:inline-flex;gap:6px;align-items:center}
+  .more summary::-webkit-details-marker{display:none}
+  .more summary::before{content:'▸';transition:transform .15s}
+  .more[open] summary::before{transform:rotate(90deg)}
+  .more dl{margin-top:8px;display:grid;gap:8px}
+  .more dt{font-size:11.5px;font-weight:700;color:var(--muted)}
+  .more dd{white-space:pre-wrap;word-break:break-word}
+  .menu-list{list-style:none;display:grid;gap:3px}
+  .menu-list li{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed var(--glass-line);padding-bottom:3px}
+  .menu-list li .rp{font-weight:700;white-space:nowrap}
+  fieldset{border:0;display:grid;gap:12px}
+  fieldset legend{font-size:14px;font-weight:700;margin-bottom:8px;padding:0}
+  fieldset legend small{display:block;font-weight:500;font-size:12px;color:var(--muted)}
+
   /* DIALOG */
-  dialog{margin:auto;border-radius:30px;padding:0;color:var(--ink);width:min(460px,calc(100vw - 32px));background:var(--glass-2)}
+  dialog{margin:auto;border-radius:30px;padding:0;max-height:92vh;overflow:auto;color:var(--ink);width:min(460px,calc(100vw - 32px));background:var(--glass-2)}
   dialog::backdrop{background:rgba(60,20,40,.28);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
   form.f{padding:22px;display:grid;gap:12px}
   form.f h3{font-weight:700;font-size:22px;letter-spacing:-.025em}
@@ -176,7 +196,7 @@
     </div>
     <div class="eyebrow">3 – 10 Oct 2026</div>
     <h1>Momo <span class="x">✕</span> Salsa,<br>Jakarta week</h1>
-    <p>Workdays di siang hari, dates di malam hari. Padel, Whoosh, boots, arrows, dogs, books, spa, and one very loud Friday.</p>
+    <p>Work by day, dates by night. Padel, Whoosh, boots, arrows, dogs, books, spa, and one very loud Friday.</p>
     <div class="meta">
       <div><span>🏨</span>The Dharmawangsa</div>
       <div><span>🌙</span>7 nights</div>
@@ -185,14 +205,14 @@
     <div class="cd" id="cd" aria-live="polite"></div>
     <div class="banner" id="banner"></div>
     <div class="toolbar">
-      <button class="btn solid cta" data-add="">＋ Tambah tempat</button>
+      <button class="btn solid cta" data-add="">＋ Add a place</button>
       <button class="btn" id="share">🔗 Copy share link</button>
-      <button class="btn" id="wa">💬 Copy ke WA</button>
+      <button class="btn" id="wa">💬 Copy for WhatsApp</button>
       <button class="btn" id="export">⬇ Export</button>
       <button class="btn" id="importBtn">⬆ Import</button>
       <input type="file" id="importFile" accept="application/json,.json" hidden>
     </div>
-    <p class="hint">Tempat &amp; link yang kamu tambahin kesimpen di browser ini. Mau Momo lihat juga? Pakai <b>Copy share link</b> — linknya bawa semua tempat, dan pas dibuka bisa langsung digabung.</p>
+    <p class="hint">Places &amp; links you add are saved in this browser. Want Momo to see them too? Use <b>Copy share link</b>: the link carries every place, and whoever opens it can merge them into their list.</p>
   </div>
 </header>
 
@@ -203,7 +223,7 @@
 
   <section class="bucket">
     <h2 class="sec-h">💡 Ideas bucket</h2>
-    <p class="hint" style="margin-bottom:14px">Tempat yang belum ada harinya. Nanti tinggal ✎ edit dan pindahin ke hari yang pas.</p>
+    <p class="hint" style="margin-bottom:14px">Places without a day yet. Tap ✎ to move one to the right day later.</p>
     <div class="card"><div class="places" style="margin:0" data-slot="ideas"></div></div>
   </section>
 </main>
@@ -214,18 +234,19 @@
 
 <dialog id="dlg">
   <form class="f" id="form" method="dialog">
-    <h3 id="formTitle">Tambah tempat</h3>
-    <label>Nama tempat<input name="name" placeholder="mis. Kopi Nako Braga" autocomplete="off"></label>
+    <h3 id="formTitle">Add a place</h3>
+    <label>Place name<input name="name" placeholder="e.g. Kopi Nako Braga" autocomplete="off"></label>
     <label>Link (Maps / IG / website)<input name="url" type="text" inputmode="url" placeholder="https://maps.app.goo.gl/…" autocomplete="off"></label>
     <div class="row2">
-      <label>Hari<select name="day" id="daySelect"></select></label>
-      <label>Jenis<select name="type" id="typeSelect"></select></label>
+      <label>Day<select name="day" id="daySelect"></select></label>
+      <label>Type<select name="type" id="typeSelect"></select></label>
     </div>
-    <label>Catatan<textarea name="note" placeholder="jam buka, harus reservasi, menu andalan, dress code…"></textarea></label>
+    <fieldset id="details"><legend>Details <small>All optional. Fill in whatever you know.</small></legend></fieldset>
+    <label>Other notes<textarea name="note" placeholder="why we want to go, who recommended it, etc."></textarea></label>
     <div class="err" id="err"></div>
     <div class="f-acts">
-      <button type="button" class="btn" id="cancel">Batal</button>
-      <button type="submit" class="btn solid" id="save">Simpan</button>
+      <button type="button" class="btn" id="cancel">Cancel</button>
+      <button type="submit" class="btn solid" id="save">Save</button>
     </div>
   </form>
 </dialog>
@@ -242,34 +263,48 @@ const DEPART  = '2026-10-10T18:00:00+07:00';
 const DAYS = [
   { id:'sat3', date:'2026-10-03', label:'Sat, 3 Oct', short:'Sat 3', emoji:'✈️', title:'Momo arrives',
     blurb:'Landing, hotel, reunion. Nothing else is required of anyone today.',
-    items:[['13.00','Landing ✈️'],['After','Dharmawangsa check-in'],['Afternoon','Shower + nap + reunion'],['Evening','Dinner santai'],['Night','Hotel night']] },
+    items:[['13.00','Landing ✈️'],['After','Dharmawangsa check-in'],['Afternoon','Shower + nap + reunion'],['Evening','Easy dinner'],['Night','Hotel night']] },
   { id:'sun4', date:'2026-10-04', label:'Sun, 4 Oct', short:'Sun 4', emoji:'🚄', title:'Padel → Bandung', chips:['WHOOSH'],
     blurb:'Sporty Jakarta morning → Whoosh → cool Bandung afternoon → shopping → food → train home.',
-    items:[['08.30','Breakfast'],['10.00–12.00','🎾 Padel with your friend (tentative)'],['12.00–13.00','Lunch'],['13.00-ish','Berangkat ke stasiun'],['±14.30','Whoosh → Bandung'],['16.00','☕ Coffee'],['17.00–19.00','🧥 Momo’s leather boots + local handmade shopping'],['19.00–20.30','Bandung dinner'],['±20.30/21.00','Whoosh balik'],['±22.30','Dharmawangsa. KO.']],
-    note:['Tennis?','Drop tennis kalau padel jadi. Kalau padel batal → tennis di Dharmawangsa jadi backup Minggu pagi, dan plan Bandung tetap sama persis.'] },
+    items:[['08.30','Breakfast'],['10.00–12.00','🎾 Padel with your friend (tentative)'],['12.00–13.00','Lunch'],['13.00-ish','Head to the station'],['±14.30','Whoosh → Bandung'],['16.00','☕ Coffee'],['17.00–19.00','🧥 Momo’s leather boots + local handmade shopping'],['19.00–20.30','Bandung dinner'],['±20.30/21.00','Whoosh back'],['±22.30','Dharmawangsa. KO.']],
+    note:['Tennis?','Drop tennis if padel happens. If padel gets cancelled → tennis at Dharmawangsa is the Sunday-morning backup, and the Bandung plan stays exactly the same.'] },
   { id:'mon5', date:'2026-10-05', label:'Mon, 5 Oct', short:'Mon 5', emoji:'🛒', title:'Domestic night',
-    items:[['Day','You work · Momo bebas santai / pool / hotel',1],['After work','🛒 Grocery run'],['Dinner','Dinner di kamar'],['Night','Movie / ngobrol / cuddling'],['Late','Early night']] },
+    items:[['Day','Salsa works · Momo free to chill / pool / hotel',1],['After work','🛒 Grocery run'],['Dinner','Dinner in the room'],['Night','Movie / talking / cuddling'],['Late','Early night']] },
   { id:'tue6', date:'2026-10-06', label:'Tue, 6 Oct', short:'Tue 6', emoji:'🏹', title:'Archery + casual date',
     blurb:'Not a whole “activity day”. Just “we finished work and went shooting arrows together.”',
-    items:[['Day','You work',1],['18.30-ish','→ RR Archery Radio Dalam'],['60–90 min','🏹 Archery'],['Dinner','Around Radio Dalam / Cipete'],['After','Dessert / coffee'],['Night','Home']] },
+    items:[['Day','Salsa works',1],['18.30-ish','→ RR Archery Radio Dalam'],['60–90 min','🏹 Archery'],['Dinner','Around Radio Dalam / Cipete'],['After','Dessert / coffee'],['Night','Home']] },
   { id:'wed7', date:'2026-10-07', label:'Wed, 7 Oct', short:'Wed 7', emoji:'🐕', title:'Dogs + books',
-    items:[['Day','You work',1],['After work','🐕 Dog-friendly café / dog community activity'],['Dinner','Casual dinner'],['Ritual','📚 Seats at the Library — each picks a book for the other'],['Night','Hotel']] },
+    items:[['Day','Salsa works',1],['After work','🐕 Dog-friendly café / dog community activity'],['Dinner','Casual dinner'],['Ritual','📚 Seats at the Library — each picks a book for the other'],['Night','Hotel']] },
   { id:'thu8', date:'2026-10-08', label:'Thu, 8 Oct', short:'Thu 8', emoji:'🧖🏻‍♀️', title:'Spa night', chips:['RECOVERY'],
     blurb:'Exists specifically to undo the consequences of padel + archery.',
-    items:[['Day','You work',1],['Evening','🧖🏻‍♀️ Couples spa, ideally 90–120 min'],['After','Nice dinner'],['Night','Hotel · no club, no ambitious activity']] },
+    items:[['Day','Salsa works',1],['Evening','🧖🏻‍♀️ Couples spa, ideally 90–120 min'],['After','Nice dinner'],['Night','Hotel · no club, no ambitious activity']] },
   { id:'fri9', date:'2026-10-09', label:'Fri, 9 Oct', short:'Fri 9', emoji:'🪩', title:'Big date night', chips:['DRESS UP'],
-    items:[['Day','You work',1],['Early eve','Back to hotel, dress up'],['Dinner','Dinner'],['Then','🚌 Double-decker dinner bus'],['Late','🪩 Nightlife / club / live music / creative event'],['Very late','Go home when your souls have left your bodies']] },
+    items:[['Day','Salsa works',1],['Early eve','Back to hotel, dress up'],['Dinner','Dinner'],['Then','🚌 Double-decker dinner bus'],['Late','🪩 Nightlife / club / live music / creative event'],['Very late','Go home when your souls have left your bodies']] },
   { id:'sat10', date:'2026-10-10', label:'Sat, 10 Oct', short:'Sat 10', emoji:'👋', title:'Slow goodbye',
     items:[['Morning','Breakfast'],['Late morning','Pool / lounge'],['Midday','Final lunch'],['After','Pack'],['Later','Airport ✈️']] },
 ];
 
-const TYPES = { food:'🍽️ Makan', coffee:'☕ Coffee / dessert', shop:'🛍️ Shopping', activity:'🎯 Activity', night:'🪩 Nightlife', stay:'🏨 Hotel / transport', other:'📍 Lainnya' };
+const TYPES = { food:'🍽️ Food', coffee:'☕ Coffee / dessert', shop:'🛍️ Shopping', activity:'🎯 Activity', night:'🪩 Nightlife', stay:'🏨 Hotel / transport', other:'📍 Other' };
 const ICON = t => (TYPES[t]||TYPES.other).split(' ')[0];
 
+/* Extra info per place. [key, label, emoji, placeholder, multiline] */
+const DETAILS = [
+  ['what',   'What they sell / what it is', '🏷️', 'e.g. homey Sundanese, satay, custom leather boots', 0],
+  ['musttry','Must-try',                '⭐', 'e.g. Nasi bakar cumi, es kopi pandan', 0],
+  ['menu',   'Menu + prices',           '📋', 'One per line, e.g.\nNasi bakar cumi — 45k\nEs kopi pandan — 28k', 1],
+  ['price',  'Price range',             '💸', 'e.g. Rp100–150k / person', 0],
+  ['hours',  'Opening hours',           '🕒', 'e.g. 10.00–22.00, closed Mon', 0],
+  ['addr',   'Address / area',          '📍', 'e.g. Jl. Braga No. 1, Bandung', 0],
+  ['tips',   'Tips',                    '💡', 'e.g. book ahead, busy around 7pm, smart casual', 1],
+];
+const DKEYS = DETAILS.map(d => d[0]);
+
+/* Places Claude researched / seeded. Stable ids: new ones show up on the next visit,
+   ones you delete stay deleted. */
 const SEED = [
-  { day:'sat3', type:'stay', name:'The Dharmawangsa Jakarta', url:'', note:'Home base all week.' },
-  { day:'sun4', type:'stay', name:'Stasiun Whoosh Halim', url:'', note:'Beli tiket di app Whoosh. Ke pusat kota Bandung biasanya turun Padalarang → KA feeder ke Stasiun Bandung.' },
-  { day:'tue6', type:'activity', name:'RR Archery Radio Dalam', url:'', note:'' },
+  { id:'seed-dharmawangsa', day:'sat3', type:'stay', name:'The Dharmawangsa Jakarta', url:'', note:'Home base all week.' },
+  { id:'seed-halim', day:'sun4', type:'stay', name:'Stasiun Whoosh Halim', url:'', note:'Buy tickets in the Whoosh app. For central Bandung you usually get off at Padalarang → feeder train to Bandung Station.' },
+  { id:'seed-rr-archery', day:'tue6', type:'activity', name:'RR Archery Radio Dalam', url:'', note:'' },
 ];
 
 /* ============================================================
@@ -277,12 +312,27 @@ const SEED = [
    ============================================================ */
 const KEY = 'momo-salsa-jkt-places-v1';
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+const GONE = KEY + ':removed';
+/* seed notes from before the English switch, so stored copies get replaced */
+const LEGACY_NOTES = { 'seed-halim':'Beli tiket di app Whoosh. Ke pusat kota Bandung biasanya turun Padalarang → KA feeder ke Stasiun Bandung.' };
+let removed = [];
+try{ removed = JSON.parse(localStorage.getItem(GONE)) || []; }catch(e){}
 function load(){
-  try{ const raw = localStorage.getItem(KEY); if(raw) return JSON.parse(raw); }catch(e){}
-  return SEED.map(p => ({ ...p, id:uid(), picked:false, t:Date.now() }));
+  let list = [];
+  try{ const raw = localStorage.getItem(KEY); if(raw) list = JSON.parse(raw); }catch(e){}
+  SEED.forEach((p, i) => {
+    if(removed.includes(p.id)) return;
+    const same = list.find(x => x.id===p.id || (x.name.toLowerCase()===p.name.toLowerCase() && x.day===p.day));
+    if(!same) return list.push({ ...p, picked:false, t:i, seedNote:p.note });
+    if(same.id !== p.id) same.id = p.id;
+    // refresh a seeded note you never edited (e.g. after a wording change)
+    if(same.note === (same.seedNote ?? LEGACY_NOTES[p.id])) same.note = p.note;
+    same.seedNote = p.note;
+  });
+  return list;
 }
 let places = load();
-function save(){ try{ localStorage.setItem(KEY, JSON.stringify(places)); }catch(e){} }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(places)); localStorage.setItem(GONE, JSON.stringify(removed)); }catch(e){} }
 save();
 
 /* ============================================================
@@ -327,15 +377,23 @@ function renderDays(){
       el('ul',{className:'sched'}, d.items.map(([t,x,w]) => el('li',{className:w?'work':''}, el('span',{className:'t',textContent:t}), el('span',{textContent:x})))),
       d.note && el('div',{className:'note'}, el('div',{}, el('b',{textContent:d.note[0]}), d.note[1])),
       el('div',{className:'places'},
-        el('div',{className:'places-head'}, el('h4',{textContent:'Places & links'}), el('button',{className:'btn small',textContent:'＋ Tambah',onclick:()=>openForm({day:d.id})})),
+        el('div',{className:'places-head'}, el('h4',{textContent:'Places & links'}), el('button',{className:'btn small',textContent:'＋ Add',onclick:()=>openForm({day:d.id})})),
         el('div',{className:'plist', dataset:{slot:d.id}})));
     const sec = el('article',{className:'day'+(i%2?' lime':'')+(isToday?' is-today':''), id:d.id}, card);
     tl.append(sec);
   });
   const ideas = $('[data-slot="ideas"]');
   ideas.replaceChildren(
-    el('div',{className:'places-head'}, el('h4',{textContent:'Belum ada hari'}), el('button',{className:'btn small',textContent:'＋ Tambah',onclick:()=>openForm({day:''})})),
+    el('div',{className:'places-head'}, el('h4',{textContent:'No day yet'}), el('button',{className:'btn small',textContent:'＋ Add',onclick:()=>openForm({day:''})})),
     el('div',{className:'plist', dataset:{slot:''}}));
+}
+
+/* "Nasi bakar — 45rb" → name on the left, price on the right */
+function menuList(text){
+  return el('ul',{className:'menu-list'}, text.split('\n').map(l => l.trim()).filter(Boolean).map(l => {
+    const m = l.match(/^(.*?)\s*(?:[—–:|]|\s-\s)\s*((?:Rp\.?\s*)?[\d.,]+\s*(?:rb|k|ribu|jt)?)$/i);
+    return m ? el('li',{}, el('span',{textContent:m[1]}), el('span',{className:'rp',textContent:m[2]})) : el('li',{}, el('span',{textContent:l}));
+  }));
 }
 
 function renderPlaces(){
@@ -344,7 +402,7 @@ function renderPlaces(){
     const mine = places.filter(p => (DAYS.some(d=>d.id===p.day) ? p.day : '') === slot)
                        .sort((a,b) => (b.picked-a.picked) || (a.t-b.t));
     list.replaceChildren();
-    if(!mine.length){ list.append(el('p',{className:'empty',textContent:'Belum ada. Tambahin rekomendasi tempat + link di sini.'})); return; }
+    if(!mine.length){ list.append(el('p',{className:'empty',textContent:'Nothing yet. Add a place recommendation + link here.'})); return; }
     mine.forEach(p => {
       const url = safeUrl(p.url) || mapsFor(p.name);
       list.append(el('div',{className:'place'+(p.picked?' picked':'')},
@@ -352,12 +410,21 @@ function renderPlaces(){
         el('div',{className:'body'},
           el('div',{className:'src',textContent: (p.picked?'⭐ Picked · ':'') + (safeUrl(p.url) ? host(p.url) : 'Google Maps')}),
           el('div',{className:'name'}, el('a',{href:url,target:'_blank',rel:'noopener noreferrer',textContent:p.name})),
-          p.note && el('div',{className:'pnote',textContent:p.note})),
+          p.what && el('div',{className:'what',textContent:p.what}),
+          (p.price || p.hours) && el('div',{className:'facts'}, p.price && el('span',{textContent:'💸 '+p.price}), p.hours && el('span',{textContent:'🕒 '+p.hours})),
+          p.musttry && el('div',{className:'must'}, el('b',{textContent:'⭐ Must-try: '}), p.musttry),
+          p.note && el('div',{className:'pnote',textContent:p.note}),
+          (p.menu || p.addr || p.tips) && el('details',{className:'more'},
+            el('summary',{textContent: p.menu ? 'Menu & info' : 'Info'}),
+            el('dl',{},
+              p.menu && [el('dt',{textContent:'📋 Menu'}), el('dd',{}, menuList(p.menu))],
+              p.addr && [el('dt',{textContent:'📍 Address'}), el('dd',{textContent:p.addr})],
+              p.tips && [el('dt',{textContent:'💡 Tips'}), el('dd',{textContent:p.tips})]))),
         el('div',{className:'acts'},
-          el('button',{className:'icon-btn'+(p.picked?' on':''),title:p.picked?'Batal pilih':'Pilih ini',textContent:p.picked?'⭐':'☆',onclick:()=>{p.picked=!p.picked;save();renderPlaces();}}),
+          el('button',{className:'icon-btn'+(p.picked?' on':''),title:p.picked?'Unpick':'Pick this one',textContent:p.picked?'⭐':'☆',onclick:()=>{p.picked=!p.picked;save();renderPlaces();}}),
           el('button',{className:'icon-btn',title:'Edit',textContent:'✎',onclick:()=>openForm(p)}),
-          el('button',{className:'icon-btn',title:'Hapus',textContent:'🗑',onclick:()=>{ if(confirm(`Hapus “${p.name}”?`)){ places=places.filter(x=>x.id!==p.id); save(); renderPlaces(); } }}),
-          el('a',{className:'go',href:url,target:'_blank',rel:'noopener noreferrer',title:'Buka link',textContent:'↗'}))));
+          el('button',{className:'icon-btn',title:'Delete',textContent:'🗑',onclick:()=>{ if(confirm(`Delete “${p.name}”?`)){ places=places.filter(x=>x.id!==p.id); if(p.id.startsWith('seed-')) removed.push(p.id); save(); renderPlaces(); } }}),
+          el('a',{className:'go',href:url,target:'_blank',rel:'noopener noreferrer',title:'Open link',textContent:'↗'}))));
     });
   });
 }
@@ -366,14 +433,17 @@ function renderPlaces(){
    FORM
    ============================================================ */
 const dlg = $('#dlg'), form = $('#form'), F = form.elements;
-$('#daySelect').append(...DAYS.map(d => el('option',{value:d.id,textContent:d.emoji+' '+d.label+' · '+d.title})), el('option',{value:'',textContent:'💡 Belum ditentukan'}));
+$('#daySelect').append(...DAYS.map(d => el('option',{value:d.id,textContent:d.emoji+' '+d.label+' · '+d.title})), el('option',{value:'',textContent:'💡 Not decided yet'}));
 $('#typeSelect').append(...Object.entries(TYPES).map(([v,t]) => el('option',{value:v,textContent:t})));
+$('#details').append(...DETAILS.map(([k,label,emo,ph,multi]) =>
+  el('label',{}, emo+' '+label, multi ? el('textarea',{name:k,placeholder:ph}) : el('input',{name:k,placeholder:ph,autocomplete:'off'}))));
 let editing = null;
 function openForm(p){
   editing = p.id ? p : null;
-  $('#formTitle').textContent = editing ? 'Edit tempat' : 'Tambah tempat';
+  $('#formTitle').textContent = editing ? 'Edit place' : 'Add a place';
   F.name.value = p.name||''; F.url.value = p.url||''; F.note.value = p.note||'';
   F.day.value = p.day ?? ''; F.type.value = p.type||'food'; $('#err').textContent='';
+  DKEYS.forEach(k => F[k].value = p[k]||'');
   dlg.showModal(); F.name.focus();
 }
 document.querySelectorAll('[data-add]').forEach(b => b.onclick = () => openForm({day:''}));
@@ -381,13 +451,14 @@ $('#cancel').onclick = () => dlg.close();
 form.addEventListener('submit', e => {
   const name = F.name.value.trim(), rawUrl = F.url.value.trim();
   const url = safeUrl(rawUrl);
-  if(rawUrl && !url){ e.preventDefault(); $('#err').textContent='Linknya kurang valid — harus http(s).'; return; }
+  if(rawUrl && !url){ e.preventDefault(); $('#err').textContent='That link doesn’t look right. It needs to be http(s).'; return; }
   const finalName = name || host(url);
-  if(!finalName){ e.preventDefault(); $('#err').textContent='Isi nama tempat atau link dulu.'; return; }
+  if(!finalName){ e.preventDefault(); $('#err').textContent='Add a place name or a link first.'; return; }
   const data = { name:finalName, url, note:F.note.value.trim(), day:F.day.value, type:F.type.value };
+  DKEYS.forEach(k => data[k] = F[k].value.trim());
   if(editing) Object.assign(editing, data);
   else places.push({ ...data, id:uid(), picked:false, t:Date.now() });
-  save(); renderPlaces(); toast(editing ? 'Updated ✓' : 'Ditambahin ✓');
+  save(); renderPlaces(); toast(editing ? 'Updated ✓' : 'Added ✓');
   if(data.day) setTimeout(()=>document.getElementById(data.day)?.scrollIntoView({behavior:'smooth',block:'start'}), 80);
 });
 
@@ -396,14 +467,15 @@ form.addEventListener('submit', e => {
    ============================================================ */
 const b64e = s => btoa(String.fromCharCode(...new TextEncoder().encode(s))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
 const b64d = s => new TextDecoder().decode(Uint8Array.from(atob(s.replace(/-/g,'+').replace(/_/g,'/')), c=>c.charCodeAt(0)));
-const slim = () => places.map(({id,name,url,note,day,type,picked,t}) => ({id,name,url,note,day,type,picked,t}));
+const slim = () => places.map(p => { const o = {id:p.id,name:p.name,url:p.url,note:p.note,day:p.day,type:p.type,picked:p.picked,t:p.t}; DKEYS.forEach(k => { if(p[k]) o[k] = p[k]; }); return o; });
 
 function sanitize(list){
   if(!Array.isArray(list)) return [];
   return list.filter(p => p && typeof p.name==='string' && p.name.trim()).map(p => ({
     id: String(p.id||uid()).slice(0,40), name:String(p.name).slice(0,200), url:safeUrl(String(p.url||'')),
     note:String(p.note||'').slice(0,2000), day: DAYS.some(d=>d.id===p.day) ? p.day : '',
-    type: TYPES[p.type] ? p.type : 'other', picked:!!p.picked, t:Number(p.t)||Date.now() }));
+    type: TYPES[p.type] ? p.type : 'other', picked:!!p.picked, t:Number(p.t)||Date.now(),
+    ...Object.fromEntries(DKEYS.map(k => [k, String(p[k]||'').slice(0,3000)])) }));
 }
 function merge(incoming){
   let added=0, updated=0;
@@ -417,18 +489,26 @@ function merge(incoming){
 
 $('#share').onclick = async () => {
   const link = location.href.split('#')[0] + '#p=' + b64e(JSON.stringify(slim()));
-  toast(await copy(link) ? 'Link ke-copy — kirim ke Momo 💌' : 'Gagal copy, coba lagi');
+  toast(await copy(link) ? 'Link copied. Send it to Momo 💌' : 'Couldn’t copy, try again');
 };
 $('#wa').onclick = async () => {
   const lines = ['*MOMO ✕ SALSA — Jakarta week* 🇮🇩', ''];
-  [...DAYS, {id:'', label:'IDEAS', title:'belum ada hari', emoji:'💡'}].forEach(d => {
+  [...DAYS, {id:'', label:'IDEAS', title:'no day yet', emoji:'💡'}].forEach(d => {
     const ps = places.filter(p => p.day===d.id);
     if(!ps.length) return;
     lines.push(`*${d.emoji} ${d.label} — ${d.title}*`);
-    ps.forEach(p => lines.push(`${p.picked?'⭐':'•'} ${p.name}${p.note?' — '+p.note:''}\n  ${safeUrl(p.url)||mapsFor(p.name)}`));
+    ps.forEach(p => {
+      lines.push(`${p.picked?'⭐':'•'} *${p.name}*${p.what?' — '+p.what:''}`);
+      if(p.musttry) lines.push(`  Must-try: ${p.musttry}`);
+      if(p.price)   lines.push(`  Price: ${p.price}`);
+      if(p.hours)   lines.push(`  Hours: ${p.hours}`);
+      if(p.addr)    lines.push(`  📍 ${p.addr}`);
+      if(p.note)    lines.push(`  ${p.note}`);
+      lines.push(`  ${safeUrl(p.url)||mapsFor(p.name)}`);
+    });
     lines.push('');
   });
-  toast(await copy(lines.join('\n').trim()) ? 'Ke-copy, tinggal paste di WA ✓' : 'Gagal copy');
+  toast(await copy(lines.join('\n').trim()) ? 'Copied. Paste it into WhatsApp ✓' : 'Couldn’t copy');
 };
 $('#export').onclick = () => {
   const blob = new Blob([JSON.stringify(slim(),null,2)],{type:'application/json'});
@@ -437,8 +517,8 @@ $('#export').onclick = () => {
 $('#importBtn').onclick = () => $('#importFile').click();
 $('#importFile').onchange = async e => {
   const f = e.target.files[0]; if(!f) return;
-  try{ const r = merge(sanitize(JSON.parse(await f.text()))); toast(`+${r.added} baru, ${r.updated} updated`); }
-  catch(err){ toast('File-nya nggak kebaca 😕'); }
+  try{ const r = merge(sanitize(JSON.parse(await f.text()))); toast(`+${r.added} new, ${r.updated} updated`); }
+  catch(err){ toast('Couldn’t read that file 😕'); }
   e.target.value='';
 };
 
@@ -449,9 +529,9 @@ function checkHash(){
   const bn = $('#banner');
   const clear = () => { bn.classList.remove('show'); history.replaceState(null,'',location.pathname+location.search); };
   bn.replaceChildren(
-    el('span',{style:'flex:1;min-width:200px',textContent:`💌 Link ini bawa ${incoming.length} tempat. Gabung ke list kamu?`}),
-    el('button',{className:'btn small',textContent:'Gabung',onclick:()=>{ const r=merge(incoming); toast(`+${r.added} baru, ${r.updated} updated`); clear(); }}),
-    el('button',{className:'btn small',textContent:'Nggak usah',onclick:clear}));
+    el('span',{style:'flex:1;min-width:200px',textContent:`💌 This link has ${incoming.length} places. Merge them into your list?`}),
+    el('button',{className:'btn small',textContent:'Merge',onclick:()=>{ const r=merge(incoming); toast(`+${r.added} new, ${r.updated} updated`); clear(); }}),
+    el('button',{className:'btn small',textContent:'No thanks',onclick:clear}));
   bn.classList.add('show');
 }
 
