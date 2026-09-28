@@ -1,0 +1,64 @@
+# Auto-fill worker
+
+Powers the **✨ Auto-fill from the web** button in `jakarta.html`. You type a place name
+(or paste a Google Maps link) and the form fills in what the place sells, must-try, menu +
+prices, price range, hours, address, and tips, plus the sites the info came from.
+
+How it works: the page sends the name/link to this small Cloudflare Worker. The worker
+expands Maps short links (`maps.app.goo.gl/…`) to get the place name, then asks Gemini to look
+the place up with Google Search and answer in JSON. Your keys stay in the worker, never in the
+public page.
+
+Everything here runs on **free plans**, no credit card:
+
+- **Cloudflare Workers Free**: 100,000 requests a day.
+- **Gemini API free tier** (Google AI Studio): includes Google Search grounding, with a daily
+  limit far above what two people need. If the quota runs out, the button says so; try again later.
+  On the free tier Google may use what you send to improve its products. Here that's only place
+  names and links.
+
+## Setup (~10 minutes, one time)
+
+### 1. Get a Gemini API key
+1. Go to **aistudio.google.com** and sign in with a Google account.
+2. Click **Get API key → Create API key**. Copy it.
+
+### 2. Create the worker
+1. Sign up at **dash.cloudflare.com** (free).
+2. **Workers & Pages → Create → Create Worker** (the "Hello World" starter). Give it a
+   name like `momo-autofill`, then **Deploy**.
+3. Click **Edit code**, delete everything in `worker.js`, paste in the contents of
+   [`worker.js`](worker.js) from this folder, and click **Deploy**.
+
+### 3. Add the secrets
+In the worker: **Settings → Variables and Secrets → Add**:
+
+| Name | Type | Value |
+|---|---|---|
+| `GEMINI_API_KEY` | Secret | the key from step 1 |
+| `PASSCODE` | Secret | any word you like, e.g. `momosalsa` |
+
+Optional:
+
+| Name | Value |
+|---|---|
+| `ALLOWED_ORIGIN` | Only if the page lives somewhere other than `https://salsabillayudha.github.io` |
+| `GEMINI_MODEL` | Defaults to `gemini-2.5-flash`. If Google retires that model, put a current free-tier model name here. |
+
+Click **Deploy** again after adding them.
+
+### 4. Connect the page
+Copy the worker URL (looks like `https://momo-autofill.<you>.workers.dev`). Then either:
+
+- **Easiest:** open `jakarta.html`, tap **＋ Add a place → ✨ Auto-fill**, and paste the URL and
+  passcode when it asks. They're remembered in that browser. Momo does the same once on
+  their phone.
+- **Or** put the URL in `const AUTOFILL_URL = '';` in `jakarta.html`, so only the passcode is asked.
+
+"Change auto-fill setup" under the button clears what that browser remembers.
+
+## Notes
+- The passcode keeps strangers who find the page from using up your free quota.
+- Results come from the web and can be out of date or incomplete. Fields the search couldn't
+  support stay empty rather than being made up, and anything you already typed is never
+  overwritten. Check before you save.

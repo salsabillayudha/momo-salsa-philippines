@@ -31,6 +31,10 @@ Google Maps search. Everything saves in the browser; **Copy share link** packs
 the whole list into the URL so the other person can merge it in, **Copy for
 WhatsApp** gives a pasteable summary, and Export / Import move a JSON file.
 
+**Auto-fill:** the add-a-place form has a **✨ Auto-fill from the web** button. Type a
+name or paste a Google Maps link, and a small free Cloudflare Worker (Gemini + Google Search)
+fills the empty fields. One-time setup is in [`worker/README.md`](worker/README.md).
+
 ## `chat.html` — the conversation reader
 
 A second page that turns a WhatsApp chat export back into a conversation you can

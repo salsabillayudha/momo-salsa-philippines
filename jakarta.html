@@ -165,6 +165,12 @@
   .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .f-acts{display:flex;justify-content:flex-end;gap:8px;margin-top:4px}
   .err{color:var(--pink-deep);font-size:12.5px;font-weight:600;min-height:1em}
+  .autofill{display:grid;gap:6px;padding:12px;border-radius:18px;background:linear-gradient(120deg,var(--pink-soft),var(--lime-soft));border:1px solid var(--glass-line)}
+  .autofill .btn{justify-self:start;background:var(--pill);color:var(--pill-ink);border-color:var(--pill)}
+  .autofill .btn[disabled]{opacity:.6;cursor:wait}
+  .autofill small{font-size:12px;color:#5b5360}
+  .autofill .af-reset{border:0;background:none;padding:0;font-size:11.5px;color:#5b5360;text-decoration:underline;justify-self:start}
+  @media (prefers-color-scheme:dark){.autofill{background:linear-gradient(120deg,#4a2638,#33461a)}.autofill small,.autofill .af-reset{color:var(--muted)}}
 
   /* BANNER + TOAST */
   .banner{display:none;margin-top:16px;padding:14px 16px;border-radius:22px;background:var(--pill);color:var(--pill-ink);font-size:14px;font-weight:500}
@@ -241,6 +247,11 @@
     <h3 id="formTitle">Add a place</h3>
     <label>Place name<input name="name" placeholder="e.g. Kopi Nako Braga" autocomplete="off"></label>
     <label>Link (Maps / IG / website)<input name="url" type="text" inputmode="url" placeholder="https://maps.app.goo.gl/…" autocomplete="off"></label>
+    <div class="autofill">
+      <button type="button" class="btn small" id="afBtn">✨ Auto-fill from the web</button>
+      <small id="afMsg">Type a name (+ city) or paste a Google Maps link, then tap. Empty fields get filled; anything you typed stays.</small>
+      <button type="button" class="af-reset" id="afReset" hidden>Change auto-fill setup</button>
+    </div>
     <div class="row2">
       <label>Day<select name="day" id="daySelect"></select></label>
       <label>Type<select name="type" id="typeSelect"></select></label>
@@ -531,6 +542,57 @@ form.addEventListener('submit', e => {
   save(); renderPlaces(); toast(editing ? 'Updated ✓' : 'Added ✓');
   if(data.day) setTimeout(()=>document.getElementById(data.day)?.scrollIntoView({behavior:'smooth',block:'start'}), 80);
 });
+
+/* ============================================================
+   AUTO-FILL — asks the Cloudflare Worker in /worker (Gemini + Google Search)
+   Put your worker URL here after deploying, or paste it when the page asks.
+   ============================================================ */
+const AUTOFILL_URL = '';
+const AF_URL = 'momo-salsa-autofill-url', AF_PASS = 'momo-salsa-autofill-pass';
+const lsGet = k => { try{ return localStorage.getItem(k) || ''; }catch(e){ return ''; } };
+const lsSet = (k,v) => { try{ v ? localStorage.setItem(k,v) : localStorage.removeItem(k); }catch(e){} };
+function afSetup(){
+  let url = AUTOFILL_URL || lsGet(AF_URL);
+  if(!url){
+    url = (prompt('Auto-fill isn’t set up yet.\nPaste your Cloudflare Worker URL (see worker/README.md):') || '').trim();
+    if(!/^https:\/\//.test(url)) return null;
+    lsSet(AF_URL, url);
+  }
+  let pass = lsGet(AF_PASS);
+  if(!pass){
+    pass = (prompt('Auto-fill passcode:') || '').trim();
+    if(!pass) return null;
+    lsSet(AF_PASS, pass);
+  }
+  $('#afReset').hidden = false;
+  return { url, pass };
+}
+$('#afReset').hidden = !(AUTOFILL_URL || lsGet(AF_URL));
+$('#afReset').onclick = () => { if(!AUTOFILL_URL) lsSet(AF_URL,''); lsSet(AF_PASS,''); $('#afReset').hidden = true; $('#afMsg').textContent = 'Setup cleared. Tap Auto-fill to enter it again.'; };
+$('#afBtn').onclick = async () => {
+  const name = F.name.value.trim(), link = F.url.value.trim(), msg = $('#afMsg'), btn = $('#afBtn');
+  if(!name && !link){ msg.textContent = 'Type a place name or paste a link first.'; return; }
+  const cfg = afSetup(); if(!cfg){ msg.textContent = 'Auto-fill needs the worker URL and passcode.'; return; }
+  btn.disabled = true; btn.textContent = '✨ Searching… (20–40 s)'; msg.textContent = 'Looking it up on the web…';
+  try{
+    const res = await fetch(cfg.url, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ name, link, passcode: cfg.pass }) });
+    const out = await res.json().catch(() => ({}));
+    if(res.status === 401){ lsSet(AF_PASS,''); throw new Error('Wrong passcode. Tap again to re-enter it.'); }
+    if(!res.ok || !out.place) throw new Error(out.error || `Auto-fill failed (${res.status}).`);
+    const p = out.place; let filled = 0;
+    if(!F.name.value.trim() && p.name){ F.name.value = p.name; filled++; }
+    if(p.type && TYPES[p.type] && !editing && F.type.value === 'food') F.type.value = p.type;
+    DKEYS.forEach(k => { if(!F[k].value.trim() && p[k]){ F[k].value = p[k]; filled++; } });
+    // grounding links are long redirect URLs, so keep just the site names
+    const src = [...new Set((out.sources||[]).map(x => (x.title || host(x.uri) || '').trim()).filter(Boolean))];
+    if(src.length && !F.note.value.includes('Sources:')) F.note.value = (F.note.value.trim() ? F.note.value.trim()+'\n' : '') + 'Sources: ' + src.join(', ');
+    msg.textContent = filled ? `Filled ${filled} field${filled>1?'s':''}. Check them, then Save.` : 'Nothing new found. Fields you typed were kept.';
+  }catch(err){
+    msg.textContent = err.message || 'Auto-fill failed.';
+  }finally{
+    btn.disabled = false; btn.textContent = '✨ Auto-fill from the web';
+  }
+};
 
 /* ============================================================
    SHARE / EXPORT / IMPORT
