@@ -269,17 +269,17 @@ const DAYS = [
     items:[['08.30','Breakfast'],['10.00–12.00','🎾 Padel with your friend (tentative)'],['12.00–13.00','Lunch'],['13.00-ish','Head to the station'],['±14.30','Whoosh → Bandung'],['16.00','☕ Coffee'],['17.00–19.00','🧥 Momo’s leather boots + local handmade shopping'],['19.00–20.30','Bandung dinner'],['±20.30/21.00','Whoosh back'],['±22.30','Dharmawangsa. KO.']],
     note:['Tennis?','Drop tennis if padel happens. If padel gets cancelled → tennis at Dharmawangsa is the Sunday-morning backup, and the Bandung plan stays exactly the same.'] },
   { id:'mon5', date:'2026-10-05', label:'Mon, 5 Oct', short:'Mon 5', emoji:'🛒', title:'Domestic night',
-    items:[['Day','You work · Momo free to chill / pool / hotel',1],['After work','🛒 Grocery run'],['Dinner','Dinner in the room'],['Night','Movie / talking / cuddling'],['Late','Early night']] },
+    items:[['Day','Salsa works · Momo free to chill / pool / hotel',1],['After work','🛒 Grocery run'],['Dinner','Dinner in the room'],['Night','Movie / talking / cuddling'],['Late','Early night']] },
   { id:'tue6', date:'2026-10-06', label:'Tue, 6 Oct', short:'Tue 6', emoji:'🏹', title:'Archery + casual date',
     blurb:'Not a whole “activity day”. Just “we finished work and went shooting arrows together.”',
-    items:[['Day','You work',1],['18.30-ish','→ RR Archery Radio Dalam'],['60–90 min','🏹 Archery'],['Dinner','Around Radio Dalam / Cipete'],['After','Dessert / coffee'],['Night','Home']] },
+    items:[['Day','Salsa works',1],['18.30-ish','→ RR Archery Radio Dalam'],['60–90 min','🏹 Archery'],['Dinner','Around Radio Dalam / Cipete'],['After','Dessert / coffee'],['Night','Home']] },
   { id:'wed7', date:'2026-10-07', label:'Wed, 7 Oct', short:'Wed 7', emoji:'🐕', title:'Dogs + books',
-    items:[['Day','You work',1],['After work','🐕 Dog-friendly café / dog community activity'],['Dinner','Casual dinner'],['Ritual','📚 Seats at the Library — each picks a book for the other'],['Night','Hotel']] },
+    items:[['Day','Salsa works',1],['After work','🐕 Dog-friendly café / dog community activity'],['Dinner','Casual dinner'],['Ritual','📚 Seats at the Library — each picks a book for the other'],['Night','Hotel']] },
   { id:'thu8', date:'2026-10-08', label:'Thu, 8 Oct', short:'Thu 8', emoji:'🧖🏻‍♀️', title:'Spa night', chips:['RECOVERY'],
     blurb:'Exists specifically to undo the consequences of padel + archery.',
-    items:[['Day','You work',1],['Evening','🧖🏻‍♀️ Couples spa, ideally 90–120 min'],['After','Nice dinner'],['Night','Hotel · no club, no ambitious activity']] },
+    items:[['Day','Salsa works',1],['Evening','🧖🏻‍♀️ Couples spa, ideally 90–120 min'],['After','Nice dinner'],['Night','Hotel · no club, no ambitious activity']] },
   { id:'fri9', date:'2026-10-09', label:'Fri, 9 Oct', short:'Fri 9', emoji:'🪩', title:'Big date night', chips:['DRESS UP'],
-    items:[['Day','You work',1],['Early eve','Back to hotel, dress up'],['Dinner','Dinner'],['Then','🚌 Double-decker dinner bus'],['Late','🪩 Nightlife / club / live music / creative event'],['Very late','Go home when your souls have left your bodies']] },
+    items:[['Day','Salsa works',1],['Early eve','Back to hotel, dress up'],['Dinner','Dinner'],['Then','🚌 Double-decker dinner bus'],['Late','🪩 Nightlife / club / live music / creative event'],['Very late','Go home when your souls have left your bodies']] },
   { id:'sat10', date:'2026-10-10', label:'Sat, 10 Oct', short:'Sat 10', emoji:'👋', title:'Slow goodbye',
     items:[['Morning','Breakfast'],['Late morning','Pool / lounge'],['Midday','Final lunch'],['After','Pack'],['Later','Airport ✈️']] },
 ];
@@ -313,6 +313,8 @@ const SEED = [
 const KEY = 'momo-salsa-jkt-places-v1';
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7);
 const GONE = KEY + ':removed';
+/* seed notes from before the English switch, so stored copies get replaced */
+const LEGACY_NOTES = { 'seed-halim':'Beli tiket di app Whoosh. Ke pusat kota Bandung biasanya turun Padalarang → KA feeder ke Stasiun Bandung.' };
 let removed = [];
 try{ removed = JSON.parse(localStorage.getItem(GONE)) || []; }catch(e){}
 function load(){
@@ -321,8 +323,11 @@ function load(){
   SEED.forEach((p, i) => {
     if(removed.includes(p.id)) return;
     const same = list.find(x => x.id===p.id || (x.name.toLowerCase()===p.name.toLowerCase() && x.day===p.day));
-    if(!same) list.push({ ...p, picked:false, t:i });
-    else if(same.id !== p.id) same.id = p.id;
+    if(!same) return list.push({ ...p, picked:false, t:i, seedNote:p.note });
+    if(same.id !== p.id) same.id = p.id;
+    // refresh a seeded note you never edited (e.g. after a wording change)
+    if(same.note === (same.seedNote ?? LEGACY_NOTES[p.id])) same.note = p.note;
+    same.seedNote = p.note;
   });
   return list;
 }
