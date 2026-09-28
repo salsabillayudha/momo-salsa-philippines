@@ -28,7 +28,7 @@ the one you picked. Seeded places live in `SEED` in the page with stable ids, so
 new ones show up on the next visit and deleted ones stay deleted.
 Places without a day go in the **Ideas bucket**. No link? The name opens a
 Google Maps search. Everything saves in the browser; **Copy share link** packs
-the whole list into the URL so the other person can merge it in, **Copy buat
+the whole list into the URL so the other person can merge it in, **Copy for
 WhatsApp** gives a pasteable summary, and Export / Import move a JSON file.
 
 ## `chat.html` — the conversation reader
