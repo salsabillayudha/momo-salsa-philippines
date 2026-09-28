@@ -30,6 +30,12 @@ Everything here runs on **free plans**, no credit card:
 3. Click **Edit code**, delete everything in `worker.js`, paste in the contents of
    [`worker.js`](worker.js) from this folder, and click **Deploy**.
 
+**Connected to GitHub instead?** If you created the worker with **Import a repository**
+(the dashboard shows **New deployment** instead of **Edit code**), you don't paste anything:
+[`wrangler.jsonc`](../wrangler.jsonc) at the repo root tells Cloudflare to deploy
+`worker/worker.js`, and every merge to `main` redeploys it. The worker must be named
+`momo-salsa-philippines` (or change `name` in `wrangler.jsonc` to match).
+
 ### 3. Add the secrets
 In the worker: **Settings → Variables and Secrets → Add**:
 

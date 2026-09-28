@@ -1,0 +1,10 @@
+// Cloudflare Workers config for the auto-fill worker (see worker/README.md).
+// The Cloudflare worker "momo-salsa-philippines" is connected to this repo, so every
+// merge to main redeploys worker/worker.js. The website itself stays on GitHub Pages.
+// Secrets (GEMINI_API_KEY, PASSCODE) are set in the Cloudflare dashboard, not here.
+{
+  "name": "momo-salsa-philippines",
+  "main": "worker/worker.js",
+  "compatibility_date": "2026-09-01",
+  "workers_dev": true
+}
