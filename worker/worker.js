@@ -101,7 +101,7 @@ Rules: English only. Use only what the search results support; if you can't find
     data = await res.json();
     if (!res.ok) {
       const msg = data?.error?.message || `Gemini error ${res.status}`;
-      return reply({ error: res.status === 429 ? 'Free quota used up for now. Try again later.' : msg }, 502);
+      return reply({ error: res.status === 429 ? quotaMessage(data) : msg }, 502);
     }
   } catch (e) {
     return reply({ error: 'Could not reach Gemini: ' + e.message }, 502);
@@ -120,6 +120,19 @@ Rules: English only. Use only what the search results support; if you can't find
     .slice(0, 5);
 
   return reply({ place, sources });
+}
+
+/* Turn Gemini's 429 into "which limit, and how long to wait". Google's error carries the
+   quota that ran out (QuotaFailure) and often a retry delay (RetryInfo). */
+export function quotaMessage(data) {
+  const details = (data && data.error && data.error.details) || [];
+  const ids = details.flatMap(d => (d.violations || []).map(v => String(v.quotaId || v.quotaMetric || ''))).join(' ');
+  const retry = details.map(d => d.retryDelay).find(Boolean) || '';
+  const secs = Math.ceil(parseFloat(retry) || 0);
+  if (/PerDay/i.test(ids)) return 'Today’s free Gemini quota is used up. It resets around 14.00 WIB (15.00 WIB from November).';
+  if (/PerMonth/i.test(ids)) return 'This month’s free search quota is used up. It resets at the start of next month.';
+  if (/PerMinute/i.test(ids) || secs) return `Too many lookups in a row. Wait ${secs ? `about ${secs} seconds` : 'a minute'} and try again.`;
+  return 'Free Gemini quota is used up for now. Wait a minute and try again; if it keeps happening, the daily quota resets around 14.00 WIB.';
 }
 
 /* Follow redirects by hand (max 5) and return the final URL. */
