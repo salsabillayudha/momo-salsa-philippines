@@ -49,7 +49,7 @@ Optional:
 | Name | Value |
 |---|---|
 | `ALLOWED_ORIGIN` | Optional lock to specific sites, e.g. `https://salsabillayudha.github.io`. Leave it out and any site can call the worker; the passcode still guards it. |
-| `GEMINI_MODEL` | Defaults to `gemini-3.8-flash`. If Google retires that model, put a current free-tier model name here. |
+| `GEMINI_MODEL` | Defaults to `gemini-3.8-flash`. If it's rate-limited or retired, the worker falls back to `gemini-flash-lite-latest`, then `gemini-flash-latest`. |
 
 Click **Deploy** again after adding them.
 
@@ -79,6 +79,12 @@ Copy the worker URL (looks like `https://momo-autofill.<you>.workers.dev`). Then
   does, the URL saved in the page is probably off, so tap **Change auto-fill setup** and paste it again.
 - **"…not like the auto-fill worker"**: something else is deployed at that URL.
 - **An error that mentions the model**: set `GEMINI_MODEL` to a current free-tier Gemini model.
+
+## Staying under the free limits
+- If a model is rate-limited, the worker tries the next one (Flash-Lite has the roomiest free tier).
+- A lookup is remembered on that phone for 30 days, so asking for the same place again costs nothing.
+- For per-minute limits, the button counts down and retries once by itself. The daily limit resets
+  around 14.00 WIB (midnight Pacific).
 
 ## Notes
 - The passcode keeps strangers who find the page from using up your free quota.

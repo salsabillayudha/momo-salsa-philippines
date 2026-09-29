@@ -742,27 +742,60 @@ function afSetup(){
 }
 $('#afReset').hidden = !(AUTOFILL_URL || lsGet(AF_URL));
 $('#afReset').onclick = () => { if(!AUTOFILL_URL) lsSet(AF_URL,''); lsSet(AF_PASS,''); $('#afReset').hidden = true; $('#afMsg').textContent = 'Setup cleared. Tap Auto-fill to enter it again.'; };
+/* Lookups are remembered on this phone for 30 days, so asking again costs no quota. */
+const AF_CACHE = 'momo-salsa-autofill-cache';
+const afKey = (name, link) => (name.toLowerCase() + '|' + link.replace(/[?#].*$/,'')).trim();
+function afCached(key){
+  const c = readJSON(AF_CACHE, {}), hit = c[key];
+  return hit && Date.now() - hit.at < 30*864e5 ? hit.out : null;
+}
+function afRemember(key, out){
+  const c = readJSON(AF_CACHE, {}); c[key] = { at:Date.now(), out };
+  const keys = Object.keys(c); if(keys.length > 80) keys.sort((a,b) => c[a].at - c[b].at).slice(0, keys.length-80).forEach(k => delete c[k]);
+  try{ localStorage.setItem(AF_CACHE, JSON.stringify(c)); }catch(e){}
+}
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+async function afRequest(cfg, name, link){
+  // text/plain keeps this a "simple" request, so the browser skips the CORS preflight
+  const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 90000);
+  let res;
+  try{
+    res = await fetch(cfg.url, { method:'POST', headers:{'Content-Type':'text/plain;charset=UTF-8'}, body: JSON.stringify({ name, link, passcode: cfg.pass }), signal: ctl.signal });
+  }catch(netErr){
+    throw new Error(netErr.name === 'AbortError'
+      ? 'Took too long (90 s). Try again, maybe with the city in the name.'
+      : `Couldn’t reach the auto-fill worker at ${cfg.url}. Open that URL in your browser: it should say “Auto-fill worker is running”. If it doesn’t, fix the worker; if the URL is wrong, tap “Change auto-fill setup”.`);
+  }finally{ clearTimeout(timer); }
+  const isJson = (res.headers.get('content-type')||'').includes('json');
+  const out = isJson ? await res.json().catch(() => ({})) : {};
+  if(!isJson) throw new Error(`That URL answered, but not like the auto-fill worker (HTTP ${res.status}). Make sure worker.js is pasted and deployed there, or tap “Change auto-fill setup”.`);
+  if(res.status === 401){ lsSet(AF_PASS,''); throw new Error('Wrong passcode. Tap again to re-enter it.'); }
+  return { res, out };
+}
+
 $('#afBtn').onclick = async () => {
   const name = F.name.value.trim(), link = F.url.value.trim(), msg = $('#afMsg'), btn = $('#afBtn');
   if(!name && !link){ msg.textContent = 'Type a place name or paste a link first.'; return; }
-  const cfg = afSetup(); if(!cfg){ msg.textContent = 'Auto-fill needs the worker URL and passcode.'; return; }
-  btn.disabled = true; btn.textContent = '✨ Searching… (20–40 s)'; msg.textContent = 'Looking it up on the web…';
+  const key = afKey(name, link);
+  let out = afCached(key);
+  const cfg = out ? null : afSetup();
+  if(!out && !cfg){ msg.textContent = 'Auto-fill needs the worker URL and passcode.'; return; }
+  btn.disabled = true;
   try{
-    // text/plain keeps this a "simple" request, so the browser skips the CORS preflight
-    const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 90000);
-    let res;
-    try{
-      res = await fetch(cfg.url, { method:'POST', headers:{'Content-Type':'text/plain;charset=UTF-8'}, body: JSON.stringify({ name, link, passcode: cfg.pass }), signal: ctl.signal });
-    }catch(netErr){
-      throw new Error(netErr.name === 'AbortError'
-        ? 'Took too long (90 s). Try again, maybe with the city in the name.'
-        : `Couldn’t reach the auto-fill worker at ${cfg.url}. Open that URL in your browser: it should say “Auto-fill worker is running”. If it doesn’t, fix the worker; if the URL is wrong, tap “Change auto-fill setup”.`);
-    }finally{ clearTimeout(timer); }
-    const isJson = (res.headers.get('content-type')||'').includes('json');
-    const out = isJson ? await res.json().catch(() => ({})) : {};
-    if(!isJson) throw new Error(`That URL answered, but not like the auto-fill worker (HTTP ${res.status}). Make sure worker.js is pasted and deployed there, or tap “Change auto-fill setup”.`);
-    if(res.status === 401){ lsSet(AF_PASS,''); throw new Error('Wrong passcode. Tap again to re-enter it.'); }
-    if(!res.ok || !out.place) throw new Error(out.error || `Auto-fill failed (${res.status}).`);
+    if(!out){
+      btn.textContent = '✨ Searching… (20–40 s)'; msg.textContent = 'Looking it up on the web…';
+      let { res, out: o } = await afRequest(cfg, name, link);
+      // Google said "wait a bit": count down and try once more by ourselves
+      const wait = Number(o.retryAfter) || 0;
+      if(!res.ok && wait > 0 && wait <= 60){
+        for(let s = wait + 1; s > 0; s--){ btn.textContent = `⏳ Busy, retrying in ${s}s…`; msg.textContent = 'Google’s free tier is busy. Hang on, I’ll try again automatically.'; await sleep(1000); }
+        btn.textContent = '✨ Searching… (20–40 s)';
+        ({ res, out: o } = await afRequest(cfg, name, link));
+      }
+      if(!res.ok || !o.place) throw new Error(o.error || `Auto-fill failed (${res.status}).`);
+      out = o; afRemember(key, out);
+    }
     const p = out.place; let filled = 0;
     if(!F.name.value.trim() && p.name){ F.name.value = p.name; filled++; }
     if(p.type && TYPES[p.type] && !editing && F.type.value === 'food') F.type.value = p.type;
