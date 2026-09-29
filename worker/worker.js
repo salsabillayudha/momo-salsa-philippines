@@ -8,10 +8,12 @@
  *   GEMINI_API_KEY   secret, from aistudio.google.com
  *   PASSCODE         secret, anything you like; the page asks for it once
  *   ALLOWED_ORIGIN   optional; comma-separated sites allowed to call this (default: any, the passcode guards it)
- *   GEMINI_MODEL     optional, defaults to gemini-3.8-flash
+ *   GEMINI_MODEL     optional, defaults to gemini-3.8-flash (Flash-Lite and Flash are tried next if it's rate-limited)
  */
 
 const DEFAULT_MODEL = 'gemini-3.8-flash';
+// Tried in order when a model is rate-limited or unavailable. Flash-Lite has the most generous free tier.
+const FALLBACK_MODELS = ['gemini-flash-lite-latest', 'gemini-flash-latest'];
 const TYPES = ['food', 'coffee', 'shop', 'activity', 'night', 'stay', 'other'];
 const FIELDS = ['name', 'type', 'what', 'musttry', 'menu', 'price', 'hours', 'addr', 'tips'];
 
@@ -44,7 +46,7 @@ async function handle(request, env, reply) {
   if (request.method === 'GET') return reply({
     ok: true, message: 'Auto-fill worker is running',
     GEMINI_API_KEY: env.GEMINI_API_KEY ? 'set' : 'MISSING', PASSCODE: env.PASSCODE ? 'set' : 'MISSING',
-    model: env.GEMINI_MODEL || DEFAULT_MODEL,
+    models: modelsFor(env),
   });
   if (request.method !== 'POST') return reply({ error: 'POST only' }, 405);
   if (!env.GEMINI_API_KEY || !env.PASSCODE) return reply({ error: 'Worker is missing GEMINI_API_KEY or PASSCODE. Add them under Settings → Variables and Secrets, then deploy.' }, 500);
@@ -86,26 +88,33 @@ Reply with ONLY one JSON object, no markdown fences, with exactly these string k
 
 Rules: English only. Use only what the search results support; if you can't find something, use "" for it. Never invent prices, hours or menu items. Prices in Indonesian rupiah written like 45k.`;
 
-  const model = env.GEMINI_MODEL || DEFAULT_MODEL;
-  let data;
-  try {
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': env.GEMINI_API_KEY },
-      body: JSON.stringify({
-        contents: [{ role: 'user', parts: [{ text: prompt }] }],
-        tools: [{ google_search: {} }],
-        generationConfig: { temperature: 0.2 },
-      }),
-    });
-    data = await res.json();
-    if (!res.ok) {
-      const msg = data?.error?.message || `Gemini error ${res.status}`;
-      return reply({ error: res.status === 429 ? quotaMessage(data) : msg }, 502);
+  // Try each model until one answers; a rate limit or a retired model moves on to the next.
+  let data, lastErr = null;
+  for (const model of modelsFor(env)) {
+    let res;
+    try {
+      res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': env.GEMINI_API_KEY },
+        body: JSON.stringify({
+          contents: [{ role: 'user', parts: [{ text: prompt }] }],
+          tools: [{ google_search: {} }],
+          generationConfig: { temperature: 0.2 },
+        }),
+      });
+      data = await res.json();
+    } catch (e) {
+      lastErr = { error: 'Could not reach Gemini: ' + e.message };
+      continue;
     }
-  } catch (e) {
-    return reply({ error: 'Could not reach Gemini: ' + e.message }, 502);
+    if (res.ok) { lastErr = null; break; }
+    const msg = data?.error?.message || `Gemini error ${res.status}`;
+    // only per-minute limits are worth an automatic retry; daily/monthly ones won't clear in seconds
+    if (res.status === 429) lastErr = { error: quotaMessage(data), retryAfter: longQuota(data) ? 0 : retrySeconds(data) };
+    else if (res.status === 404 || /not found|no longer available|not supported/i.test(msg)) lastErr = lastErr || { error: msg };
+    else return reply({ error: msg }, 502);
   }
+  if (lastErr) return reply(lastErr, 502);
 
   const cand = data?.candidates?.[0];
   const text = (cand?.content?.parts || []).map(p => p.text || '').join('');
@@ -122,11 +131,25 @@ Rules: English only. Use only what the search results support; if you can't find
   return reply({ place, sources });
 }
 
+function modelsFor(env) {
+  return [...new Set([env.GEMINI_MODEL || DEFAULT_MODEL, ...FALLBACK_MODELS])];
+}
+
+const quotaIds = data => ((data && data.error && data.error.details) || []).flatMap(d => (d.violations || []).map(v => String(v.quotaId || v.quotaMetric || ''))).join(' ');
+const longQuota = data => /PerDay|PerMonth/i.test(quotaIds(data));
+
+/* Seconds Google asks us to wait before retrying, or 0. */
+export function retrySeconds(data) {
+  const details = (data && data.error && data.error.details) || [];
+  const d = details.map(x => x.retryDelay).find(Boolean);
+  return Math.ceil(parseFloat(d) || 0);
+}
+
 /* Turn Gemini's 429 into "which limit, and how long to wait". Google's error carries the
    quota that ran out (QuotaFailure) and often a retry delay (RetryInfo). */
 export function quotaMessage(data) {
   const details = (data && data.error && data.error.details) || [];
-  const ids = details.flatMap(d => (d.violations || []).map(v => String(v.quotaId || v.quotaMetric || ''))).join(' ');
+  const ids = quotaIds(data);
   const retry = details.map(d => d.retryDelay).find(Boolean) || '';
   const secs = Math.ceil(parseFloat(retry) || 0);
   if (/PerDay/i.test(ids)) return 'Today’s free Gemini quota is used up. It resets around 14.00 WIB (15.00 WIB from November).';
