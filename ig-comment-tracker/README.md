@@ -4,27 +4,33 @@ Mengumpulkan komentar (termasuk balasan) yang ditulis sebuah akun Instagram di p
 
 Instagram tidak punya fitur "semua komentar @x", jadi tool ini membuka setiap post dari akun-akun tersebut lalu memfilter komentar milik target. Komentar di akun yang tidak dia follow tidak akan tertangkap.
 
-## Setup
+## Jalan di GitHub (tanpa laptop)
+
+Simpan tool ini di repo **private**, karena hasilnya di-commit ke repo.
+
+1. **Settings → Secrets and variables → Actions → Secrets**, tambahkan:
+   - `IG_USERNAME`: username akun cadangan untuk login
+   - `IG_PASSWORD`: password akun itu (**2FA harus mati**)
+2. Di halaman yang sama, buka tab **Variables** dan tambahkan:
+   - `IG_TARGET`: username yang mau dilacak (tanpa @)
+   - `IG_DAYS` (opsional): default 180
+3. **Actions → Scan comments → Run workflow.** Untuk uji coba, isi menit dengan `10`.
+4. Hasilnya ada di folder `results/` di repo. File `<target>_comments.csv` bisa langsung dibaca di GitHub sebagai tabel.
+
+Setelah itu workflow jalan sendiri 2x sehari dan melanjutkan dari titik terakhir sampai semua akun selesai di-scan. Kalau sudah selesai, setiap run hanya memakan sekitar 1 menit.
+
+Kalau login ditolak dengan pesan "checkpoint", buka aplikasi Instagram dengan akun cadangan itu, pilih "Ini saya" pada notifikasi login, lalu jalankan workflow lagi.
+
+Kuota gratis GitHub Actions untuk repo private adalah 2.000 menit per bulan. Setiap run dibatasi 100 menit, jadi kuota cukup untuk sekitar 9 hari scanning penuh.
+
+## Jalan di komputer
 ```bash
 pip install -r requirements.txt
-```
-
-## Pakai
-```bash
 python ig_comment_tracker.py USERNAME_TARGET --login AKUN_CADANGANMU
 ```
-Run pertama akan meminta password (dan 2FA kalau ada). Sesi login disimpan, jadi run berikutnya tidak perlu login lagi.
-
-Opsi:
-- `--days 180`: seberapa jauh ke belakang (default 180 = 6 bulan)
-- `--max-followees 50`: hanya scan 50 akun pertama, berguna untuk uji coba
-- `--db`, `--csv`: nama file progress dan output (default `<target>.db` dan `<target>_comments.csv`)
-
-## Output
-`<target>_comments.csv` berisi kolom waktu komentar, pemilik post, link post, tanggal post, isi komentar, jumlah like, apakah balasan, dan komentar yang dibalas. File ini bisa langsung dibuka di Excel atau Google Sheets.
+Opsi: `--days 180`, `--max-followees 50`, `--max-minutes 60`, `--db`, `--csv`. Progress tersimpan, jadi kalau berhenti (kena rate-limit atau Ctrl+C) cukup jalankan perintah yang sama untuk melanjutkan.
 
 ## Penting
 - **Pakai akun cadangan.** Akun yang dipakai login bisa kena limit, checkpoint, atau banned.
-- **Prosesnya lambat.** Akun dengan banyak post dan komentar bisa memakan waktu berjam-jam sampai berhari-hari.
-- **Bisa dilanjutkan.** Kalau kena rate-limit atau di-Ctrl+C, progress tetap tersimpan. Tunggu beberapa jam lalu jalankan perintah yang sama, dan scan akan lanjut dari titik terakhir. CSV selalu ditulis ulang di akhir setiap run.
-- Akun private yang tidak di-follow oleh akun login akan dilewati. Kalau target sendiri private, akun login harus follow target dulu.
+- Akun private yang tidak di-follow oleh akun login akan dilewati.
+- Akun yang gagal di-scan dicoba sekali lagi di run berikutnya, setelah itu dilewati.

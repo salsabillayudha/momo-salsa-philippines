@@ -1,0 +1,73 @@
+name: Scan comments
+
+on:
+  workflow_dispatch:
+    inputs:
+      minutes:
+        description: "How long this run may scan (minutes)"
+        default: "100"
+  schedule:
+    # twice a day, continuing where the last run stopped; finishes in about a minute once everything is scanned
+    - cron: "17 3,15 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: scan
+
+jobs:
+  scan:
+    if: vars.IG_TARGET != ''
+    runs-on: ubuntu-latest
+    env:
+      IG_TARGET: ${{ vars.IG_TARGET }}
+      IG_DAYS: ${{ vars.IG_DAYS || '180' }}
+      IG_USERNAME: ${{ secrets.IG_USERNAME }}
+      MINUTES: ${{ inputs.minutes || '100' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Restore login session
+        uses: actions/cache/restore@v4
+        with:
+          path: session
+          key: ig-session-${{ github.run_id }}
+          restore-keys: ig-session-
+
+      - name: Scan
+        timeout-minutes: 120
+        env:
+          IG_PASSWORD: ${{ secrets.IG_PASSWORD }}
+        run: |
+          T=$(echo "$IG_TARGET" | tr -d '@' | tr 'A-Z' 'a-z')
+          mkdir -p results session
+          python ig_comment_tracker.py "$T" --login "$IG_USERNAME" --days "$IG_DAYS" \
+            --max-minutes "$MINUTES" --session-file session/ig-session \
+            --db "results/$T.db" --csv "results/${T}_comments.csv"
+
+      - name: Save login session
+        if: always() && hashFiles('session/ig-session') != ''
+        uses: actions/cache/save@v4
+        with:
+          path: session
+          key: ig-session-${{ github.run_id }}
+
+      - name: Commit results
+        if: always()
+        run: |
+          T=$(echo "$IG_TARGET" | tr -d '@' | tr 'A-Z' 'a-z')
+          [ -f "results/$T.db" ] || exit 0
+          python ig_comment_tracker.py "$T" --login "$IG_USERNAME" --export-only \
+            --db "results/$T.db" --csv "results/${T}_comments.csv"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results
+          git diff --cached --quiet || { git commit -m "Scan results for $T" && git push; }

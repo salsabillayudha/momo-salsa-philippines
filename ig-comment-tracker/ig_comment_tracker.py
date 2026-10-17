@@ -11,23 +11,27 @@ started again and it picks up where it stopped.
 
 import argparse
 import csv
+import os
 import sqlite3
 import sys
+import time
 from datetime import datetime, timedelta, timezone
 
 import instaloader
 from instaloader.exceptions import (
     ConnectionException,
     InstaloaderException,
+    BadCredentialsException,
     LoginRequiredException,
     TooManyRequestsException,
+    TwoFactorAuthRequiredException,
 )
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS accounts (
     username   TEXT PRIMARY KEY,
     position   INTEGER,
-    status     TEXT DEFAULT 'pending'   -- pending | done | private | error
+    status     TEXT DEFAULT 'pending'   -- pending | done | private | error | failed
 );
 CREATE TABLE IF NOT EXISTS scanned_posts (
     shortcode  TEXT PRIMARY KEY,
@@ -58,6 +62,18 @@ class RateLimited(Exception):
     pass
 
 
+class TimeUp(Exception):
+    pass
+
+
+DEADLINE = None
+
+
+def check_deadline():
+    if DEADLINE and time.monotonic() > DEADLINE:
+        raise TimeUp
+
+
 def log(msg):
     print(f"[{datetime.now():%H:%M:%S}] {msg}", flush=True)
 
@@ -71,13 +87,29 @@ def open_db(path):
 def login(loader, username, session_file):
     try:
         loader.load_session_from_file(username, session_file)
-        log(f"Session loaded for @{username}")
+        if (loader.test_login() or "").lower() == username.lower():
+            log(f"Session loaded for @{username}")
+            return
+        log("Saved session has expired")
     except FileNotFoundError:
-        log(f"No saved session for @{username}, logging in")
-        loader.interactive_login(username)
-        loader.save_session_to_file(session_file)
-    if loader.test_login() != username:
-        sys.exit("Login check failed. Delete the session file and log in again.")
+        pass
+
+    log(f"Logging in as @{username}")
+    password = os.environ.get("IG_PASSWORD")
+    try:
+        if password:
+            loader.login(username, password)
+        else:
+            loader.interactive_login(username)
+    except TwoFactorAuthRequiredException:
+        sys.exit("This account has two-factor login on. Use a spare account with 2FA turned off.")
+    except BadCredentialsException:
+        sys.exit("Wrong password.")
+    except ConnectionException as e:
+        sys.exit(f"Instagram refused the login: {e}\n"
+                 "If it mentions a checkpoint, open Instagram on your phone with this account, "
+                 "approve the login ('This was me'), then run again.")
+    loader.save_session_to_file(session_file)
 
 
 def load_accounts(db, loader, target, max_followees):
@@ -152,6 +184,7 @@ def scan_account(db, loader, username, target, cutoff):
                 break
             continue
         old_in_a_row = 0
+        check_deadline()
 
         if db.execute("SELECT 1 FROM scanned_posts WHERE shortcode = ?", (post.shortcode,)).fetchone():
             continue
@@ -190,12 +223,26 @@ def main():
     parser.add_argument("--db", help="progress database (default <target>.db)")
     parser.add_argument("--csv", help="output CSV (default <target>_comments.csv)")
     parser.add_argument("--session-file", help="where to keep the login session (default instaloader's location)")
+    parser.add_argument("--max-minutes", type=int, default=0, help="stop cleanly after this long (0 = no limit)")
+    parser.add_argument("--export-only", action="store_true", help="just rewrite the CSV from the database")
     args = parser.parse_args()
 
     target_name = args.target.lstrip("@").lower()
     db = open_db(args.db or f"{target_name}.db")
     csv_path = args.csv or f"{target_name}_comments.csv"
     cutoff = datetime.now(timezone.utc) - timedelta(days=args.days)
+
+    if args.export_only:
+        export_csv(db, csv_path)
+        return
+    queued = db.execute("SELECT COUNT(*), SUM(status IN ('pending', 'error')) FROM accounts").fetchone()
+    if queued[0] and not queued[1]:
+        log("Every account is already scanned; nothing left to do")
+        export_csv(db, csv_path)
+        return
+    if args.max_minutes:
+        global DEADLINE
+        DEADLINE = time.monotonic() + args.max_minutes * 60
 
     loader = instaloader.Instaloader(
         download_pictures=False, download_videos=False, download_video_thumbnails=False,
@@ -210,20 +257,22 @@ def main():
         load_accounts(db, loader, target, args.max_followees)
 
         pending = db.execute(
-            "SELECT username FROM accounts WHERE status IN ('pending', 'error') ORDER BY position"
+            "SELECT username, status FROM accounts WHERE status IN ('pending', 'error') ORDER BY position"
         ).fetchall()
         total = db.execute("SELECT COUNT(*) FROM accounts").fetchone()[0]
         log(f"Looking back to {cutoff:%Y-%m-%d}; {len(pending)} of {total} accounts left")
 
-        for i, (username,) in enumerate(pending, 1):
+        for i, (username, previous) in enumerate(pending, 1):
+            check_deadline()
             log(f"[{total - len(pending) + i}/{total}] @{username}")
             try:
                 status, found = scan_account(db, loader, username, target, cutoff)
             except (TooManyRequestsException, ConnectionException, LoginRequiredException) as e:
                 raise RateLimited(e)
             except InstaloaderException as e:
-                log(f"  skipped: {e}")
-                status, found = "error", 0
+                # one retry on a later run, then give up on this account
+                status, found = ("failed" if previous == "error" else "error"), 0
+                log(f"  skipped ({status}): {e}")
             if status == "private":
                 log("  private account, skipped")
             elif found:
@@ -234,6 +283,8 @@ def main():
     except RateLimited as e:
         log(f"Instagram stopped answering ({e}).")
         log("Progress is saved. Wait a few hours, then run the same command again to continue.")
+    except TimeUp:
+        log(f"Reached the {args.max_minutes}-minute limit; the next run continues from here.")
     except KeyboardInterrupt:
         log("Stopped. Progress is saved; run the same command again to continue.")
     finally:
