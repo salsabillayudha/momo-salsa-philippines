@@ -1,0 +1,4 @@
+# results and login sessions stay on your machine
+*.db
+*.csv
+session-*
