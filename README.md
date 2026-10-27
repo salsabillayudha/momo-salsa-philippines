@@ -79,6 +79,25 @@ the repo can stay public — but the ciphertext is public and permanent in git h
 so the passphrase is the whole defence. Use a long one, keep it somewhere safe, and
 know there is no reset.
 
+## `latihan/` — 16-week strength tracker (PWA)
+
+A phone-first, offline logbook for the 16-week program (LOWER A / UPPER / LOWER B, three
+blocks, deloads in weeks 6 and 12). Open `latihan/` on the phone and "Add to Home Screen".
+
+- When you log an exercise, the last session's numbers sit right above the input:
+  `Terakhir: 8kg × 12, 12, 10`.
+- **Double progression:** once all prescribed sets are logged, every set at the top of the
+  range means *Naikin beban sesi depan* (+2,5 kg compound / +1 kg isolation), and any set
+  below the range means the same weight. The suggestion is saved and prefilled next session.
+- The rest timer starts on every logged set (120 s compound, 90 s isolation), then vibrates and beeps.
+- Exercise history and body metrics have charts. JSON export/import is under **Program**.
+
+All data lives in the phone's IndexedDB. Nothing is sent anywhere, so export a backup now and then.
+
+Source is in `latihan-app/` (React + Vite + TypeScript, Dexie, Recharts). `npm ci && npm run build`
+writes the site into `latihan/`, which is committed so GitHub Pages serves it with no build step.
+`npm test` runs the progression and formatting tests.
+
 ## Edit the countdown date
 Open `index.html`, find the line near the bottom that starts with `var DEPARTURE =`
 and set it to the real Day-1 arrival date/time (Philippines time, `+08:00`).
