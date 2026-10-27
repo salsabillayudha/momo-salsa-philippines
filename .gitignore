@@ -2,3 +2,6 @@
 chat.txt
 *_chat*.txt
 *.zip
+
+# latihan-app build deps
+latihan-app/node_modules
