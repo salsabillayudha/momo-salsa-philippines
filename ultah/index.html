@@ -152,7 +152,7 @@ section{padding:72px 18px;max-width:1040px;margin:0 auto}
 .stamp p{font-size:19.5px;color:var(--ink);margin-bottom:14px}
 .stamp .sign{font-family:var(--hand);font-size:28px;color:var(--red);text-align:right;margin-top:16px;line-height:1.1}
 .stamp .bow{position:absolute;font-size:22px}
-.letter-side{position:relative;padding-top:40px}
+.letter-side{position:sticky;top:40px;padding-top:40px}
 .letter-side .polaroid{width:92%;margin-left:-6%;transform:rotate(5deg);z-index:2}
 .cassette{display:block;width:62%;margin:-22px 0 0 18%;transform:rotate(-6deg);position:relative;z-index:3;cursor:pointer;background:none;border:0;-webkit-tap-highlight-color:transparent;transition:transform .25s}
 .cassette:hover{transform:rotate(-3deg) scale(1.03)}
@@ -381,14 +381,34 @@ const CONFIG = {
   clip: { src: "clip.mp4", poster: "clip-poster.jpg", caption: "us, being silly" },
 
   letter: {
-    dear: "Dear baba,",
+    dear: "To my dearest Momo,",
     paragraphs: [
-      "Happy 31st birthday. I wish I could be there to wake you up and have one of our quiet breakfasts together — I miss those too, every single morning.",
-      "Thank you for taking such good care of me: for asking if I ate, how my day was, how I'm feeling, even on the days you're the one who isn't well. Thank you for being proud of me, and for letting me be so proud of you.",
-      "I hope 31 brings you everything you've been working so hard for — the recognition you deserve, a little more rest, and a lot more of us. Wherever we end up next, I just want to be there with you.",
-      "I'm so lucky, baba. Always.",
+      "Happy birthday, my love.",
+      "I’ve been thinking about what to write to you, and it’s funny because I always have so many things going on in my head, but somehow, when it comes to telling you how much you mean to me, I never really know where to start.",
+      "Sometimes I wonder how two people who grew up in different places, lived entirely different lives, and probably never even imagined meeting each other somehow ended up here. Out of all the people we could’ve crossed paths with, somehow, I found you.",
+      "And I’m so, so grateful that I did.",
+      "It’s funny how someone who was once a complete stranger can become someone you want to tell everything to. Someone you look for when something good happens, when you’ve had a terrible day, or even when you have absolutely nothing to talk about but still want to hear their voice.",
+      "That’s what you’ve become to me, baby. And I don’t think you realize just how much you mean to me.",
+      "I know I’m not always the best at expressing how I feel. Sometimes I overthink, sometimes I get scared, and sometimes I don’t even understand my own feelings. But please know that beneath all of that, there’s someone who loves you very sincerely.",
+      "I don’t know what the future holds for us. I wish I did. I wish I could skip ahead and see that everything works out, that one day all this distance will just be a story we tell each other while we’re lying next to each other.",
+      "But life doesn’t really give us that kind of certainty, does it?",
+      "What I do know is that right now, I love you. So much. And I don’t want my fears about tomorrow to take away from how grateful I am to have you today.",
+      "But enough about me. It’s your birthday, baby. And I have so many things I wish for you.",
+      "I hope this year brings you all the good things you’ve been hoping and praying for, even the ones you don’t always talk about. I hope everything you’ve been working so hard for slowly finds its way to you. I hope life surprises you with beautiful things, with opportunities you never expected, and with so many little moments that make you genuinely happy.",
+      "I hope you’re always surrounded by people who love you, appreciate you, and make you feel like you never have to be anyone other than yourself.",
+      "And I hope that even when life gets difficult, you’ll always find your way back to happiness. That you’ll have peace in your heart, reasons to laugh, and people to lean on when things feel a little too heavy.",
+      "Sometimes I wish I could just gather every good thing in this world and give it all to you. I know that’s impossible, but I really do wish life would be extra kind to you. Because if there’s one thing I want for you, it’s for you to have a beautiful, happy life. One that you genuinely love living.",
+      "And selfishly, I hope I get to be part of it.",
+      "I hope I get to celebrate so many more birthdays with you, watch you achieve the things you’ve always wanted, and be there for all the little things in between. I hope one day I won’t have to wish you a happy birthday from thousands of miles away. That I can just roll over, kiss your face, annoy you a little, and tell you how much I love you.",
+      "Until then, I hope you know that there’s a girl here in Jakarta who’s so incredibly happy that you exist. Who thinks about you more than you probably realize, and who wishes nothing but the very best for you, every single day.",
+      "I’m so happy you were born, Momo. I’m happy that out of all the people in this world, I got to know you, to love you, and to be loved by you.",
+      "Happy birthday, my sweetest boy.",
+      "I hope this year loves you a little extra. I hope life is gentle with you, your heart stays happy, and every beautiful thing that’s meant for you finds its way to you.",
+      "And more than anything, I hope you never forget how much you are loved.",
+      "Especially by me. Obviously.",
+      "I love you, baby. More than I probably know how to put into words.",
     ],
-    sign: "Love you so much,\nyour cutie, Salsa",
+    sign: "Yours,\nSalsa ♡",
     photo: "photos/2.jpg",
     photoCaption: "always yours",
   },
