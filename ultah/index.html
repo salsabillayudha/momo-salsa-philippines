@@ -115,6 +115,7 @@ section{padding:72px 18px;max-width:1040px;margin:0 auto}
 .mem .polaroid{transform:rotate(-3.5deg)}
 .mem h2{font-family:var(--serif);font-style:italic;font-weight:500;font-size:clamp(26px,4vw,34px);line-height:1.15;margin-bottom:10px;color:#fff}
 .mem p{color:#fbe3e3;font-size:20px}
+.mem p+p,.page p+p{margin-top:12px}
 .kicker{font-family:var(--hand);font-size:22px;color:var(--gold);display:block;margin-bottom:2px}
 
 /* film strip */
@@ -265,7 +266,7 @@ footer .big{font-family:var(--serif);font-style:italic;font-size:clamp(30px,6vw,
       <div class="page l">
         <div class="age"><span id="age"></span><span class="cake">🎂</span></div>
         <h1 id="headline"></h1>
-        <p id="intro-text"></p>
+        <div id="intro-text"></div>
         <div class="date" id="date"></div>
         <span class="sticker" style="right:22px;bottom:18px;transform:rotate(-12deg)">🎀</span>
       </div>
@@ -356,23 +357,50 @@ const CONFIG = {
   date: "4 November 2026",
   from: "Salsa",
   headline: "Happy birthday, baba",
-  intro: "Thirty-one looks so good on you. I can't be there to kiss you good morning today, so I made you this little thing instead.",
+  intro: [
+    "31 looks so good on you, baba.",
+    "I wish I could be there to kiss you good morning, annoy you with a thousand kisses, and remind you how loved you are. But since I can’t, I made you this little something instead.",
+    "Happy birthday, my sweetest boy. ♡",
+  ],
   label: "my favourite",
   cover: { photo: "photos/7.jpg", caption: "cheek to cheek ♡" },
 
   memories: [
     { photo: "photos/5.jpg", caption: "us, being us", kicker: "where it started",
       title: "Bali",
-      text: "Where it all began. A few days that turned into weeks of you texting me “I miss being with you in Bali.” Me too, baba. Me too." },
+      text: [
+        "Funny how we had absolutely no idea what was coming, huh?",
+        "Just two people who happened to cross paths in Bali, not knowing that a few days together would turn into something so much more.",
+        "And somehow, out of all the people I could’ve met, I met you.",
+        "My favorite little coincidence. ♡",
+      ] },
     { photo: "photos/3.jpg", caption: "summer with you", kicker: "two whole weeks",
       title: "Dubai, every single day",
-      text: "Two weeks of waking up next to you, pool days, slow breakfasts and doing absolutely nothing together. You said you were grateful we got to spend all day, every day together. So was I." },
+      text: [
+        "Two weeks of waking up next to you, slow mornings, pool days, and doing absolutely nothing together.",
+        "I remember you telling me how grateful you were that we got to spend every single day together.",
+        "I don’t think I ever told you how much those ordinary little days meant to me.",
+        "I’d relive them a thousand times. With you, obviously.",
+      ] },
     { photo: "photos/8.jpg", caption: "mirror, mirror", kicker: "my turn to host",
       title: "You, in my city",
-      text: "You came all the way to Jakarta. Padel, late dinners, me dragging you to all my places — and you fit into every one of them like you'd always been there." },
+      text: [
+        "And then it was my turn to have you here.",
+        "Taking you to my favorite places, dragging you around Jakarta, having late dinners, and getting to show you little pieces of my everyday life.",
+        "I think my favorite part was how natural it all felt.",
+        "Like you belonged in those little moments with me.",
+        "And I wish we had more time. ♡",
+      ] },
     { photo: "photos/1.jpg", caption: "my monkey 🐒", kicker: "the little things",
-      title: "Why I love you",
-      text: "How you ask if I've eaten and if I took my medicine. How you say “baby girl.” How you're proud of me out loud. How you send me job links at 7pm. And how you're always the hugging one — my monkey." },
+      title: "Reasons why I love you ♡",
+      text: [
+        "I love the little things about you, baba. How you check on me, remind me to take care of myself, and somehow make me feel loved even when we’re miles apart.",
+        "I love how you believe in me, how you remind me that I deserve to be loved the way I want to, and how you make even the most ordinary conversations feel special.",
+        "I love your affectionate side, your silly little moments, and how you never seem to run out of kisses and hugs for me.",
+        "But most of all, I love getting to know you. Not just the sweet, romantic side of you, but the real you. The one with his own dreams, worries, little habits, and imperfections.",
+        "And I hope you know that you don’t have to do anything extraordinary for me to love you.",
+        "I just love you for being you, baby. ♡",
+      ] },
   ],
 
   filmTitle: "a few of my favourite frames",
@@ -441,7 +469,8 @@ function build(){
   $('#toLine').textContent = `for ${C.name}`;
   $('#age').textContent = C.age;
   $('#headline').textContent = C.headline;
-  $('#intro-text').textContent = C.intro;
+  const paras = x => [].concat(x).map(t => `<p>${esc(t)}</p>`).join('');
+  $('#intro-text').innerHTML = paras(C.intro);
   $('#date').textContent = C.date;
   $('#label').textContent = C.label;
   const cov = $('#coverPhoto'); cov.append(el('span','tape')); fillPolaroid(cov, C.cover.photo, C.cover.caption);
@@ -452,7 +481,7 @@ function build(){
     const row = el('div','mem');
     const fig = el('figure','polaroid rv'); fig.append(el('span','tape')); fillPolaroid(fig, m.photo, m.caption);
     const txt = el('div','rv');
-    txt.innerHTML = `<span class="kicker">${esc(m.kicker||'')}</span><h2>${esc(m.title)}</h2><p>${esc(m.text)}</p>`;
+    txt.innerHTML = `<span class="kicker">${esc(m.kicker||'')}</span><h2>${esc(m.title)}</h2>${paras(m.text)}`;
     row.append(fig, txt); mem.append(row);
   });
 
