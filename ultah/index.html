@@ -567,7 +567,7 @@ $('#again').addEventListener('click', () => {
 });
 
 build();
-const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold:.18 });
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold:0, rootMargin:'0px 0px -12% 0px' });
 document.querySelectorAll('.rv').forEach(n => io.observe(n));
 </script>
 </body>
