@@ -1,0 +1,550 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Happy Birthday, Momo</title>
+<meta name="description" content="A little letter for Momo's birthday.">
+<meta name="theme-color" content="#9e1320">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💌</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;1,500&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   ✏️  EDIT EVERYTHING IN THE CONFIG <script> AT THE BOTTOM.
+   Photos go in ultah/photos/ (1.jpg, 2.jpg, ...).
+   Optional song: ultah/song.mp3 (tap the cassette to play).
+   ============================================================ */
+:root{
+  --red:#9e1320; --red-2:#b81b2a; --red-deep:#6e0a14;
+  --paper:#fbf6ee; --paper-2:#f3eadb; --ink:#3b1519; --ink-soft:#6b4347;
+  --gold:#e7b24a; --pink:#f3b7bf; --cream:#fff8ec;
+  --serif:'Playfair Display',Georgia,serif;
+  --body:'Cormorant Garamond',Georgia,serif;
+  --hand:'Caveat','Comic Sans MS',cursive;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--red);color:var(--cream);font-family:var(--body);
+  font-size:19px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  background-image:
+    radial-gradient(120% 80% at 50% 0%, #b81b2a 0%, transparent 60%),
+    radial-gradient(100% 60% at 50% 100%, #7d0d17 0%, transparent 70%);
+  background-attachment:fixed;
+}
+body.locked{overflow:hidden;height:100svh}
+/* soft paper grain */
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.07;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* ---------------- INTRO / ENVELOPE ---------------- */
+#intro{position:fixed;inset:0;z-index:20;display:grid;place-items:center;transition:opacity .9s ease, visibility .9s}
+#intro.gone{opacity:0;visibility:hidden}
+.stage{position:relative;width:min(560px,92vw);aspect-ratio:1.5;display:grid;place-items:center;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.stage:focus-visible{outline:2px dashed var(--cream);outline-offset:12px;border-radius:12px}
+.env{position:relative;width:62%;aspect-ratio:1.55;perspective:900px;z-index:2;animation:bob 3.2s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-6px) rotate(-.6deg)}}
+.env-back{position:absolute;inset:0;background:#efe4d3;border-radius:6px;box-shadow:0 22px 40px -12px rgba(40,0,6,.55)}
+.card{position:absolute;left:7%;right:7%;top:8%;height:84%;background:var(--paper);border-radius:4px;
+  display:grid;place-items:center;text-align:center;color:var(--red);transition:transform .9s cubic-bezier(.2,.8,.2,1) .45s;
+  box-shadow:0 2px 6px rgba(0,0,0,.08);z-index:1}
+.card b{font-family:var(--hand);font-weight:700;font-size:clamp(22px,5.4vw,34px);line-height:1}
+.card small{display:block;font-family:var(--body);font-style:italic;color:var(--ink-soft);font-size:clamp(11px,2.4vw,14px);margin-top:4px}
+.env-front{position:absolute;inset:0;z-index:2;pointer-events:none}
+.env-front svg{width:100%;height:100%;display:block}
+.flap{position:absolute;left:0;right:0;top:0;height:58%;transform-origin:top center;transition:transform .6s ease-in, z-index 0s .3s;z-index:3}
+.flap svg{width:100%;height:100%;display:block;filter:drop-shadow(0 3px 3px rgba(60,10,14,.18))}
+.seal{position:absolute;left:50%;top:86%;width:16%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#d6303e,#8e0f1b 70%);display:grid;place-items:center;color:#ffd9de;font-size:clamp(12px,2.6vw,18px);
+  box-shadow:0 2px 4px rgba(0,0,0,.25), inset 0 0 0 3px rgba(255,255,255,.08)}
+.opened .flap{transform:rotateX(180deg);z-index:0}
+.opened .seal{opacity:0;transition:opacity .2s}
+.opened .card{transform:translateY(-62%)}
+.opened .env{animation:none}
+
+.bouquet{position:absolute;right:-2%;top:2%;width:38%;z-index:3;transform:rotate(14deg);filter:drop-shadow(0 14px 18px rgba(40,0,6,.45));transition:transform .8s ease}
+.camera{position:absolute;left:0;bottom:8%;width:25%;z-index:3;transform:rotate(-10deg);filter:drop-shadow(0 12px 14px rgba(40,0,6,.45));transition:transform .8s ease}
+.opened .bouquet{transform:rotate(22deg) translate(14%,-6%)}
+.opened .camera{transform:rotate(-16deg) translate(-14%,6%)}
+.hint{position:absolute;left:0;right:0;bottom:-34px;text-align:center;font-family:var(--hand);font-size:22px;color:var(--cream);opacity:.9;animation:pulse 1.8s ease-in-out infinite}
+.opened .hint,.opened .to{opacity:0;animation:none;transition:opacity .3s}
+@keyframes pulse{50%{opacity:.45}}
+.to{position:absolute;top:-56px;left:0;right:0;text-align:center;font-family:var(--serif);font-style:italic;font-size:clamp(18px,4vw,24px);color:var(--cream);opacity:.92}
+
+/* ---------------- MAIN ---------------- */
+main{opacity:0;transition:opacity 1s ease .1s}
+main.show{opacity:1}
+section{padding:72px 18px;max-width:1040px;margin:0 auto}
+
+/* notebook */
+.nb-wrap{min-height:100svh;display:grid;place-items:center;padding-top:40px;padding-bottom:40px}
+.notebook{position:relative;display:grid;grid-template-columns:1fr 34px 1fr;width:min(940px,100%);
+  filter:drop-shadow(0 30px 40px rgba(40,0,6,.5));transform:rotate(-1deg)}
+.page{background:var(--paper);color:var(--ink);padding:clamp(26px,5vw,52px);min-height:440px;position:relative;
+  background-image:repeating-linear-gradient(transparent 0 31px, rgba(158,19,32,.07) 31px 32px)}
+.page.l{border-radius:10px 2px 2px 10px}
+.page.r{border-radius:2px 10px 10px 2px}
+.rings{background:linear-gradient(90deg,var(--paper-2),#e2d6c2 50%,var(--paper-2));display:flex;flex-direction:column;justify-content:space-around;align-items:center;padding:18px 0}
+.ring{width:46px;height:12px;border-radius:8px;border:3px solid #9a9a9a;border-color:#b9b9b9 #8a8a8a #6f6f6f #8a8a8a;background:transparent;box-shadow:0 1px 1px rgba(0,0,0,.2)}
+.age{font-family:var(--serif);font-weight:800;color:var(--red);font-size:clamp(88px,15vw,150px);line-height:.9;letter-spacing:-.03em;display:flex;align-items:flex-start;gap:6px}
+.age .cake{font-size:.32em;transform:rotate(12deg);margin-top:.2em}
+.page h1{font-family:var(--serif);font-style:italic;font-weight:500;font-size:clamp(26px,4vw,36px);color:var(--red);margin:14px 0 10px;line-height:1.1}
+.page p{font-size:19px;color:var(--ink-soft)}
+.page .date{font-family:var(--hand);font-size:22px;color:var(--red);margin-top:18px}
+.sticker{position:absolute;font-size:30px;filter:drop-shadow(0 2px 2px rgba(0,0,0,.15))}
+.page.r{display:grid;place-items:center}
+.page.r .polaroid{width:min(300px,86%);transform:rotate(3deg)}
+.page.r .label{position:absolute;z-index:3;top:26px;right:26px;background:var(--red);color:var(--cream);font-family:var(--hand);font-size:20px;padding:2px 14px 4px;transform:rotate(6deg);border-radius:3px;box-shadow:0 2px 4px rgba(0,0,0,.2)}
+
+/* polaroid */
+.polaroid{background:#fff;padding:10px 10px 0;box-shadow:0 14px 28px -8px rgba(30,0,4,.45),0 2px 4px rgba(0,0,0,.12);position:relative}
+.polaroid .ph{aspect-ratio:1;overflow:hidden;background:#ead7cf}
+.polaroid img{width:100%;height:100%;object-fit:cover;display:block}
+.polaroid figcaption{font-family:var(--hand);color:var(--ink);font-size:21px;text-align:center;padding:8px 4px 12px;line-height:1.15}
+.tape{position:absolute;top:-12px;left:50%;width:92px;height:26px;transform:translateX(-50%) rotate(-4deg);background:rgba(255,236,200,.75);
+  box-shadow:0 1px 2px rgba(0,0,0,.12);clip-path:polygon(3% 0,97% 4%,100% 50%,96% 100%,2% 96%,0 50%)}
+.missing{display:grid;place-items:center;text-align:center;color:#9b6f6a;font:600 14px/1.3 ui-monospace,Menlo,monospace;padding:12px;
+  background:repeating-linear-gradient(45deg,#f2e2da 0 10px,#ead5cc 10px 20px)}
+
+/* memories */
+.mem{display:grid;grid-template-columns:minmax(220px,340px) 1fr;gap:clamp(28px,6vw,72px);align-items:center;margin:0 auto 96px;max-width:900px}
+.mem:nth-child(even){grid-template-columns:1fr minmax(220px,340px)}
+.mem:nth-child(even) .polaroid{order:2;transform:rotate(3deg)}
+.mem .polaroid{transform:rotate(-3.5deg)}
+.mem h2{font-family:var(--serif);font-style:italic;font-weight:500;font-size:clamp(26px,4vw,34px);line-height:1.15;margin-bottom:10px;color:#fff}
+.mem p{color:#fbe3e3;font-size:20px}
+.kicker{font-family:var(--hand);font-size:22px;color:var(--gold);display:block;margin-bottom:2px}
+
+/* film strip */
+.film{padding:40px 0 90px;overflow:hidden;position:relative}
+.film h3{text-align:center;font-family:var(--hand);font-size:30px;color:var(--cream);margin-bottom:22px;font-weight:500}
+.strip{background:#151112;padding:22px 0;transform:rotate(-2.5deg);margin:0 -40px;box-shadow:0 18px 34px -10px rgba(0,0,0,.55);position:relative}
+.strip::before,.strip::after{content:"";position:absolute;left:0;right:0;height:10px;
+  background:repeating-linear-gradient(90deg,transparent 0 10px,#f1e9e0 10px 22px,transparent 22px 34px);opacity:.85}
+.strip::before{top:6px}.strip::after{bottom:6px}
+.track{display:flex;gap:14px;width:max-content;animation:roll 40s linear infinite}
+.strip:hover .track{animation-play-state:paused}
+@keyframes roll{to{transform:translateX(-50%)}}
+.frame{width:clamp(150px,22vw,210px);aspect-ratio:4/3;overflow:hidden;background:#2a2224;flex:none;border-radius:2px}
+.frame img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(1.05) contrast(1.03)}
+.frame.missing{font-size:12px}
+.star{position:absolute;right:6%;bottom:30px;font-size:42px;transform:rotate(14deg);z-index:2;filter:drop-shadow(0 4px 6px rgba(0,0,0,.35))}
+
+/* clip */
+.clip-sec{display:grid;place-items:center;padding-top:10px;padding-bottom:30px}
+.clip{width:min(300px,78vw)}
+.clip.rv.in{transform:rotate(-2deg)}
+.vid{position:relative;aspect-ratio:9/16;background:#1a1012;overflow:hidden}
+.vid video{width:100%;height:100%;object-fit:cover;display:block}
+.snd{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);border:0;border-radius:999px;padding:6px 14px;
+  background:rgba(20,8,10,.6);color:#fff;font:600 13px/1.2 system-ui,sans-serif;cursor:pointer;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+
+/* letter */
+.letter-sec{padding-bottom:40px}
+.letter-wrap{position:relative;max-width:900px;margin:0 auto;display:grid;grid-template-columns:1.35fr 1fr;gap:0;align-items:start}
+.stamp-shadow{filter:drop-shadow(0 22px 30px rgba(30,0,4,.45));transform:rotate(-1.2deg)}
+.stamp{--r:9px;background:var(--paper);color:var(--ink);padding:clamp(34px,5vw,56px) clamp(28px,5vw,52px);
+  -webkit-mask:radial-gradient(farthest-side,#000 97%,#0000) 0 0/calc(2*var(--r)) calc(2*var(--r)) round,linear-gradient(#000 0 0) var(--r) var(--r)/calc(100% - 2*var(--r)) calc(100% - 2*var(--r)) no-repeat;
+          mask:radial-gradient(farthest-side,#000 97%,#0000) 0 0/calc(2*var(--r)) calc(2*var(--r)) round,linear-gradient(#000 0 0) var(--r) var(--r)/calc(100% - 2*var(--r)) calc(100% - 2*var(--r)) no-repeat}
+.stamp .dear{font-family:var(--hand);font-size:30px;color:var(--red);margin-bottom:8px}
+.stamp p{font-size:19.5px;color:var(--ink);margin-bottom:14px}
+.stamp .sign{font-family:var(--hand);font-size:28px;color:var(--red);text-align:right;margin-top:16px;line-height:1.1}
+.stamp .bow{position:absolute;font-size:22px}
+.letter-side{position:sticky;top:40px;padding-top:40px}
+.letter-side .polaroid{width:92%;margin-left:-6%;transform:rotate(5deg);z-index:2}
+.cassette{display:block;width:62%;margin:-22px 0 0 18%;transform:rotate(-6deg);position:relative;z-index:3;cursor:pointer;background:none;border:0;-webkit-tap-highlight-color:transparent;transition:transform .25s}
+.cassette:hover{transform:rotate(-3deg) scale(1.03)}
+.cassette svg{width:100%;display:block;filter:drop-shadow(0 10px 12px rgba(0,0,0,.4))}
+.cassette .reel{transform-box:fill-box;transform-origin:center}
+.playing .reel{animation:spin 2.2s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.cassette-tip{font-family:var(--hand);font-size:20px;color:var(--cream);margin:10px 0 0 22%;opacity:.85}
+.bear{position:absolute;left:-46px;bottom:-34px;width:110px;z-index:4;transform:rotate(-8deg);filter:drop-shadow(0 10px 12px rgba(30,0,4,.4))}
+
+footer{text-align:center;padding:60px 18px 70px;color:#f7cfd2}
+footer .big{font-family:var(--serif);font-style:italic;font-size:clamp(30px,6vw,52px);color:#fff;line-height:1.1;margin-bottom:12px}
+.again{margin-top:22px;background:transparent;color:var(--cream);border:1.5px solid rgba(255,248,236,.6);border-radius:999px;padding:10px 22px;font:500 18px var(--body);cursor:pointer}
+.again:hover{background:rgba(255,255,255,.08)}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(34px);transition:opacity .9s ease, transform .9s cubic-bezier(.2,.8,.2,1)}
+.rv.in{opacity:1;transform:none}
+.mem .polaroid.rv{transform:translateY(34px) rotate(-8deg)}
+.mem .polaroid.rv.in{transform:rotate(-3.5deg)}
+.mem:nth-child(even) .polaroid.rv.in{transform:rotate(3deg)}
+
+/* hearts confetti */
+.heart{position:fixed;top:-40px;z-index:30;pointer-events:none;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(115vh) rotate(var(--rot))}}
+
+/* ---------------- PHONE ---------------- */
+@media (max-width:720px){
+  body{font-size:18px}
+  .notebook{grid-template-columns:1fr;grid-template-rows:auto 30px auto;transform:none}
+  .page{min-height:0}
+  .page.l{border-radius:10px 10px 2px 2px}
+  .page.r{border-radius:2px 2px 10px 10px;padding-top:40px;padding-bottom:40px}
+  .rings{flex-direction:row;padding:0 14px}
+  .ring{width:12px;height:40px}
+  .mem,.mem:nth-child(even){grid-template-columns:1fr;gap:26px;margin-bottom:72px}
+  .mem .polaroid,.mem:nth-child(even) .polaroid{order:0;width:min(300px,82%);margin:0 auto}
+  .mem p{font-size:19px}
+  .letter-wrap{grid-template-columns:1fr}
+  .letter-side{padding-top:0;margin-top:-10px;display:flex;flex-direction:column;align-items:center}
+  .letter-side .polaroid{width:min(270px,76%);margin:0}
+  .cassette{width:min(220px,60%);margin:-18px 0 0 22%}
+  .cassette-tip{margin:8px 0 0}
+  .bear{left:4%;bottom:-6px;width:84px}
+  .page.r .label{top:12px;right:14px;z-index:3}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition-duration:.01ms!important}
+  .rv{opacity:1;transform:none}
+}
+</style>
+</head>
+<body class="locked">
+
+<!-- ============ INTRO ============ -->
+<div id="intro">
+  <div class="stage" id="stage" role="button" tabindex="0" aria-label="Open your birthday letter">
+    <div class="to" id="toLine">for Momo</div>
+
+    <!-- camera -->
+    <svg class="camera" viewBox="0 0 120 90" aria-hidden="true">
+      <rect x="4" y="16" width="112" height="70" rx="12" fill="#f4efe8"/>
+      <rect x="4" y="50" width="112" height="36" rx="0" fill="#e7e0d6"/><rect x="4" y="74" width="112" height="12" rx="6" fill="#e7e0d6"/>
+      <rect x="14" y="8" width="26" height="12" rx="4" fill="#d9d1c6"/>
+      <circle cx="62" cy="50" r="24" fill="#2c2526"/><circle cx="62" cy="50" r="17" fill="#3d3436"/><circle cx="62" cy="50" r="9" fill="#151012"/>
+      <circle cx="56" cy="44" r="4" fill="#fff" opacity=".55"/>
+      <rect x="92" y="24" width="16" height="10" rx="3" fill="#2c2526"/><circle cx="20" cy="30" r="5" fill="#d6303e"/>
+    </svg>
+
+    <div class="env" id="env">
+      <div class="env-back"></div>
+      <div class="card"><div><b>Happy Birthday</b><small id="cardSmall">open me ♡</small></div></div>
+      <div class="env-front">
+        <svg viewBox="0 0 310 200" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 0 L155 112 L0 200Z" fill="#f6eee2"/>
+          <path d="M310 0 L155 112 L310 200Z" fill="#f6eee2"/>
+          <path d="M0 200 L155 96 L310 200Z" fill="#fbf5ec"/>
+          <path d="M0 200 L155 96 L310 200" fill="none" stroke="#e3d6c3" stroke-width="1.2"/>
+        </svg>
+      </div>
+      <div class="flap">
+        <svg viewBox="0 0 310 116" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0 H310 L155 116Z" fill="#efe3d1"/></svg>
+        <div class="seal">♥</div>
+      </div>
+    </div>
+
+    <!-- bouquet -->
+    <svg class="bouquet" viewBox="0 0 160 200" aria-hidden="true">
+      <path d="M40 92 L80 196 L120 92Z" fill="#f7efe4"/><path d="M40 92 L80 196 L62 92Z" fill="#eee2d2"/>
+      <g fill="#3f7a4a"><ellipse cx="34" cy="70" rx="10" ry="22" transform="rotate(-40 34 70)"/><ellipse cx="128" cy="66" rx="10" ry="22" transform="rotate(40 128 66)"/><ellipse cx="82" cy="24" rx="8" ry="18" transform="rotate(10 82 24)"/></g>
+      <defs><g id="rose">
+        <circle cx="0" cy="0" r="22" fill="#b5142a"/><circle cx="0" cy="0" r="16" fill="#cf2236"/>
+        <path d="M-9 2 C-9 -10 9 -10 9 0 C9 8 -3 9 -3 2 C-3 -3 4 -3 4 1" fill="none" stroke="#8e0c1d" stroke-width="2.4" stroke-linecap="round"/>
+      </g></defs>
+      <use href="#rose" x="60" y="64"/><use href="#rose" x="100" y="58"/><use href="#rose" x="80" y="94"/>
+      <use href="#rose" x="48" y="98" transform="scale(1)"/><use href="#rose" x="114" y="96"/>
+      <g fill="#fff"><circle cx="78" cy="42" r="5"/><circle cx="130" cy="80" r="4"/><circle cx="32" cy="84" r="4"/><circle cx="96" cy="120" r="4"/></g>
+      <path d="M66 140 C50 150 52 168 66 160 M94 140 C110 150 108 168 94 160" fill="none" stroke="#c91f32" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="80" cy="140" r="7" fill="#c91f32"/>
+    </svg>
+
+    <div class="hint">tap to open ♡</div>
+  </div>
+</div>
+
+<!-- ============ MAIN ============ -->
+<main id="main" aria-hidden="true">
+  <section class="nb-wrap">
+    <div class="notebook">
+      <div class="page l">
+        <div class="age"><span id="age"></span><span class="cake">🎂</span></div>
+        <h1 id="headline"></h1>
+        <p id="intro-text"></p>
+        <div class="date" id="date"></div>
+        <span class="sticker" style="right:22px;bottom:18px;transform:rotate(-12deg)">🎀</span>
+      </div>
+      <div class="rings" id="rings"></div>
+      <div class="page r">
+        <span class="label" id="label"></span>
+        <figure class="polaroid" id="coverPhoto"></figure>
+        <span class="sticker" style="left:24px;bottom:22px;transform:rotate(10deg)">♥</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="memories"></section>
+
+  <div class="film">
+    <h3 id="filmTitle"></h3>
+    <div class="strip"><div class="track" id="track"></div></div>
+    <span class="star">⭐</span>
+  </div>
+
+  <section class="clip-sec">
+    <figure class="polaroid clip rv">
+      <span class="tape"></span>
+      <div class="vid">
+        <video id="clip" playsinline muted loop preload="metadata"></video>
+        <button class="snd" id="snd" aria-label="Turn sound on">🔇 tap for sound</button>
+      </div>
+      <figcaption id="clipCap"></figcaption>
+    </figure>
+  </section>
+
+  <section class="letter-sec">
+    <div class="letter-wrap">
+      <div class="stamp-shadow rv"><div class="stamp" id="letter"></div></div>
+      <div class="letter-side rv">
+        <figure class="polaroid" id="letterPhoto"><span class="tape"></span></figure>
+        <button class="cassette" id="cassette" aria-label="Play our song">
+          <svg viewBox="0 0 200 128" aria-hidden="true">
+            <rect x="2" y="2" width="196" height="124" rx="10" fill="#2a2426"/>
+            <rect x="18" y="14" width="164" height="70" rx="6" fill="#f5ede2"/>
+            <rect x="18" y="14" width="164" height="16" rx="6" fill="#c91f32"/>
+            <text x="100" y="27" text-anchor="middle" font-family="Caveat,cursive" font-size="14" fill="#fff" id="tapeLabel">our song</text>
+            <rect x="46" y="40" width="108" height="34" rx="17" fill="#3b3335"/>
+            <g class="reel"><circle cx="66" cy="57" r="13" fill="#e9e1d6"/><circle cx="66" cy="57" r="5" fill="#3b3335"/><path d="M66 46v6M66 62v6M55 57h6M71 57h6" stroke="#3b3335" stroke-width="3"/></g>
+            <g class="reel"><circle cx="134" cy="57" r="13" fill="#e9e1d6"/><circle cx="134" cy="57" r="5" fill="#3b3335"/><path d="M134 46v6M134 62v6M123 57h6M139 57h6" stroke="#3b3335" stroke-width="3"/></g>
+            <path d="M44 126 L56 96 H144 L156 126" fill="#3b3335"/>
+            <circle cx="72" cy="112" r="5" fill="#2a2426"/><circle cx="128" cy="112" r="5" fill="#2a2426"/>
+          </svg>
+        </button>
+        <div class="cassette-tip" id="cassetteTip" hidden>tap the tape ♪</div>
+      </div>
+      <!-- monkey (the hugging one) -->
+      <svg class="bear" viewBox="0 0 130 130" aria-hidden="true">
+        <circle cx="18" cy="52" r="16" fill="#8a5a33"/><circle cx="112" cy="52" r="16" fill="#8a5a33"/>
+        <circle cx="18" cy="52" r="9" fill="#f0b7a0"/><circle cx="112" cy="52" r="9" fill="#f0b7a0"/>
+        <ellipse cx="65" cy="104" rx="38" ry="26" fill="#8a5a33"/>
+        <circle cx="65" cy="52" r="42" fill="#9b6a3f"/>
+        <path d="M65 40 C56 26 30 30 32 50 C33 60 38 66 40 70 C44 86 86 86 90 70 C92 66 97 60 98 50 C100 30 74 26 65 40Z" fill="#f2d2b0"/>
+        <circle cx="51" cy="50" r="5" fill="#2a1a12"/><circle cx="79" cy="50" r="5" fill="#2a1a12"/>
+        <circle cx="52.5" cy="48.5" r="1.6" fill="#fff"/><circle cx="80.5" cy="48.5" r="1.6" fill="#fff"/>
+        <ellipse cx="60" cy="63" rx="2" ry="1.6" fill="#7a4a2a"/><ellipse cx="70" cy="63" rx="2" ry="1.6" fill="#7a4a2a"/>
+        <path d="M54 71 Q65 80 76 71" fill="none" stroke="#7a4a2a" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="42" cy="64" r="5" fill="#e88a8a" opacity=".5"/><circle cx="88" cy="64" r="5" fill="#e88a8a" opacity=".5"/>
+        <path d="M65 108 C52 92 36 104 50 116 L65 127 L80 116 C94 104 78 92 65 108Z" fill="#c91f32"/>
+        <ellipse cx="44" cy="110" rx="11" ry="8" fill="#9b6a3f"/><ellipse cx="86" cy="110" rx="11" ry="8" fill="#9b6a3f"/>
+      </svg>
+    </div>
+  </section>
+
+  <footer>
+    <div class="big rv" id="outro"></div>
+    <div class="rv" id="outroSub"></div>
+    <button class="again" id="again">open it again ♡</button>
+  </footer>
+</main>
+
+<audio id="song" preload="none"></audio>
+
+<script>
+/* =====================================================================
+   ✏️  CONFIG — change the words & photos here. That's all you need.
+   Photos: put them in the ultah/photos/ folder with these exact names.
+   Any photo that's missing shows a striped placeholder with its name.
+   ===================================================================== */
+const CONFIG = {
+  name: "Momo",
+  age: 31,
+  date: "4 November 2026",
+  from: "Salsa",
+  headline: "Happy birthday, baba",
+  intro: "Thirty-one looks so good on you. I can't be there to kiss you good morning today, so I made you this little thing instead.",
+  label: "my favourite",
+  cover: { photo: "photos/7.jpg", caption: "cheek to cheek ♡" },
+
+  memories: [
+    { photo: "photos/5.jpg", caption: "us, being us", kicker: "where it started",
+      title: "Bali",
+      text: "Where it all began. A few days that turned into weeks of you texting me “I miss being with you in Bali.” Me too, baba. Me too." },
+    { photo: "photos/3.jpg", caption: "summer with you", kicker: "two whole weeks",
+      title: "Dubai, every single day",
+      text: "Two weeks of waking up next to you, pool days, slow breakfasts and doing absolutely nothing together. You said you were grateful we got to spend all day, every day together. So was I." },
+    { photo: "photos/8.jpg", caption: "mirror, mirror", kicker: "my turn to host",
+      title: "You, in my city",
+      text: "You came all the way to Jakarta. Padel, late dinners, me dragging you to all my places — and you fit into every one of them like you'd always been there." },
+    { photo: "photos/1.jpg", caption: "my monkey 🐒", kicker: "the little things",
+      title: "Why I love you",
+      text: "How you ask if I've eaten and if I took my medicine. How you say “baby girl.” How you're proud of me out loud. How you send me job links at 7pm. And how you're always the hugging one — my monkey." },
+  ],
+
+  filmTitle: "a few of my favourite frames",
+  film: ["photos/2.jpg","photos/4.jpg","photos/6.jpg","photos/1.jpg","photos/7.jpg","photos/3.jpg","photos/5.jpg","photos/8.jpg"],
+
+  clip: { src: "clip.mp4", poster: "clip-poster.jpg", caption: "us, being silly" },
+
+  letter: {
+    dear: "To my dearest Momo,",
+    paragraphs: [
+      "Happy birthday, my love.",
+      "I’ve been thinking about what to write to you, and it’s funny because I always have so many things going on in my head, but somehow, when it comes to telling you how much you mean to me, I never really know where to start.",
+      "Sometimes I wonder how two people who grew up in different places, lived entirely different lives, and probably never even imagined meeting each other somehow ended up here. Out of all the people we could’ve crossed paths with, somehow, I found you.",
+      "And I’m so, so grateful that I did.",
+      "It’s funny how someone who was once a complete stranger can become someone you want to tell everything to. Someone you look for when something good happens, when you’ve had a terrible day, or even when you have absolutely nothing to talk about but still want to hear their voice.",
+      "That’s what you’ve become to me, baby. And I don’t think you realize just how much you mean to me.",
+      "I know I’m not always the best at expressing how I feel. Sometimes I overthink, sometimes I get scared, and sometimes I don’t even understand my own feelings. But please know that beneath all of that, there’s someone who loves you very sincerely.",
+      "I don’t know what the future holds for us. I wish I did. I wish I could skip ahead and see that everything works out, that one day all this distance will just be a story we tell each other while we’re lying next to each other.",
+      "But life doesn’t really give us that kind of certainty, does it?",
+      "What I do know is that right now, I love you. So much. And I don’t want my fears about tomorrow to take away from how grateful I am to have you today.",
+      "But enough about me. It’s your birthday, baby. And I have so many things I wish for you.",
+      "I hope this year brings you all the good things you’ve been hoping and praying for, even the ones you don’t always talk about. I hope everything you’ve been working so hard for slowly finds its way to you. I hope life surprises you with beautiful things, with opportunities you never expected, and with so many little moments that make you genuinely happy.",
+      "I hope you’re always surrounded by people who love you, appreciate you, and make you feel like you never have to be anyone other than yourself.",
+      "And I hope that even when life gets difficult, you’ll always find your way back to happiness. That you’ll have peace in your heart, reasons to laugh, and people to lean on when things feel a little too heavy.",
+      "Sometimes I wish I could just gather every good thing in this world and give it all to you. I know that’s impossible, but I really do wish life would be extra kind to you. Because if there’s one thing I want for you, it’s for you to have a beautiful, happy life. One that you genuinely love living.",
+      "And selfishly, I hope I get to be part of it.",
+      "I hope I get to celebrate so many more birthdays with you, watch you achieve the things you’ve always wanted, and be there for all the little things in between. I hope one day I won’t have to wish you a happy birthday from thousands of miles away. That I can just roll over, kiss your face, annoy you a little, and tell you how much I love you.",
+      "Until then, I hope you know that there’s a girl here in Jakarta who’s so incredibly happy that you exist. Who thinks about you more than you probably realize, and who wishes nothing but the very best for you, every single day.",
+      "I’m so happy you were born, Momo. I’m happy that out of all the people in this world, I got to know you, to love you, and to be loved by you.",
+      "Happy birthday, my sweetest boy.",
+      "I hope this year loves you a little extra. I hope life is gentle with you, your heart stays happy, and every beautiful thing that’s meant for you finds its way to you.",
+      "And more than anything, I hope you never forget how much you are loved.",
+      "Especially by me. Obviously.",
+      "I love you, baby. More than I probably know how to put into words.",
+    ],
+    sign: "Yours,\nSalsa ♡",
+    photo: "photos/2.jpg",
+    photoCaption: "always yours",
+  },
+
+  song: "song.mp3",
+  songLabel: "Nothing · Bruno Major",
+  outro: "Happy birthday, Momo",
+  outroSub: "31 looks good on you ♡ see you soon, baba",
+};
+/* ===================================================================== */
+
+const $ = s => document.querySelector(s);
+const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function img(src, alt, wrapCls){
+  const w = el('div', wrapCls);
+  const i = new Image(); i.alt = alt || ''; i.decoding = 'async'; i.src = src;
+  i.onerror = () => { w.classList.add('missing'); w.innerHTML = '📷<br>' + esc(src); };
+  w.append(i); return w;
+}
+function fillPolaroid(fig, src, caption){
+  fig.append(img(src, caption, 'ph'));
+  if (caption) fig.append(el('figcaption', null, esc(caption)));
+}
+
+function build(){
+  const C = CONFIG;
+  document.title = `Happy Birthday, ${C.name}`;
+  $('#toLine').textContent = `for ${C.name}`;
+  $('#age').textContent = C.age;
+  $('#headline').textContent = C.headline;
+  $('#intro-text').textContent = C.intro;
+  $('#date').textContent = C.date;
+  $('#label').textContent = C.label;
+  const cov = $('#coverPhoto'); cov.append(el('span','tape')); fillPolaroid(cov, C.cover.photo, C.cover.caption);
+  const rings = $('#rings'); for (let i = 0; i < 9; i++) rings.append(el('span','ring'));
+
+  const mem = $('#memories');
+  C.memories.forEach(m => {
+    const row = el('div','mem');
+    const fig = el('figure','polaroid rv'); fig.append(el('span','tape')); fillPolaroid(fig, m.photo, m.caption);
+    const txt = el('div','rv');
+    txt.innerHTML = `<span class="kicker">${esc(m.kicker||'')}</span><h2>${esc(m.title)}</h2><p>${esc(m.text)}</p>`;
+    row.append(fig, txt); mem.append(row);
+  });
+
+  $('#filmTitle').textContent = C.filmTitle;
+  const track = $('#track');
+  [...C.film, ...C.film].forEach(src => track.append(img(src, '', 'frame')));   // doubled for a seamless loop
+
+  const L = C.letter, letter = $('#letter');
+  letter.innerHTML = `<div class="dear">${esc(L.dear)}</div>` + L.paragraphs.map(p => `<p>${esc(p)}</p>`).join('') +
+    `<div class="sign">${esc(L.sign).replace(/\n/g,'<br>')}</div>` +
+    `<span class="bow" style="right:26px;top:22px;transform:rotate(14deg)">🎀</span>`;
+  fillPolaroid($('#letterPhoto'), L.photo, L.photoCaption);
+
+  $('#tapeLabel').textContent = C.songLabel;
+  $('#outro').textContent = C.outro;
+  $('#outroSub').textContent = C.outroSub;
+  $('#cardSmall').textContent = `for ${C.name} ♡`;
+
+  // clip
+  const v = $('#clip'), snd = $('#snd');
+  if (C.clip){
+    v.src = C.clip.src; if (C.clip.poster) v.poster = C.clip.poster;
+    $('#clipCap').textContent = C.clip.caption || '';
+    new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) v.play().catch(()=>{}); else v.pause(); }), { threshold:.4 }).observe(v);
+    const toggle = () => {
+      v.muted = !v.muted;
+      snd.textContent = v.muted ? '🔇 tap for sound' : '🔊 sound on';
+      if (!v.muted){ v.play().catch(()=>{}); const s2 = $('#song'); s2.pause(); $('#cassette').classList.remove('playing'); }
+    };
+    snd.addEventListener('click', e => { e.stopPropagation(); toggle(); });
+    v.addEventListener('click', toggle);
+  } else { document.querySelector('.clip-sec').remove(); }
+
+  // song: only advertise the tape if the file actually exists
+  const song = $('#song');
+  if (C.song){
+    song.src = C.song;
+    song.addEventListener('canplay', () => { $('#cassetteTip').hidden = false; }, { once:true });
+    song.load();
+  }
+  $('#cassette').addEventListener('click', () => {
+    if (!song.src || song.error) return;
+    if (song.paused){ const vv=$('#clip'); if(!vv.muted){ vv.muted=true; $('#snd').textContent='🔇 tap for sound'; } song.play().then(() => $('#cassette').classList.add('playing')).catch(()=>{}); }
+    else { song.pause(); $('#cassette').classList.remove('playing'); }
+  });
+  song.addEventListener('ended', () => $('#cassette').classList.remove('playing'));
+}
+
+function hearts(n = 36){
+  const glyphs = ['♥','♡','❤','✿','✦'];
+  for (let i = 0; i < n; i++){
+    const h = el('span','heart', glyphs[i % glyphs.length]);
+    h.style.left = Math.random()*100 + 'vw';
+    h.style.fontSize = (14 + Math.random()*22) + 'px';
+    h.style.color = ['#ffd6db','#fff','#f3b7bf','#e7b24a'][i % 4];
+    h.style.setProperty('--rot', (Math.random()*720-360) + 'deg');
+    h.style.animationDuration = (2.8 + Math.random()*2.8) + 's';
+    h.style.animationDelay = (Math.random()*0.9) + 's';
+    document.body.append(h);
+    h.addEventListener('animationend', () => h.remove());
+  }
+}
+
+let opened = false;
+function openLetter(){
+  if (opened) return; opened = true;
+  $('#stage').classList.add('opened');
+  setTimeout(() => hearts(), 700);
+  setTimeout(() => {
+    $('#intro').classList.add('gone');
+    document.body.classList.remove('locked');
+    const m = $('#main'); m.classList.add('show'); m.removeAttribute('aria-hidden');
+    window.scrollTo(0,0);
+    // play the song on open if there is one (the tap counts as a user gesture on most phones)
+    const s = $('#song'); if (s.src && !s.error) s.play().then(() => $('#cassette').classList.add('playing')).catch(()=>{});
+  }, 2000);
+}
+$('#stage').addEventListener('click', openLetter);
+$('#stage').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openLetter(); } });
+
+$('#again').addEventListener('click', () => {
+  opened = false;
+  $('#stage').classList.remove('opened');
+  $('#intro').classList.remove('gone');
+  $('#main').classList.remove('show');
+  document.body.classList.add('locked');
+  window.scrollTo(0,0);
+});
+
+build();
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold:.18 });
+document.querySelectorAll('.rv').forEach(n => io.observe(n));
+</script>
+</body>
+</html>
