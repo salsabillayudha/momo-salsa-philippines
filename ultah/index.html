@@ -132,6 +132,15 @@ section{padding:72px 18px;max-width:1040px;margin:0 auto}
 .frame.missing{font-size:12px}
 .star{position:absolute;right:6%;bottom:30px;font-size:42px;transform:rotate(14deg);z-index:2;filter:drop-shadow(0 4px 6px rgba(0,0,0,.35))}
 
+/* clip */
+.clip-sec{display:grid;place-items:center;padding-top:10px;padding-bottom:30px}
+.clip{width:min(300px,78vw)}
+.clip.rv.in{transform:rotate(-2deg)}
+.vid{position:relative;aspect-ratio:9/16;background:#1a1012;overflow:hidden}
+.vid video{width:100%;height:100%;object-fit:cover;display:block}
+.snd{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);border:0;border-radius:999px;padding:6px 14px;
+  background:rgba(20,8,10,.6);color:#fff;font:600 13px/1.2 system-ui,sans-serif;cursor:pointer;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+
 /* letter */
 .letter-sec{padding-bottom:40px}
 .letter-wrap{position:relative;max-width:900px;margin:0 auto;display:grid;grid-template-columns:1.35fr 1fr;gap:0;align-items:start}
@@ -277,6 +286,17 @@ footer .big{font-family:var(--serif);font-style:italic;font-size:clamp(30px,6vw,
     <span class="star">⭐</span>
   </div>
 
+  <section class="clip-sec">
+    <figure class="polaroid clip rv">
+      <span class="tape"></span>
+      <div class="vid">
+        <video id="clip" playsinline muted loop preload="metadata"></video>
+        <button class="snd" id="snd" aria-label="Turn sound on">🔇 tap for sound</button>
+      </div>
+      <figcaption id="clipCap"></figcaption>
+    </figure>
+  </section>
+
   <section class="letter-sec">
     <div class="letter-wrap">
       <div class="stamp-shadow rv"><div class="stamp" id="letter"></div></div>
@@ -297,18 +317,20 @@ footer .big{font-family:var(--serif);font-style:italic;font-size:clamp(30px,6vw,
         </button>
         <div class="cassette-tip" id="cassetteTip" hidden>tap the tape ♪</div>
       </div>
-      <!-- bear -->
-      <svg class="bear" viewBox="0 0 120 130" aria-hidden="true">
-        <circle cx="28" cy="24" r="16" fill="#b0743f"/><circle cx="92" cy="24" r="16" fill="#b0743f"/>
-        <circle cx="28" cy="24" r="8" fill="#e2b182"/><circle cx="92" cy="24" r="8" fill="#e2b182"/>
-        <ellipse cx="60" cy="98" rx="40" ry="32" fill="#b0743f"/>
-        <circle cx="60" cy="50" r="38" fill="#c0854d"/>
-        <ellipse cx="60" cy="62" rx="16" ry="12" fill="#ecc89d"/>
-        <circle cx="46" cy="46" r="4.5" fill="#2a1a12"/><circle cx="74" cy="46" r="4.5" fill="#2a1a12"/>
-        <ellipse cx="60" cy="57" rx="6" ry="4.5" fill="#2a1a12"/>
-        <path d="M54 66 Q60 71 66 66" fill="none" stroke="#2a1a12" stroke-width="2.5" stroke-linecap="round"/>
-        <circle cx="38" cy="58" r="5" fill="#e88a8a" opacity=".55"/><circle cx="82" cy="58" r="5" fill="#e88a8a" opacity=".55"/>
-        <path d="M60 104 C48 90 34 102 46 112 L60 122 L74 112 C86 102 72 90 60 104Z" fill="#c91f32"/>
+      <!-- monkey (the hugging one) -->
+      <svg class="bear" viewBox="0 0 130 130" aria-hidden="true">
+        <circle cx="18" cy="52" r="16" fill="#8a5a33"/><circle cx="112" cy="52" r="16" fill="#8a5a33"/>
+        <circle cx="18" cy="52" r="9" fill="#f0b7a0"/><circle cx="112" cy="52" r="9" fill="#f0b7a0"/>
+        <ellipse cx="65" cy="104" rx="38" ry="26" fill="#8a5a33"/>
+        <circle cx="65" cy="52" r="42" fill="#9b6a3f"/>
+        <path d="M65 40 C56 26 30 30 32 50 C33 60 38 66 40 70 C44 86 86 86 90 70 C92 66 97 60 98 50 C100 30 74 26 65 40Z" fill="#f2d2b0"/>
+        <circle cx="51" cy="50" r="5" fill="#2a1a12"/><circle cx="79" cy="50" r="5" fill="#2a1a12"/>
+        <circle cx="52.5" cy="48.5" r="1.6" fill="#fff"/><circle cx="80.5" cy="48.5" r="1.6" fill="#fff"/>
+        <ellipse cx="60" cy="63" rx="2" ry="1.6" fill="#7a4a2a"/><ellipse cx="70" cy="63" rx="2" ry="1.6" fill="#7a4a2a"/>
+        <path d="M54 71 Q65 80 76 71" fill="none" stroke="#7a4a2a" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="42" cy="64" r="5" fill="#e88a8a" opacity=".5"/><circle cx="88" cy="64" r="5" fill="#e88a8a" opacity=".5"/>
+        <path d="M65 108 C52 92 36 104 50 116 L65 127 L80 116 C94 104 78 92 65 108Z" fill="#c91f32"/>
+        <ellipse cx="44" cy="110" rx="11" ry="8" fill="#9b6a3f"/><ellipse cx="86" cy="110" rx="11" ry="8" fill="#9b6a3f"/>
       </svg>
     </div>
   </section>
@@ -330,48 +352,51 @@ footer .big{font-family:var(--serif);font-style:italic;font-size:clamp(30px,6vw,
    ===================================================================== */
 const CONFIG = {
   name: "Momo",
-  age: 27,                                   // ← his/her new age
-  date: "4 November 2026",                   // ← birthday date (just text)
+  age: 31,
+  date: "4 November 2026",
   from: "Salsa",
-  headline: "Happy birthday, my love",
-  intro: "Another year of you, and somehow you keep getting better at being my favourite person. This little page is for you.",
-  label: "my favourite",                     // red tag on the first photo
-  cover: { photo: "photos/cover.jpg", caption: "you & me ♡" },
+  headline: "Happy birthday, baba",
+  intro: "Thirty-one looks so good on you. I can't be there to kiss you good morning today, so I made you this little thing instead.",
+  label: "my favourite",
+  cover: { photo: "photos/7.jpg", caption: "cheek to cheek ♡" },
 
   memories: [
-    { photo: "photos/1.jpg", caption: "the first one", kicker: "where it started",
-      title: "The day I met you",
-      text: "Write a few lines here about how you met, what you thought of him/her the first time, a tiny detail you still remember." },
-    { photo: "photos/2.jpg", caption: "Jakarta, Oct '26", kicker: "this year",
-      title: "Jakarta week",
-      text: "Padel, the Whoosh to Bandung, the late-night dates — write the moments from this year you keep replaying." },
-    { photo: "photos/3.jpg", caption: "us, being us", kicker: "the little things",
-      title: "What I love about you",
-      text: "The small things: how you laugh, how you look after me, the way you say my name. Be specific — those are the lines he/she will reread." },
-    { photo: "photos/4.jpg", caption: "next stop: Philippines", kicker: "what's next",
-      title: "21 days, just us",
-      text: "Manila, Palawan, Boracay… I can't wait to spend your first month of this new year island-hopping with you." },
+    { photo: "photos/5.jpg", caption: "us, being us", kicker: "where it started",
+      title: "Bali",
+      text: "Where it all began. A few days that turned into weeks of you texting me “I miss being with you in Bali.” Me too, baba. Me too." },
+    { photo: "photos/3.jpg", caption: "summer with you", kicker: "two whole weeks",
+      title: "Dubai, every single day",
+      text: "Two weeks of waking up next to you, pool days, slow breakfasts and doing absolutely nothing together. You said you were grateful we got to spend all day, every day together. So was I." },
+    { photo: "photos/8.jpg", caption: "mirror, mirror", kicker: "my turn to host",
+      title: "You, in my city",
+      text: "You came all the way to Jakarta. Padel, late dinners, me dragging you to all my places — and you fit into every one of them like you'd always been there." },
+    { photo: "photos/1.jpg", caption: "my monkey 🐒", kicker: "the little things",
+      title: "Why I love you",
+      text: "How you ask if I've eaten and if I took my medicine. How you say “baby girl.” How you're proud of me out loud. How you send me job links at 7pm. And how you're always the hugging one — my monkey." },
   ],
 
   filmTitle: "a few of my favourite frames",
-  film: ["photos/5.jpg","photos/6.jpg","photos/7.jpg","photos/8.jpg","photos/9.jpg","photos/10.jpg"],
+  film: ["photos/2.jpg","photos/4.jpg","photos/6.jpg","photos/1.jpg","photos/7.jpg","photos/3.jpg","photos/5.jpg","photos/8.jpg"],
+
+  clip: { src: "clip.mp4", poster: "clip-poster.jpg", caption: "us, being silly" },
 
   letter: {
-    dear: "Dear Momo,",
+    dear: "Dear baba,",
     paragraphs: [
-      "Happy birthday. I wish I could hand you this in person, so for now this little page will have to hug you for me.",
-      "Thank you for being patient with me, for making the distance feel smaller, and for every call that ran way too late.",
-      "I hope this year is kind to you, that everything you're working for comes through, and that you never forget how loved you are — by me, most of all.",
+      "Happy 31st birthday. I wish I could be there to wake you up and have one of our quiet breakfasts together — I miss those too, every single morning.",
+      "Thank you for taking such good care of me: for asking if I ate, how my day was, how I'm feeling, even on the days you're the one who isn't well. Thank you for being proud of me, and for letting me be so proud of you.",
+      "I hope 31 brings you everything you've been working so hard for — the recognition you deserve, a little more rest, and a lot more of us. Wherever we end up next, I just want to be there with you.",
+      "I'm so lucky, baba. Always.",
     ],
-    sign: "Love you always,\nSalsa",
-    photo: "photos/letter.jpg",
+    sign: "Love you so much,\nyour cutie, Salsa",
+    photo: "photos/2.jpg",
     photoCaption: "always yours",
   },
 
-  song: "song.mp3",                          // optional; leave the file out and the tape is just decoration
-  songLabel: "our song",
+  song: "song.mp3",
+  songLabel: "Nothing · Bruno Major",
   outro: "Happy birthday, Momo",
-  outroSub: "see you very soon ✈️ ♡",
+  outroSub: "31 looks good on you ♡ see you soon, baba",
 };
 /* ===================================================================== */
 
@@ -381,7 +406,7 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':
 
 function img(src, alt, wrapCls){
   const w = el('div', wrapCls);
-  const i = new Image(); i.alt = alt || ''; i.loading = 'lazy'; i.decoding = 'async'; i.src = src;
+  const i = new Image(); i.alt = alt || ''; i.decoding = 'async'; i.src = src;
   i.onerror = () => { w.classList.add('missing'); w.innerHTML = '📷<br>' + esc(src); };
   w.append(i); return w;
 }
@@ -426,6 +451,21 @@ function build(){
   $('#outroSub').textContent = C.outroSub;
   $('#cardSmall').textContent = `for ${C.name} ♡`;
 
+  // clip
+  const v = $('#clip'), snd = $('#snd');
+  if (C.clip){
+    v.src = C.clip.src; if (C.clip.poster) v.poster = C.clip.poster;
+    $('#clipCap').textContent = C.clip.caption || '';
+    new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) v.play().catch(()=>{}); else v.pause(); }), { threshold:.4 }).observe(v);
+    const toggle = () => {
+      v.muted = !v.muted;
+      snd.textContent = v.muted ? '🔇 tap for sound' : '🔊 sound on';
+      if (!v.muted){ v.play().catch(()=>{}); const s2 = $('#song'); s2.pause(); $('#cassette').classList.remove('playing'); }
+    };
+    snd.addEventListener('click', e => { e.stopPropagation(); toggle(); });
+    v.addEventListener('click', toggle);
+  } else { document.querySelector('.clip-sec').remove(); }
+
   // song: only advertise the tape if the file actually exists
   const song = $('#song');
   if (C.song){
@@ -435,7 +475,7 @@ function build(){
   }
   $('#cassette').addEventListener('click', () => {
     if (!song.src || song.error) return;
-    if (song.paused){ song.play().then(() => $('#cassette').classList.add('playing')).catch(()=>{}); }
+    if (song.paused){ const vv=$('#clip'); if(!vv.muted){ vv.muted=true; $('#snd').textContent='🔇 tap for sound'; } song.play().then(() => $('#cassette').classList.add('playing')).catch(()=>{}); }
     else { song.pause(); $('#cassette').classList.remove('playing'); }
   });
   song.addEventListener('ended', () => $('#cassette').classList.remove('playing'));
