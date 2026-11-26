@@ -59,7 +59,8 @@ a:focus-visible,input:focus-visible{outline:3px solid var(--blue);outline-offset
 /* hero */
 .hero{background:var(--surface);border-radius:18px;box-shadow:0 14px 40px var(--shadow);overflow:hidden;position:relative}
 .hero-body{padding:28px 24px 22px;display:grid;gap:18px;position:relative}
-.hero h1{font-weight:900;font-size:clamp(46px,12vw,104px);line-height:.86;letter-spacing:-.065em;text-transform:lowercase}
+.hero h1{font-weight:900;font-size:clamp(46px,12vw,104px);line-height:1.04;letter-spacing:-.055em;text-transform:lowercase}
+.hero h1 .hl{padding:0 .06em .02em;line-height:1}
 .hl{background:var(--hl);color:#141414;padding:0 .08em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
 .bubble{justify-self:start;display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 16px 6px 8px;font-family:var(--display);font-weight:700;font-size:18px;letter-spacing:-.03em;box-shadow:0 6px 18px var(--shadow)}
 .bubble b{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--blue);color:#fff;font-size:13px}
@@ -166,7 +167,7 @@ footer{font-size:13px;color:var(--muted);text-align:center}
     <span class="sticker" style="bottom:118px;right:10%">🍣</span>
     <span class="bubble"><b>♥</b>9 days, 8 nights</span>
     <h1>momo's<br><span class="hl">jakarta</span><br>trip</h1>
-    <p class="lede">28 Nov – 6 Dec 2026 · staying at The Dharmawangsa. Salsa works Monday to Friday (no leave, again), so weekdays Momo rests during the day and everything happens together after work. Salsa has an exam Sunday morning. Bandung and the boots hunt are on the last Saturday.</p>
+    <p class="lede">28 Nov – 6 Dec 2026 · staying at The Dharmawangsa. Salsa works Monday to Friday (no leave, again), so on weekdays Momo rests during the day and we do everything together after Salsa finishes work, except Tuesday 1 Dec: Salsa is taking the day off for our 6-month anniversary. Salsa has an exam Sunday morning. Bandung and the boots hunt are on the last Saturday.</p>
     <div class="flights">
       <div class="flight"><span>Arrive · Sat 28 Nov · Soekarno-Hatta T3</span><b>15:40</b></div>
       <div class="flight"><span>Depart · Sun 6 Dec · check terminal on ticket</span><b>17:45</b></div>
@@ -217,7 +218,7 @@ footer{font-size:13px;color:var(--muted);text-align:center}
 <article class="day">
   <div class="dayhead"><h3>Landing and settling in</h3><span class="date">Saturday, 28 Nov</span><span class="pill p-full">Together</span></div>
   <ul class="slots">
-    <li><span class="t">15:40</span><span>Land at T3. Immigration and bags usually take 45–60 minutes. Salsa picks you up at international arrivals.</span></li>
+    <li><span class="t">15:40</span><span>Land at T3. Immigration and bags usually take 45–60 minutes. Salsa picks Momo up at international arrivals.</span></li>
     <li><span class="t">16:45</span><span>Drive to Dharmawangsa on the toll road. Saturday afternoons are often busy, so allow 60–90 minutes.</span></li>
     <li><span class="t">18:15</span><span>Check in, shower, rest a bit.</span></li>
     <li><span class="t">19:30</span><span>Easy dinner nearby in Senopati or Gunawarman. Early night, since Salsa has an exam tomorrow morning.</span></li>
@@ -250,7 +251,7 @@ footer{font-size:13px;color:var(--muted);text-align:center}
   <div class="dayhead"><h3>6-month anniversary 💕</h3><span class="date">Tuesday, 1 Dec</span><span class="pill p-full">Salsa on leave · all day together</span></div>
   <ul class="slots">
     <li><span class="t">07:00</span><span>Leave the hotel early, grab pastries from Braud or Gontran Cherrier on the way if they're open. About 1 hour north to Kamal Muara / PIK.</span></li>
-    <li class="must"><span class="t">08:00</span><span><span class="tag must">⭐ Mangrove</span><b>Mangrove paddling around Kamal Muara / PIK</b>, just the two of you on the water in the cool morning. Book an operator ahead and confirm they run on a Tuesday. Bring a change of clothes and sunscreen.</span></li>
+    <li class="must"><span class="t">08:00</span><span><span class="tag must">⭐ Mangrove</span><b>Mangrove paddling around Kamal Muara / PIK</b>, just the two of us on the water in the cool morning. Book an operator ahead and confirm they run on a Tuesday. Bring a change of clothes and sunscreen.</span></li>
     <li><span class="t">11:00</span><span>Drive back south (about 1 hour), quick shower at the hotel if needed.</span></li>
     <li><span class="t">13:00</span><span><span class="tag">Unagi</span>Lunch at Unagi Kurofune, Jl. Gunawarman 67, 5 minutes from the hotel.</span></li>
     <li class="must"><span class="t">14:15</span><span><span class="tag must">⭐ Romantic</span><b>Couple photos in a self-photo studio in Blok M</b>, 10 minutes from lunch. Your own remote, no photographer. Rp20–50k a session (Photomatics, OURStudio, D'Amour).</span></li>
@@ -260,7 +261,7 @@ footer{font-size:13px;color:var(--muted);text-align:center}
       <br>· <b>Blok M Square basement</b>: second-hand books and vinyl, fun to dig through together.
       <br>· <b>Little Tokyo (Jl. Melawai)</b>: street of small Japanese shops and snack spots, grab a dessert.</span></li>
     <li><span class="t">16:30</span><span>Back to the hotel (10 minutes) to rest and dress up.</span></li>
-    <li class="must"><span class="t">19:00</span><span><span class="tag must">⭐ Dinner</span><b>Emilia Cucina Italiana, Pondok Indah</b>. Vintage décor and home-style Italian, cozy and quiet. About 20–30 minutes from the hotel; leave by 18:30 for evening traffic. Tell them it's your anniversary when you book.</span></li>
+    <li class="must"><span class="t">19:00</span><span><span class="tag must">⭐ Dinner</span><b>Emilia Cucina Italiana, Pondok Indah</b>. Vintage décor and home-style Italian, cozy and quiet. About 20–30 minutes from the hotel; leave by 18:30 for evening traffic. Salsa tells them it's our anniversary when booking.</span></li>
   </ul>
   <p class="tip">Book the mangrove operator and Emilia this week. Lunch at Unagi Kurofune may slip to 13:30 depending on traffic back from the north. When booking Emilia, make sure it's the Cucina Italiana branch in Pondok Indah (there's also Emilia Bar Italiano in SCBD and other Cucina branches).</p>
 </article>
@@ -268,7 +269,7 @@ footer{font-size:13px;color:var(--muted);text-align:center}
 <article class="day">
   <div class="dayhead"><h3>Silver, then play</h3><span class="date">Wednesday, 2 Dec</span><span class="pill p-eve">Together after work</span></div>
   <ul class="slots">
-    <li><span class="t">17:30</span><span><span class="tag">Pasar Santa</span>Silver accessories at Pasar Santa, 10 minutes from the hotel. Some stalls close early, so check the shops you want on IG first.</span></li>
+    <li><span class="t">17:30</span><span><span class="tag">Pasar Santa</span>Silver accessories at Pasar Santa, 10 minutes from the hotel. Some stalls close early, so we'll check the shops we want on IG first.</span></li>
     <li><span class="t">19:00</span><span><span class="tag">Playtopia</span>Playtopia Adventure at Senayan Park (Spark), an indoor playground for adults. Weekday tickets are cheaper. Check closing time.</span></li>
     <li><span class="t">20:45</span><span><span class="tag">Remboelan</span>Indonesian dinner at Remboelan, Senayan City, close by. Kitchen usually closes around 22:00.</span></li>
   </ul>
@@ -288,7 +289,7 @@ footer{font-size:13px;color:var(--muted);text-align:center}
   <ul class="slots">
     <li><span class="t">17:30</span><span><span class="tag">M7 Tactical</span>Shooting experience, the <b>Foreground</b> tennis simulator in Kemang, or matching bracelets at <b>Lit House</b>. Probably only time for one; pick whichever has an evening slot on Instagram.</span></li>
     <li><span class="t">19:30</span><span><span class="tag">Plataran</span>Indonesian dinner at Plataran Dharmawangsa, a few minutes from the hotel. Joglo house in a garden, the best place to show Momo Indonesian food. Then rest a bit at the hotel.</span></li>
-    <li><span class="t">23:00</span><span><span class="tag">Colosseum</span>Colosseum Club. It gets going late, so leave by about 01:30 if you still want Bandung tomorrow.</span></li>
+    <li><span class="t">23:00</span><span><span class="tag">Colosseum</span>Colosseum Club. It gets going late, so leave by about 01:30 if we still want Bandung tomorrow.</span></li>
   </ul>
 </article>
 
@@ -298,14 +299,14 @@ footer{font-size:13px;color:var(--muted);text-align:center}
     <li><span class="t">09:00</span><span>Sleep in after Colosseum. Grab to Whoosh Halim station (30–45 minutes).</span></li>
     <li><span class="t">10:00</span><span>Whoosh Halim → Padalarang (about 30 minutes), then the feeder train to Bandung Station (about 20 minutes, included in the ticket).</span></li>
     <li><span class="t">11:00</span><span><span class="tag">Old Bandung</span>Walk from the station to <b>Kopi Aroma</b> on Jl. Banceuy, a family coffee roaster running since the 1930s (buy beans to take home). Then <b>Jalan Braga</b> and <b>Jalan Asia Afrika</b>: Dutch-era buildings and Gedung Merdeka, where the 1955 Asia-Africa Conference was held.</span></li>
-    <li><span class="t">12:15</span><span><span class="tag">Lunch</span>Bandung street food: <b>Batagor Kingsley</b> (Jl. Veteran) for fried fish dumplings in peanut sauce, or <b>mie kocok</b> (beef noodle soup). Momo should try surabi too if you see a stall.</span></li>
+    <li><span class="t">12:15</span><span><span class="tag">Lunch</span>Bandung street food: <b>Batagor Kingsley</b> (Jl. Veteran) for fried fish dumplings in peanut sauce, or <b>mie kocok</b> (beef noodle soup). Momo has to try surabi if we see a stall.</span></li>
     <li><span class="t">13:00</span><span><span class="tag">Boots 1</span>Local brand showrooms in town: Brodo, Portee Goods, Piede, XTURE, Junkard.</span></li>
     <li><span class="t">15:00</span><span><span class="tag">Boots 2</span>Cibaduyut, Bandung's shoemaking district. Go for ready-made pairs, since Momo flies the next day.</span></li>
     <li><span class="t">17:00</span><span><span class="tag">Oleh-oleh</span><b>Kartika Sari</b> on Jl. Kebonjati, near the station, for pisang bolen and other Bandung snacks to take home. Coffee and a sit-down in Braga if there's time.</span></li>
     <li><span class="t">19:00</span><span>Feeder to Padalarang → Whoosh back to Halim.</span></li>
     <li><span class="t">~21:30</span><span>Back at the hotel, final packing.</span></li>
   </ul>
-  <p class="tip">Whoosh fares change with demand, roughly Rp150–350k per person one way. If you skip Colosseum, take the 08:00 train instead and add a morning in Dago (cooler hills, cafés with views). Lembang, Kawah Putih and Tangkuban Perahu are too far for this day trip.</p>
+  <p class="tip">Whoosh fares change with demand, roughly Rp150–350k per person one way. If we skip Colosseum, take the 08:00 train instead and add a morning in Dago (cooler hills, cafés with views). Lembang, Kawah Putih and Tangkuban Perahu are too far for this day trip.</p>
   <p class="tip">Clothes and accessories: factory outlets and local-brand (distro) stores line <b>Jl. Riau (RE Martadinata)</b> and <b>Jl. Trunojoyo</b>, 10 minutes from Braga; swap them in for the brand showrooms if boots are found early. <b>Pasar Baru Trade Center</b> by the station is cheap clothes, fabric and accessories, good for the last hour. <b>Jl. Cihampelas</b> is the old jeans street. Prices at Pasar Baru are for bargaining.</p>
   <p class="tip"> Check opening hours for Kopi Aroma and the food stalls.</p>
 </article>
@@ -313,7 +314,7 @@ footer{font-size:13px;color:var(--muted);text-align:center}
 <article class="day">
   <div class="dayhead"><h3>Slow goodbye</h3><span class="date">Sunday, 6 Dec</span><span class="pill p-full">Together to the airport</span></div>
   <ul class="slots">
-    <li><span class="t">07:00</span><span><span class="tag">Car Free Day</span>Optional, if you're not too tired from Bandung: walk Sudirman–Thamrin while it's closed to cars (until about 11:00), street snacks on the way.</span></li>
+    <li><span class="t">07:00</span><span><span class="tag">Car Free Day</span>Optional, if we're not too tired from Bandung: walk Sudirman–Thamrin while it's closed to cars (until about 11:00), street snacks on the way.</span></li>
     <li><span class="t">10:00</span><span><span class="tag">Brunch</span>Long brunch near the hotel, then pastries from Braud or Gontran Cherrier for the flight.</span></li>
     <li><span class="t">11:30</span><span>Final packing, check out at 12:00. Leave bags at the hotel if there's time for one last coffee.</span></li>
     <li><span class="t">13:15</span><span>Leave for the airport. Sunday midday takes 60–90 minutes.</span></li>
@@ -334,10 +335,10 @@ footer{font-size:13px;color:var(--muted);text-align:center}
     <div class="food">
       <h3>Indonesian</h3>
       <ul>
-        <li><b>Plataran Dharmawangsa</b> · Jl. Dharmawangsa Raya, a few minutes from the hotel. Javanese joglo house in a garden, often named Jakarta's best Indonesian restaurant by Tatler. Try the duck curry and sate. Best pick to show Momo Indonesian food.</li>
+        <li><b>Plataran Dharmawangsa</b> · Jl. Dharmawangsa Raya, a few minutes from the hotel. Javanese joglo house in a garden, often named Jakarta's best Indonesian restaurant by Tatler. Try the duck curry and sate. Salsa's pick to show Momo Indonesian food.</li>
         <li><b>Puja</b> · The Trunojoyo compound, Kebayoran. Indonesian heritage dishes served family style.</li>
         <li><b>Remboelan</b> · Senayan City / Plaza Senayan, about 15 minutes. Classic Indonesian dishes in a casual setting, around Rp50–100k per person. Easy lunch on a mall day.</li>
-        <li><b>Waroeng SS (Spesial Sambal)</b> · Chain from Yogyakarta with dozens of sambals, from mild to very hot. Fun way to test Momo's spice level. Cheap. Check Maps for the nearest branch.</li>
+        <li><b>Waroeng SS (Spesial Sambal)</b> · Chain from Yogyakarta with dozens of sambals, from mild to very hot. Fun way to test how much spice Momo can handle. Cheap. Check Maps for the nearest branch.</li>
         <li><b>Gultik Blok M</b> · Street-side gulai (rice with curried beef) on the corner by Blok M, open at night. Cheap and very Jakarta. Good after drinks.</li>
       </ul>
     </div>
@@ -355,7 +356,7 @@ footer{font-size:13px;color:var(--muted);text-align:center}
       <ul>
         <li><b>Babooji</b> · Gunawarman, 5 minutes away. Modern Indian (Sunday's dinner).</li>
         <li><b>Ganesha Ek Sanskriti / Udupi</b> · Kemang (Thursday's dinner).</li>
-        <li><b>D' Bollywood</b> · Rasuna Said, Kuningan. Best food reviews of the places I checked.</li>
+        <li><b>D' Bollywood</b> · Rasuna Said, Kuningan. Best food reviews of the Indian places on this list.</li>
         <li><b>Fez-Kinara / Queen's Tandoor</b> · Kemang. Long-running backups.</li>
       </ul>
     </div>
@@ -365,7 +366,7 @@ footer{font-size:13px;color:var(--muted);text-align:center}
         <li><b>Man Man Unagi</b> · Senopati. Singapore unagi spot with a Michelin Bib Gourmand there, live eel from Japan grilled over charcoal. Order the hitsumabushi. Expect a queue.</li>
         <li><b>Unacho</b> · Plaza Senayan. Charcoal-grilled unagi and hitsumabushi.</li>
         <li><b>Unagi Kurofune</b> · Jl. Gunawarman 67, about 5 minutes from the hotel. Japanese unagi chain, open daily 11:30–22:30.</li>
-        <li><b>Obihiro Nikudon</b> · Blok M. Hokkaido-style grilled pork rice bowls, around Rp55–80k. Try the truffle or kabayaki nikudon. Good cheap lunch for Momo.</li>
+        <li><b>Obihiro Nikudon</b> · Blok M. Hokkaido-style grilled pork rice bowls, around Rp55–80k. Try the truffle or kabayaki nikudon. Good cheap lunch.</li>
         <li><b>Shori Sushi Bar</b> · ASHTA District 8, Jl. Senopati. Well-reviewed sushi counter, easy pick near the hotel.</li>
         <li><b>Kintaro Sushi</b> · Jl. Suryo, Senopati. More casual, around US$25 per person (estimate).</li>
         <li><b>Kiyadon</b> · Pacific Place, SCBD. Long-running casual Japanese, known for its rolls. Good for a quick lunch.</li>
@@ -398,13 +399,13 @@ footer{font-size:13px;color:var(--muted);text-align:center}
 <section class="win">
   <div class="winbar"><span class="dots"><i></i><i></i><i></i></span><span class="url">notes — budget</span></div>
   <div class="inner">
-  <p style="color:var(--muted);font-size:14px">Prices come from listings and reviews, some of them older. Where I found nothing, it says check Instagram.</p>
+  <p style="color:var(--muted);font-size:14px">Prices come from listings and reviews, some of them older. Where there was no price online, it says check Instagram.</p>
   <div class="scroll">
   <table class="budget">
     <thead><tr><th>Place</th><th>Rough cost</th><th>Note</th></tr></thead>
     <tbody>
       <tr><td>UP at Thamrin Nine</td><td class="mono">Rp100k</td><td>Entry up to floor 106. Swing, edge walk and floors 108–109 cost Rp60–100k extra each</td></tr>
-      <tr><td>Osteria Gia</td><td class="mono">±Rp400k</td><td>About US$25 per person (estimate). More if you order the caviar dishes</td></tr>
+      <tr><td>Osteria Gia</td><td class="mono">±Rp400k</td><td>About US$25 per person (estimate). More if we order the caviar dishes</td></tr>
       <tr><td>Modernhaus</td><td class="mono">±Rp200k / drink</td><td>About US$12 a cocktail. Open Mon–Sat from 17:00</td></tr>
       <tr><td>The Cocktail Club</td><td class="mono">±Rp160k / drink</td><td>About US$10 a cocktail. Closed Sunday</td></tr>
       <tr><td>Colosseum Club</td><td class="mono">±Rp200k+</td><td>Cover or first drink, from a 2024 review. Higher on international DJ nights</td></tr>
@@ -430,7 +431,7 @@ footer{font-size:13px;color:var(--muted);text-align:center}
       <ul class="check">
         <li><input type="checkbox" id="b1"><label for="b1">Decide the style: chelsea, lace-up work boot, or something for winter</label></li>
         <li><input type="checkbox" id="b2"><label for="b2">Note Momo's EU size and foot length in cm</label></li>
-        <li><input type="checkbox" id="b3"><label for="b3">Bring the socks you'll wear with them</label></li>
+        <li><input type="checkbox" id="b3"><label for="b3">Bring the socks Momo will wear with them</label></li>
         <li><input type="checkbox" id="b4"><label for="b4">Check showroom addresses and hours on Instagram or Maps; some workshops are by appointment</label></li>
         <li><input type="checkbox" id="b5"><label for="b5">Set a budget (local genuine-leather boots start around Rp500k and go into the millions)</label></li>
       </ul>
