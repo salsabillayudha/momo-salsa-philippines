@@ -37,6 +37,20 @@ card highlighted during the trip.
 name or paste a Google Maps link, and a small free Cloudflare Worker (Gemini + Google Search)
 fills the empty fields. One-time setup is in [`worker/README.md`](worker/README.md).
 
+## `jakarta-dec.html` — Momo's Jakarta trip (28 Nov – 6 Dec 2026)
+
+A desktop-scrapbook itinerary for the second Jakarta visit: sky background, app-window cards,
+pink folders and a dock that jump to each section.
+
+- **Who's free when** strip: weekends together, 1 Dec (6-month anniversary) all day, other
+  weekdays together after work.
+- **Day by day**, from landing at T3 to the mangrove stop on the way to the airport, with the
+  Bandung boots trip on Saturday 5 Dec.
+- **Food near the hotel** (Indonesian, Indian, pizza & Italian, sushi & unagi, pastry, special),
+  a **budget per person** table, and **boots mission** notes.
+
+Static HTML with Google Fonts only, light and dark.
+
 ## `chat.html` — the conversation reader
 
 A second page that turns a WhatsApp chat export back into a conversation you can

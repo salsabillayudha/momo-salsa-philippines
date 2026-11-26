@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>MOMO ✕ SALSA — Jakarta, Nov–Dec 2026</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  :root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+  body{margin:0;font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+  img{max-width:100%}
+  [hidden]{display:none!important}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;700;800;900&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: desktop-scrapbook. Sky background, every section is an app window with traffic-light dots, pill labels like chat bubbles, pink folders + dock as navigation */
+:root{
+  --sky:#c7ddf2; --sky2:#e6f0fa; --cloud:rgba(255,255,255,.75);
+  --bg:#c7ddf2; --surface:#ffffff; --chrome:#f1ede6; --ink:#141414; --muted:#6b6f76; --line:#e3e6ea; --hair:#e8eaee;
+  --pink:#f59bc2; --pink-soft:#fde3ef; --hl:#fff04d; --blue:#2f7cf6;
+  --green:#e0468f; --green-soft:#fde3ef; --tan:#141414; --tan-soft:#fff9c4; --mustard:#fff04d; --warn:#9a6b00; --warn-soft:#fff6bf;
+  --shadow:rgba(30,60,100,.16);
+  --display:"Inter Tight","Helvetica Neue",Arial,sans-serif;
+  --body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"Inter",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --sky:#16233a; --sky2:#1e3050; --cloud:rgba(140,170,220,.12);
+  --bg:#16233a; --surface:#1d2230; --chrome:#272c3a; --ink:#f3f4f7; --muted:#a4abba; --line:#333a4a; --hair:#2d3443;
+  --pink:#f59bc2; --pink-soft:#4a2338; --hl:#e8d83a; --blue:#6ea4ff;
+  --green:#f59bc2; --green-soft:#4a2338; --tan:#f3f4f7; --tan-soft:#3a3618; --mustard:#e8d83a; --warn:#e8d83a; --warn-soft:#3a3618;
+  --shadow:rgba(0,0,0,.45); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --sky:#16233a; --sky2:#1e3050; --cloud:rgba(140,170,220,.12);
+  --bg:#16233a; --surface:#1d2230; --chrome:#272c3a; --ink:#f3f4f7; --muted:#a4abba; --line:#333a4a; --hair:#2d3443;
+  --pink:#f59bc2; --pink-soft:#4a2338; --hl:#e8d83a; --blue:#6ea4ff;
+  --green:#f59bc2; --green-soft:#4a2338; --tan:#f3f4f7; --tan-soft:#3a3618; --mustard:#e8d83a; --warn:#e8d83a; --warn-soft:#3a3618;
+  --shadow:rgba(0,0,0,.45); color-scheme:dark}
+body{background:var(--bg);background-image:radial-gradient(ellipse 40% 18% at 12% 8%,var(--cloud),transparent 70%),radial-gradient(ellipse 35% 14% at 88% 22%,var(--cloud),transparent 70%),radial-gradient(ellipse 45% 16% at 20% 55%,var(--cloud),transparent 70%),radial-gradient(ellipse 40% 15% at 85% 78%,var(--cloud),transparent 70%),linear-gradient(180deg,var(--sky2),var(--sky));background-attachment:fixed;color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55}
+.wrap{max-width:800px;margin:0 auto;padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:34px}
+h1,h2{font-family:var(--display);margin:0;text-wrap:balance}
+h3{font-family:var(--display);font-weight:800;font-size:18px;letter-spacing:-.02em;margin:0;line-height:1.2;text-wrap:balance}
+p{margin:0}
+.mono{font-variant-numeric:tabular-nums}
+a{color:inherit}
+a:focus-visible,input:focus-visible{outline:3px solid var(--blue);outline-offset:2px;border-radius:6px}
+
+/* window chrome */
+.dots{display:inline-flex;gap:7px;flex:none}
+.dots i{width:12px;height:12px;border-radius:50%;background:#ff5f57}
+.dots i:nth-child(2){background:#febc2e}.dots i:nth-child(3){background:#28c840}
+.winbar{display:flex;align-items:center;gap:12px;background:var(--chrome);padding:10px 14px;border-bottom:1px solid var(--line)}
+.url{flex:1;min-width:0;background:var(--surface);border-radius:999px;padding:4px 14px;font-size:13px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.url::before{content:"⌕ ";color:var(--muted)}
+
+/* hero */
+.hero{background:var(--surface);border-radius:18px;box-shadow:0 14px 40px var(--shadow);overflow:hidden;position:relative}
+.hero-body{padding:28px 24px 22px;display:grid;gap:18px;position:relative}
+.hero h1{font-weight:900;font-size:clamp(46px,12vw,104px);line-height:.86;letter-spacing:-.065em;text-transform:lowercase}
+.hl{background:var(--hl);color:#141414;padding:0 .08em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.bubble{justify-self:start;display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 16px 6px 8px;font-family:var(--display);font-weight:700;font-size:18px;letter-spacing:-.03em;box-shadow:0 6px 18px var(--shadow)}
+.bubble b{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--blue);color:#fff;font-size:13px}
+.hero p.lede{max-width:56ch;color:var(--muted);font-size:15px}
+.sticker{position:absolute;font-size:30px;line-height:1;filter:drop-shadow(0 3px 4px var(--shadow));pointer-events:none;user-select:none}
+.folders{display:flex;flex-wrap:wrap;gap:18px}
+.folder{display:grid;justify-items:center;gap:4px;text-decoration:none;font-size:12px;font-weight:600;color:var(--ink)}
+.folder span.ico{width:58px;height:42px;background:var(--pink);border-radius:4px 8px 8px 8px;position:relative;margin-top:7px}
+.folder span.ico::before{content:"";position:absolute;left:0;top:-7px;width:24px;height:9px;background:var(--pink);border-radius:4px 6px 0 0;filter:brightness(.95)}
+.folder:hover span.ico{transform:translateY(-2px)}
+.dock{justify-self:center;display:flex;gap:8px;padding:8px 10px;border-radius:18px;background:var(--chrome);border:1px solid var(--line);box-shadow:0 8px 22px var(--shadow)}
+.dock a{display:grid;place-items:center;width:44px;height:44px;border-radius:11px;background:var(--surface);font-size:24px;text-decoration:none;box-shadow:0 1px 3px var(--shadow);transition:transform .15s}
+.dock a:hover{transform:translateY(-4px) scale(1.08)}
+@media (prefers-reduced-motion:reduce){.dock a,.folder span.ico{transition:none}.dock a:hover{transform:none}}
+
+/* flights as notification cards */
+.flights{display:flex;flex-wrap:wrap;gap:12px}
+.flight{flex:1 1 220px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px 16px 12px 58px;display:grid;gap:0;box-shadow:0 6px 18px var(--shadow);position:relative}
+.flight::before{content:"✈️";position:absolute;left:14px;top:50%;transform:translateY(-50%);width:32px;height:32px;display:grid;place-items:center;border-radius:9px;background:var(--pink-soft);font-size:17px}
+.flight b{font-family:var(--display);font-weight:900;font-size:26px;letter-spacing:-.04em;order:2}
+.flight span{color:var(--muted);font-size:13px;order:1}
+
+/* section windows */
+.win{background:var(--surface);border-radius:18px;box-shadow:0 12px 32px var(--shadow);overflow:hidden;display:grid}
+.win>.inner{padding:18px 20px 20px;display:grid;gap:14px}
+.label{justify-self:start;font-family:var(--display);font-weight:800;font-size:clamp(24px,5vw,32px);letter-spacing:-.05em;line-height:1;text-transform:lowercase;background:var(--surface);border-radius:14px;padding:8px 18px;box-shadow:0 8px 22px var(--shadow);margin-bottom:-6px;position:relative;z-index:1}
+.label .hl{padding:0 .1em}
+
+/* availability strip */
+.strip{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:6px}
+.cell{display:grid;gap:4px;text-align:center;font-size:12px}
+.cell .bar{height:34px;border-radius:10px}
+.cell .d{color:var(--muted);font-weight:600}
+.full .bar{background:var(--pink)}
+.eve .bar{background:linear-gradient(to bottom,var(--hair) 0 60%,var(--pink) 60% 100%)}
+.trip .bar{background:var(--hl)}
+.half .bar{background:linear-gradient(to bottom,var(--hair) 0 40%,var(--pink) 40% 100%)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:4px;vertical-align:-1px;margin-right:6px}
+
+/* days */
+.days{display:grid;gap:22px}
+.day{background:var(--surface);border-radius:18px;display:grid;box-shadow:0 12px 32px var(--shadow);overflow:hidden}
+.day::before{content:"";display:block;height:34px;background:var(--chrome);border-bottom:1px solid var(--line);background-image:radial-gradient(circle at 20px 17px,#ff5f57 6px,transparent 6.5px),radial-gradient(circle at 39px 17px,#febc2e 6px,transparent 6.5px),radial-gradient(circle at 58px 17px,#28c840 6px,transparent 6.5px)}
+.day>*:not(.dayhead){margin-inline:20px}
+.day>:last-child{margin-bottom:18px}
+.day>*+*{margin-top:12px}
+.day.star{box-shadow:0 0 0 4px var(--hl),0 12px 32px var(--shadow)}
+.dayhead{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;padding:16px 20px 0}
+.dayhead h3{flex:1 1 100%;font-size:22px;letter-spacing:-.04em;text-transform:lowercase}
+.date{font-size:13px;font-weight:600;color:var(--muted)}
+.pill{font-size:12px;font-weight:600;padding:3px 11px;border-radius:999px;white-space:nowrap}
+.p-full{background:var(--pink-soft);color:var(--green)}
+.p-eve{background:var(--hair);color:var(--muted)}
+.p-trip{background:var(--hl);color:#141414}
+.slots{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.slots li{display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;align-items:start}
+.slots .t{font-family:var(--display);font-weight:800;font-size:14px;letter-spacing:-.02em;color:var(--ink);background:var(--hair);border-radius:8px;padding:2px 8px;justify-self:start}
+.slots .solo{color:var(--muted)}
+.tag{display:inline-block;font-size:11px;font-weight:700;color:var(--green);background:var(--pink-soft);border-radius:999px;padding:1px 9px;margin-right:6px;vertical-align:1px}
+.tag.s{color:var(--muted);background:var(--hair)}
+.tag.must{background:var(--hl);color:#141414}
+.slots li.must>span:last-child{background:var(--tan-soft);border-radius:10px;padding:6px 10px;margin:-6px -10px}
+.tip{font-size:13px;color:var(--ink);background:var(--warn-soft);border-radius:12px;padding:10px 14px}
+.tip::before{content:"📌 "}
+
+/* boots + food */
+.boots{background:var(--surface);border-radius:18px;padding:0;display:grid;box-shadow:0 12px 32px var(--shadow);overflow:hidden}
+.boots>h2{display:none}
+.boots .grid2{padding:18px 20px 20px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+.boots ul{margin:0;padding-left:18px;display:grid;gap:6px;font-size:14px}
+.check{list-style:none;padding:0!important}
+.check li{display:flex;gap:8px;align-items:flex-start}
+.check input{margin-top:4px;accent-color:var(--green);width:16px;height:16px}
+.check label{cursor:pointer}
+.food{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:grid;gap:8px;min-width:0;align-content:start}
+.food h3{display:inline;justify-self:start;font-size:19px;text-transform:lowercase;background:linear-gradient(transparent 55%,var(--hl) 55%);padding:0 2px}
+.food ul{margin:0;padding-left:18px;display:grid;gap:8px;font-size:14px}
+.food b{font-weight:700}
+
+/* budget as notes app */
+.budget{width:100%;border-collapse:collapse;font-size:14px}
+.budget th,.budget td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--hair);vertical-align:top}
+.budget th{font-size:12px;color:var(--muted);font-weight:600}
+.budget td:nth-child(1){font-weight:600}
+.budget td:nth-child(2){white-space:nowrap;font-family:var(--display);font-weight:800;letter-spacing:-.02em}
+.budget td:nth-child(3){color:var(--muted);min-width:180px}
+.budget tr:last-child td{border-bottom:0}
+.scroll{overflow-x:auto}
+footer{font-size:13px;color:var(--muted);text-align:center}
+@media (max-width:520px){.strip{gap:3px}.strip .cell{font-size:10px}.slots li{grid-template-columns:60px minmax(0,1fr)}.sticker{font-size:22px}.sticker:nth-of-type(n+3){display:none}.hero-body{padding:22px 16px 18px}.dock a{width:38px;height:38px;font-size:20px}.dock{gap:5px}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+<header class="hero">
+  <div class="winbar"><span class="dots"><i></i><i></i><i></i></span><span class="url">www.momoinjakarta.com</span></div>
+  <div class="hero-body">
+    <span class="sticker" style="top:14px;right:22px">⭐</span>
+    <span class="sticker" style="top:96px;right:16%">✨</span>
+    <span class="sticker" style="top:30%;right:6%">🥾</span>
+    <span class="sticker" style="bottom:118px;right:10%">🍣</span>
+    <span class="bubble"><b>♥</b>9 days, 8 nights</span>
+    <h1>momo's<br><span class="hl">jakarta</span><br>trip</h1>
+    <p class="lede">28 Nov – 6 Dec 2026 · staying at The Dharmawangsa. Salsa works Monday to Friday (no leave, again), so weekdays Momo rests during the day and everything happens together after work. Salsa has an exam Sunday morning. Bandung and the boots hunt are on the last Saturday.</p>
+    <div class="flights">
+      <div class="flight"><span>Arrive · Sat 28 Nov · Soekarno-Hatta T3</span><b>15:40</b></div>
+      <div class="flight"><span>Depart · Sun 6 Dec · check terminal on ticket</span><b>17:45</b></div>
+    </div>
+    <nav class="folders" aria-label="Sections">
+      <a class="folder" href="#days"><span class="ico"></span>itinerary</a>
+      <a class="folder" href="#food"><span class="ico"></span>food</a>
+      <a class="folder" href="#budget"><span class="ico"></span>budget</a>
+      <a class="folder" href="#boots"><span class="ico"></span>boots</a>
+    </nav>
+    <nav class="dock" aria-label="Quick links">
+      <a href="#free" title="Who's free when">📅</a>
+      <a href="#days" title="Day by day">🗺️</a>
+      <a href="#food" title="Food">🍕</a>
+      <a href="#budget" title="Budget">🧮</a>
+      <a href="#boots" title="Boots">🥾</a>
+    </nav>
+  </div>
+</header>
+
+<h2 class="label" id="free">who's <span class="hl">free</span> when</h2>
+<section class="win">
+  <div class="winbar"><span class="dots"><i></i><i></i><i></i></span><span class="url">calendar</span></div>
+  <div class="inner">
+  <div class="strip" role="img" aria-label="Saturday 28 together, Sunday 29 together after Salsa's morning exam, Tuesday 1 anniversary all day, other weekdays together after work, Saturday 5 Bandung, Sunday 6 departure">
+    <div class="cell full"><div class="bar"></div><span class="d">Sa 28</span></div>
+    <div class="cell half"><div class="bar"></div><span class="d">Su 29</span></div>
+    <div class="cell eve"><div class="bar"></div><span class="d">Mo 30</span></div>
+    <div class="cell full"><div class="bar"></div><span class="d">Tu 1 💕</span></div>
+    <div class="cell eve"><div class="bar"></div><span class="d">We 2</span></div>
+    <div class="cell eve"><div class="bar"></div><span class="d">Th 3</span></div>
+    <div class="cell eve"><div class="bar"></div><span class="d">Fr 4</span></div>
+    <div class="cell trip"><div class="bar"></div><span class="d">Sa 5</span></div>
+    <div class="cell full"><div class="bar"></div><span class="d">Su 6</span></div>
+  </div>
+  <div class="legend">
+    <span><i style="background:var(--green)"></i>Together all day</span>
+    <span><i style="background:linear-gradient(to bottom,var(--line) 0 40%,var(--green) 40%)"></i>Together after Salsa's exam</span>
+    <span><i style="background:var(--tan)"></i>Bandung + boots</span>
+    <span><i style="background:linear-gradient(to bottom,var(--line) 0 60%,var(--green) 60%)"></i>Together after work (from ~17:30)</span>
+  </div>
+  </div>
+</section>
+
+<h2 class="label" id="days">day by <span class="hl">day</span></h2>
+<div class="days">
+
+<article class="day">
+  <div class="dayhead"><h3>Landing and settling in</h3><span class="date">Saturday, 28 Nov</span><span class="pill p-full">Together</span></div>
+  <ul class="slots">
+    <li><span class="t">15:40</span><span>Land at T3. Immigration and bags usually take 45–60 minutes. Salsa picks you up at international arrivals.</span></li>
+    <li><span class="t">16:45</span><span>Drive to Dharmawangsa on the toll road. Saturday afternoons are often busy, so allow 60–90 minutes.</span></li>
+    <li><span class="t">18:15</span><span>Check in, shower, rest a bit.</span></li>
+    <li><span class="t">19:30</span><span>Easy dinner nearby in Senopati or Gunawarman. Early night, since Salsa has an exam tomorrow morning.</span></li>
+  </ul>
+</article>
+
+<article class="day">
+  <div class="dayhead"><h3>Exam morning, facial and comedy</h3><span class="date">Sunday, 29 Nov</span><span class="pill p-eve">Together after the exam</span></div>
+  <ul class="slots">
+    <li class="solo"><span class="t">Morning</span><span>Salsa's exam. Momo sleeps off the jet lag, hotel breakfast, pool.</span></li>
+    <li><span class="t">After exam</span><span>Quick lunch to celebrate the exam being done.</span></li>
+    <li><span class="t">13:30</span><span><span class="tag">Ella</span>Facial at Ella Skin Care. Book a branch ahead and confirm Sunday hours.</span></li>
+    <li><span class="t">16:00</span><span><span class="tag">Mad for Laughs</span>English stand-up comedy at Mad for Coffee, Cipete. Usually doors 15:30, show 16:00 to 18:00. Check @madforlaughs for this Sunday's show and buy tickets ahead.</span></li>
+    <li><span class="t">19:00</span><span><span class="tag">Indian</span>Babooji in Gunawarman, about 5 minutes from the hotel. Modern Indian, known for its tandoori chicken.</span></li>
+  </ul>
+  <p class="tip">Book Whoosh tickets for Saturday 5 Dec now, in the Whoosh app or Access by KAI. Weekend trains sell out.</p>
+</article>
+
+<article class="day">
+  <div class="dayhead"><h3>Coffee and cats after work</h3><span class="date">Monday, 30 Nov</span><span class="pill p-eve">Together after work</span></div>
+  <ul class="slots">
+    <li class="must"><span class="t">17:30</span><span><span class="tag must">⭐ Must</span><b>Tenun Coffee Roasters</b>, Jl. Tulodong Bawah near SCBD. Meet here right after work. Check closing time on Maps.</span></li>
+    <li class="must"><span class="t">18:30</span><span><span class="tag must">⭐ Must</span><b>Cat café at Habitat Park SCBD</b>, a few minutes away. The park is open until about 21:00 with last entry around 20:00, entry from about Rp38.5k. Check the cat café's own hours and whether it needs a booking.</span></li>
+    <li><span class="t">19:45</span><span><span class="tag">Osteria Gia</span>Dinner at Osteria Gia, Pacific Place, right in SCBD.</span></li>
+    <li><span class="t">21:30</span><span><span class="tag">Cocktail Club</span>Drinks at The Cocktail Club on Senopati (open Mon–Sat until 01:00).</span></li>
+  </ul>
+</article>
+
+<article class="day star">
+  <div class="dayhead"><h3>6-month anniversary 💕</h3><span class="date">Tuesday, 1 Dec</span><span class="pill p-full">Salsa on leave · all day together</span></div>
+  <ul class="slots">
+    <li><span class="t">07:00</span><span>Leave the hotel early, grab pastries from Braud or Gontran Cherrier on the way if they're open. About 1 hour north to Kamal Muara / PIK.</span></li>
+    <li class="must"><span class="t">08:00</span><span><span class="tag must">⭐ Mangrove</span><b>Mangrove paddling around Kamal Muara / PIK</b>, just the two of you on the water in the cool morning. Book an operator ahead and confirm they run on a Tuesday. Bring a change of clothes and sunscreen.</span></li>
+    <li><span class="t">11:00</span><span>Drive back south (about 1 hour), quick shower at the hotel if needed.</span></li>
+    <li><span class="t">13:00</span><span><span class="tag">Unagi</span>Lunch at Unagi Kurofune, Jl. Gunawarman 67, 5 minutes from the hotel.</span></li>
+    <li class="must"><span class="t">14:15</span><span><span class="tag must">⭐ Romantic</span><b>Couple photos in a self-photo studio in Blok M</b>, 10 minutes from lunch. Your own remote, no photographer. Rp20–50k a session (Photomatics, OURStudio, D'Amour).</span></li>
+    <li><span class="t">14:45</span><span><span class="tag">Blok M</span>Wander Blok M on foot, it's all close together:
+      <br>· <b>Taman Literasi Martha Christina Tiahahu</b> by Blok M station: free park with a bookshop and coffee. Good spot to swap small gifts.
+      <br>· <b>M Bloc Space</b>: old government buildings turned into indie shops, cafés and a music venue.
+      <br>· <b>Blok M Square basement</b>: second-hand books and vinyl, fun to dig through together.
+      <br>· <b>Little Tokyo (Jl. Melawai)</b>: street of small Japanese shops and snack spots, grab a dessert.</span></li>
+    <li><span class="t">16:30</span><span>Back to the hotel (10 minutes) to rest and dress up.</span></li>
+    <li class="must"><span class="t">19:00</span><span><span class="tag must">⭐ Dinner</span><b>Emilia Cucina Italiana, Pondok Indah</b>. Vintage décor and home-style Italian, cozy and quiet. About 20–30 minutes from the hotel; leave by 18:30 for evening traffic. Tell them it's your anniversary when you book.</span></li>
+  </ul>
+  <p class="tip">Book the mangrove operator and Emilia this week. Lunch at Unagi Kurofune may slip to 13:30 depending on traffic back from the north. When booking Emilia, make sure it's the Cucina Italiana branch in Pondok Indah (there's also Emilia Bar Italiano in SCBD and other Cucina branches).</p>
+</article>
+
+<article class="day">
+  <div class="dayhead"><h3>Silver, then play</h3><span class="date">Wednesday, 2 Dec</span><span class="pill p-eve">Together after work</span></div>
+  <ul class="slots">
+    <li><span class="t">17:30</span><span><span class="tag">Pasar Santa</span>Silver accessories at Pasar Santa, 10 minutes from the hotel. Some stalls close early, so check the shops you want on IG first.</span></li>
+    <li><span class="t">19:00</span><span><span class="tag">Playtopia</span>Playtopia Adventure at Senayan Park (Spark), an indoor playground for adults. Weekday tickets are cheaper. Check closing time.</span></li>
+    <li><span class="t">20:45</span><span><span class="tag">Remboelan</span>Indonesian dinner at Remboelan, Senayan City, close by. Kitchen usually closes around 22:00.</span></li>
+  </ul>
+</article>
+
+<article class="day">
+  <div class="dayhead"><h3>Sky-high sunset, Kemang night</h3><span class="date">Thursday, 3 Dec</span><span class="pill p-eve">Together after work</span></div>
+  <ul class="slots">
+    <li><span class="t">17:30</span><span><span class="tag">UP at Thamrin Nine</span>Observation deck at the top of Autograph Tower, the tallest building in Indonesia. Sunset is around 17:50, so go straight from work. Take the UPswing for photos.</span></li>
+    <li><span class="t">19:45</span><span><span class="tag">Indian</span>Kemang, about 40 minutes from Thamrin in evening traffic: Ganesha Ek Sanskriti (traditional setting) or Udupi (South Indian vegetarian).</span></li>
+    <li><span class="t">21:30</span><span><span class="tag">Modernhaus</span>Cocktails at Modernhaus on Senopati, named Best Bar in Indonesia 2026 by Asia's 50 Best Bars. It's above Bouchon.</span></li>
+  </ul>
+</article>
+
+<article class="day">
+  <div class="dayhead"><h3>Friday night out</h3><span class="date">Friday, 4 Dec</span><span class="pill p-eve">Together after work</span></div>
+  <ul class="slots">
+    <li><span class="t">17:30</span><span><span class="tag">M7 Tactical</span>Shooting experience, the <b>Foreground</b> tennis simulator in Kemang, or matching bracelets at <b>Lit House</b>. Probably only time for one; pick whichever has an evening slot on Instagram.</span></li>
+    <li><span class="t">19:30</span><span><span class="tag">Plataran</span>Indonesian dinner at Plataran Dharmawangsa, a few minutes from the hotel. Joglo house in a garden, the best place to show Momo Indonesian food. Then rest a bit at the hotel.</span></li>
+    <li><span class="t">23:00</span><span><span class="tag">Colosseum</span>Colosseum Club. It gets going late, so leave by about 01:30 if you still want Bandung tomorrow.</span></li>
+  </ul>
+</article>
+
+<article class="day star">
+  <div class="dayhead"><h3>Bandung day trip: the boots mission</h3><span class="date">Saturday, 5 Dec</span><span class="pill p-trip">Bandung</span></div>
+  <ul class="slots">
+    <li><span class="t">09:00</span><span>Sleep in after Colosseum. Grab to Whoosh Halim station (30–45 minutes).</span></li>
+    <li><span class="t">10:00</span><span>Whoosh Halim → Padalarang (about 30 minutes), then the feeder train to Bandung Station (about 20 minutes, included in the ticket).</span></li>
+    <li><span class="t">11:00</span><span><span class="tag">Old Bandung</span>Walk from the station to <b>Kopi Aroma</b> on Jl. Banceuy, a family coffee roaster running since the 1930s (buy beans to take home). Then <b>Jalan Braga</b> and <b>Jalan Asia Afrika</b>: Dutch-era buildings and Gedung Merdeka, where the 1955 Asia-Africa Conference was held.</span></li>
+    <li><span class="t">12:15</span><span><span class="tag">Lunch</span>Bandung street food: <b>Batagor Kingsley</b> (Jl. Veteran) for fried fish dumplings in peanut sauce, or <b>mie kocok</b> (beef noodle soup). Momo should try surabi too if you see a stall.</span></li>
+    <li><span class="t">13:00</span><span><span class="tag">Boots 1</span>Local brand showrooms in town: Brodo, Portee Goods, Piede, XTURE, Junkard.</span></li>
+    <li><span class="t">15:00</span><span><span class="tag">Boots 2</span>Cibaduyut, Bandung's shoemaking district. Go for ready-made pairs, since Momo flies the next day.</span></li>
+    <li><span class="t">17:00</span><span><span class="tag">Oleh-oleh</span><b>Kartika Sari</b> on Jl. Kebonjati, near the station, for pisang bolen and other Bandung snacks to take home. Coffee and a sit-down in Braga if there's time.</span></li>
+    <li><span class="t">19:00</span><span>Feeder to Padalarang → Whoosh back to Halim.</span></li>
+    <li><span class="t">~21:30</span><span>Back at the hotel, final packing.</span></li>
+  </ul>
+  <p class="tip">Whoosh fares change with demand, roughly Rp150–350k per person one way. If you skip Colosseum, take the 08:00 train instead and add a morning in Dago (cooler hills, cafés with views). Lembang, Kawah Putih and Tangkuban Perahu are too far for this day trip.</p>
+  <p class="tip">Clothes and accessories: factory outlets and local-brand (distro) stores line <b>Jl. Riau (RE Martadinata)</b> and <b>Jl. Trunojoyo</b>, 10 minutes from Braga; swap them in for the brand showrooms if boots are found early. <b>Pasar Baru Trade Center</b> by the station is cheap clothes, fabric and accessories, good for the last hour. <b>Jl. Cihampelas</b> is the old jeans street. Prices at Pasar Baru are for bargaining.</p>
+  <p class="tip"> Check opening hours for Kopi Aroma and the food stalls.</p>
+</article>
+
+<article class="day">
+  <div class="dayhead"><h3>Slow goodbye</h3><span class="date">Sunday, 6 Dec</span><span class="pill p-full">Together to the airport</span></div>
+  <ul class="slots">
+    <li><span class="t">07:00</span><span><span class="tag">Car Free Day</span>Optional, if you're not too tired from Bandung: walk Sudirman–Thamrin while it's closed to cars (until about 11:00), street snacks on the way.</span></li>
+    <li><span class="t">10:00</span><span><span class="tag">Brunch</span>Long brunch near the hotel, then pastries from Braud or Gontran Cherrier for the flight.</span></li>
+    <li><span class="t">11:30</span><span>Final packing, check out at 12:00. Leave bags at the hotel if there's time for one last coffee.</span></li>
+    <li><span class="t">13:15</span><span>Leave for the airport. Sunday midday takes 60–90 minutes.</span></li>
+    <li><span class="t">14:45</span><span>At the airport, 3 hours before the international flight.</span></li>
+    <li><span class="t">17:45</span><span>Take off 🥲</span></li>
+  </ul>
+  <p class="tip">Pack the new boots in the cabin bag if they were pricey.</p>
+</article>
+
+</div>
+
+<h2 class="label" id="food">food near the <span class="hl">hotel</span></h2>
+<section class="win">
+  <div class="winbar"><span class="dots"><i></i><i></i><i></i></span><span class="url">food.jpg</span></div>
+  <div class="inner">
+  <p style="color:var(--muted);font-size:14px">For the open dinner slots (Sat 28, Mon 30, Fri 4) or any lunch. Everything here is within about 15 minutes of The Dharmawangsa. Book ahead for dinner.</p>
+  <div class="grid2">
+    <div class="food">
+      <h3>Indonesian</h3>
+      <ul>
+        <li><b>Plataran Dharmawangsa</b> · Jl. Dharmawangsa Raya, a few minutes from the hotel. Javanese joglo house in a garden, often named Jakarta's best Indonesian restaurant by Tatler. Try the duck curry and sate. Best pick to show Momo Indonesian food.</li>
+        <li><b>Puja</b> · The Trunojoyo compound, Kebayoran. Indonesian heritage dishes served family style.</li>
+        <li><b>Remboelan</b> · Senayan City / Plaza Senayan, about 15 minutes. Classic Indonesian dishes in a casual setting, around Rp50–100k per person. Easy lunch on a mall day.</li>
+        <li><b>Waroeng SS (Spesial Sambal)</b> · Chain from Yogyakarta with dozens of sambals, from mild to very hot. Fun way to test Momo's spice level. Cheap. Check Maps for the nearest branch.</li>
+        <li><b>Gultik Blok M</b> · Street-side gulai (rice with curried beef) on the corner by Blok M, open at night. Cheap and very Jakarta. Good after drinks.</li>
+      </ul>
+    </div>
+    <div class="food">
+      <h3>Pizza and Italian</h3>
+      <ul>
+        <li><b>Canella</b> · Hotel Tentrem, Jl. Wijaya, very close. Italian in a hotel setting, quiet and easy.</li>
+        <li><b>Pizza Marzano</b> · Listed at Jl. Suryo 38, Senopati, and in Senayan City. Casual pizza. Confirm the Senopati address on Maps.</li>
+        <li><b>Rosso</b> · Shangri-La, Gatot Subroto (about 15 minutes). Often ranked among Jakarta's best pizza.</li>
+        <li><b>Osteria Gia</b> · Pacific Place SCBD (Monday's dinner) or Plaza Indonesia.</li>
+      </ul>
+    </div>
+    <div class="food">
+      <h3>Indian</h3>
+      <ul>
+        <li><b>Babooji</b> · Gunawarman, 5 minutes away. Modern Indian (Sunday's dinner).</li>
+        <li><b>Ganesha Ek Sanskriti / Udupi</b> · Kemang (Thursday's dinner).</li>
+        <li><b>D' Bollywood</b> · Rasuna Said, Kuningan. Best food reviews of the places I checked.</li>
+        <li><b>Fez-Kinara / Queen's Tandoor</b> · Kemang. Long-running backups.</li>
+      </ul>
+    </div>
+    <div class="food">
+      <h3>Sushi and unagi</h3>
+      <ul>
+        <li><b>Man Man Unagi</b> · Senopati. Singapore unagi spot with a Michelin Bib Gourmand there, live eel from Japan grilled over charcoal. Order the hitsumabushi. Expect a queue.</li>
+        <li><b>Unacho</b> · Plaza Senayan. Charcoal-grilled unagi and hitsumabushi.</li>
+        <li><b>Unagi Kurofune</b> · Jl. Gunawarman 67, about 5 minutes from the hotel. Japanese unagi chain, open daily 11:30–22:30.</li>
+        <li><b>Obihiro Nikudon</b> · Blok M. Hokkaido-style grilled pork rice bowls, around Rp55–80k. Try the truffle or kabayaki nikudon. Good cheap lunch for Momo.</li>
+        <li><b>Shori Sushi Bar</b> · ASHTA District 8, Jl. Senopati. Well-reviewed sushi counter, easy pick near the hotel.</li>
+        <li><b>Kintaro Sushi</b> · Jl. Suryo, Senopati. More casual, around US$25 per person (estimate).</li>
+        <li><b>Kiyadon</b> · Pacific Place, SCBD. Long-running casual Japanese, known for its rolls. Good for a quick lunch.</li>
+        <li><b>Morimoto</b> · The Langham, SCBD. Omakase splurge.</li>
+        <li><b>Kokuu or Hakuryu</b> · Senopati. Small omakase counters, book well ahead.</li>
+      </ul>
+    </div>
+    <div class="food">
+      <h3>Pastry and dessert</h3>
+      <ul>
+        <li><b>Braud</b> · Jl. Senopati. Big, flaky croissants. Go early, they sell out.</li>
+        <li><b>Gontran Cherrier</b> · Senopati. French bakery from Paris, good croissants and tarts.</li>
+        <li><b>Butterman</b> · Jl. Cikatomas, Kebayoran. Almond croissants, chocolate or marzipan.</li>
+        <li><b>Moon Gypsy</b> · Jl. Senopati. Croissants, egg tarts and éclairs.</li>
+      </ul>
+    </div>
+    <div class="food">
+      <h3>Something special</h3>
+      <ul>
+        <li><b>August</b> · Jl. Senopati 39. On Asia's 50 Best Restaurants list and named best restaurant in Indonesia. Tasting menu, book well ahead. Good for the farewell dinner.</li>
+        <li><b>Turkuaz</b> · Gunawarman. Turkish, generous and fun to share.</li>
+        <li><b>Le Quartier</b> · Gunawarman. French brasserie, good for a long dinner.</li>
+      </ul>
+    </div>
+  </div>
+  </div>
+</section>
+
+<h2 class="label" id="budget">budget <span class="hl">per person</span></h2>
+<section class="win">
+  <div class="winbar"><span class="dots"><i></i><i></i><i></i></span><span class="url">notes — budget</span></div>
+  <div class="inner">
+  <p style="color:var(--muted);font-size:14px">Prices come from listings and reviews, some of them older. Where I found nothing, it says check Instagram.</p>
+  <div class="scroll">
+  <table class="budget">
+    <thead><tr><th>Place</th><th>Rough cost</th><th>Note</th></tr></thead>
+    <tbody>
+      <tr><td>UP at Thamrin Nine</td><td class="mono">Rp100k</td><td>Entry up to floor 106. Swing, edge walk and floors 108–109 cost Rp60–100k extra each</td></tr>
+      <tr><td>Osteria Gia</td><td class="mono">±Rp400k</td><td>About US$25 per person (estimate). More if you order the caviar dishes</td></tr>
+      <tr><td>Modernhaus</td><td class="mono">±Rp200k / drink</td><td>About US$12 a cocktail. Open Mon–Sat from 17:00</td></tr>
+      <tr><td>The Cocktail Club</td><td class="mono">±Rp160k / drink</td><td>About US$10 a cocktail. Closed Sunday</td></tr>
+      <tr><td>Colosseum Club</td><td class="mono">±Rp200k+</td><td>Cover or first drink, from a 2024 review. Higher on international DJ nights</td></tr>
+      <tr><td>Mad for Laughs</td><td class="mono">Rp175–250k</td><td>Presale to door price at a July 2026 show</td></tr>
+      <tr><td>Playtopia (Spark)</td><td class="mono">Rp150k</td><td>Per 2 hours on weekdays, about Rp200k on weekends</td></tr>
+      <tr><td>Ella facial</td><td class="mono">Rp225–356k</td><td>Fresh Glow Facial, varies by branch and promo</td></tr>
+      <tr><td>Habitat Park SCBD</td><td class="mono">from Rp38.5k</td><td>Open about 09:00–21:00</td></tr>
+      <tr><td>Whoosh (one way)</td><td class="mono">Rp150–350k</td><td>Changes by time and class</td></tr>
+      <tr><td>Tenun Coffee, M7 Tactical, Lit House, Foreground, mangrove paddling</td><td class="mono">check IG</td><td>No reliable price online</td></tr>
+    </tbody>
+  </table>
+  </div>
+  </div>
+</section>
+
+<h2 class="label" id="boots">boots <span class="hl">mission</span></h2>
+<section class="boots">
+  <div class="winbar"><span class="dots"><i></i><i></i><i></i></span><span class="url">boots_notes.txt</span></div>
+  <h2>Boots mission notes</h2>
+  <div class="grid2">
+    <div style="display:grid;gap:6px">
+      <h3>Before Saturday</h3>
+      <ul class="check">
+        <li><input type="checkbox" id="b1"><label for="b1">Decide the style: chelsea, lace-up work boot, or something for winter</label></li>
+        <li><input type="checkbox" id="b2"><label for="b2">Note Momo's EU size and foot length in cm</label></li>
+        <li><input type="checkbox" id="b3"><label for="b3">Bring the socks you'll wear with them</label></li>
+        <li><input type="checkbox" id="b4"><label for="b4">Check showroom addresses and hours on Instagram or Maps; some workshops are by appointment</label></li>
+        <li><input type="checkbox" id="b5"><label for="b5">Set a budget (local genuine-leather boots start around Rp500k and go into the millions)</label></li>
+      </ul>
+    </div>
+    <div style="display:grid;gap:6px">
+      <h3>When trying them on</h3>
+      <ul>
+        <li>Try on in the afternoon, when feet are slightly swollen, for a truer size.</li>
+        <li>A little heel lift is normal in new leather boots; it eases as they break in.</li>
+        <li>Ask whether it's real or synthetic leather, and whether the sole can be replaced.</li>
+        <li>Keep the receipt and ask about size exchanges before the 19:00 train.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>Times are estimates. Check Whoosh fares and schedules, museum, shop and restaurant hours the day before (book Indian restaurants for weekend nights).</footer>
+</div>
+
+</body>
+</html>
